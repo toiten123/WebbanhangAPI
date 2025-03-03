@@ -1,6 +1,7 @@
 # Đây là 1 dự án làm về 1 website buôn bán các linh kiện và bán PC và Laptop
 
 # 🌟 Cách chạy bấm F5 chọn C# và chọn https để chạy
+Khởi tạo sql để chạy bài ở file Pcbest.sql
 
 # 🌟 QuanLyBanHang v1.0.1
 
