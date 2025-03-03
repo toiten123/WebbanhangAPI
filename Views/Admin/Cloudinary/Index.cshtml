@@ -1,0 +1,299 @@
+@{
+    ViewData["Title"] = "Quản Lý Ảnh trên Cloudinary";
+}
+
+<div class="container mx-auto px-4 max-w-10xl">
+    <h2 class="my-6 text-2xl font-semibold text-gray-700 dark:text-gray-200 ">Quản lý ảnh trên Cloudinary</h2>
+    <div class="bg-white rounded-lg shadow-md p-4 mb-1">
+        <h3 class="text-xl font-semibold text-gray-700 mb-4">Upload ảnh</h3>
+        <input type="file" id="imageUpload" multiple class="hidden" accept="image/*">
+        <div id="imageUploads" class="border-2 border-dashed rounded-lg p-6 text-center cursor-pointer transition-colors duration-200 ease-in-out mb-4">
+            <div class="flex flex-col items-center gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-muted-foreground"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
+                <p class="text-lg font-medium">Kéo thả ảnh vào đây hoặc click để chọn</p>
+                <p class="text-sm text-muted-foreground">Hỗ trợ: JPG, JPEG, PNG, GIF, WEBP</p>
+            </div>
+        </div>
+        <div class="flex justify-between items-center">
+            <p class="text-sm text-gray-600"><span id="fileCount">0</span> ảnh đã chọn</p>
+            <button id="uploadBtn" onclick="uploadImages()" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" disabled>
+                Upload
+            </button>
+        </div>
+        <div id="progressBar" class="hidden mt-4 w-full bg-gray-200 rounded-full h-2.5 dark:bg-gray-700">
+            <div id="progressBarInner" class="bg-blue-600 h-2.5 rounded-full" style="width: 0%"></div>
+        </div>
+    </div>
+    <div class="bg-white rounded-lg shadow-md p-6">
+        <h3 class="text-xl font-semibold text-gray-700 mb-4">Danh sách ảnh</h3>
+        <div id="imageList" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 overflow-y-auto max-h-[400px] pr-2">
+            <p class="text-gray-500 col-span-full text-center py-8">Chưa có ảnh nào.</p>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.9.3/min/dropzone.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+
+    function showAlert(message, type = "success") {
+        Swal.fire({
+            icon                : type,
+            title               : type === "success" ? "Thành công" : "Lỗi",
+            text                : message,
+            confirmButtonText   : "OK"
+        });
+    }
+
+    document.addEventListener("DOMContentLoaded", function () {
+        const fileInput         = document.getElementById("imageUpload");
+        const imageUploadDiv    = document.getElementById("imageUploads");
+        const fileCountText     = document.getElementById("fileCount");
+        const uploadBtn         = document.getElementById("uploadBtn");
+
+        imageUploadDiv.addEventListener("click", function () {
+            fileInput.click();
+        });
+
+        fileInput.addEventListener("change", function () {
+            const files                 = fileInput.files;
+            fileCountText.textContent   = files.length;
+            uploadBtn.disabled          = files.length === 0;
+        });
+    });
+
+    async function loadImages() {
+        try {
+            let response                = await fetch("/api/cloudinary/list?t=" + new Date().getTime());
+            let result                  = await response.json();
+            let imageList               = document.getElementById("imageList");
+            const fileCountText         = document.getElementById("fileCount");
+
+            fileCountText.textContent   = 0;
+            imageList.innerHTML         = "";
+
+            if (!result.images || result.images.length === 0) {
+                imageList.innerHTML = '<p class="text-gray-500 col-span-full text-center py-8">Chưa có ảnh nào.</p>';
+                return;
+            }
+
+            result.images.forEach(image => {
+                if (!image.url || !image.publicId) return;
+
+                let div                     = document.createElement("div");
+                div.className               = "group relative aspect-square rounded-lg border bg-muted overflow-hidden";
+
+                let imgElement              = document.createElement("img");
+                imgElement.src              = image.url + "?t=" + new Date().getTime();
+                imgElement.alt              = image.publicId;
+                imgElement.className        = "rounded-lg object-cover transition-transform group-hover:scale-105 w-full h-full";
+
+                let overlay                 = document.createElement("div");
+                overlay.className           = "absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity";
+
+                let actions                 = document.createElement("div");
+                actions.className           = "absolute inset-0 p-4 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col justify-between";
+
+                let buttonContainer         = document.createElement("div");
+                buttonContainer.className   = "flex items-center justify-end gap-2 ";
+
+                let changeButton            = document.createElement("button");
+                changeButton.className      = "change-image p-2 text-purple-600 bg-purple-100/10 rounded-lg hover:bg-purple-100/20";
+                changeButton.setAttribute("data-public-id", image.publicId);
+                changeButton.title          = "Thay đổi ảnh";
+                changeButton.innerHTML      = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"></path></svg>`;
+                changeButton.onclick        = () => updateImages(image.publicId);
+
+                let deleteButton            = document.createElement("button");
+                deleteButton.className      = "delete-image p-2 text-red-600 bg-red-100/10 rounded-lg hover:bg-red-100/20";
+                deleteButton.setAttribute("data-public-id", image.publicId);
+                deleteButton.title          = "Xóa ảnh";
+                deleteButton.innerHTML      = `<svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>`;
+                deleteButton.onclick        = () => deleteImage(image.publicId);
+
+                let nameLabel               = document.createElement("p");
+                nameLabel.className         = "text-sm text-white font-medium truncate cursor-pointer edit-name";
+                nameLabel.setAttribute("data-public-id", image.publicId);
+                nameLabel.textContent       = image.publicId.split("/").pop();
+                nameLabel.onclick           = () => editImageName(image.publicId); 
+
+                let copyButton              = document.createElement("button");
+                copyButton.className        = "copy-url p-2 text-white-600 bg-red-100/10 rounded-lg hover:bg-red-100/20";
+                copyButton.setAttribute("data-url", image.url);
+                copyButton.innerHTML        = `  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>`;
+                copyButton.onclick          = () => copyToClipboard(image.url);
+
+                buttonContainer.appendChild(changeButton);
+                buttonContainer.appendChild(deleteButton);
+                buttonContainer.appendChild(copyButton);
+                actions.appendChild(buttonContainer);
+                actions.appendChild(nameLabel);
+                @* actions.appendChild(copyButton); *@
+
+                div.appendChild(imgElement);
+                div.appendChild(overlay);
+                div.appendChild(actions);
+                imageList.appendChild(div);
+            });
+        } catch (error) {
+            console.error("Lỗi:", error);
+            showAlert("Không thể tải danh sách ảnh!", "error");
+        }
+    }
+
+    function copyToClipboard(text) {
+        navigator.clipboard.writeText(text).then(() => {
+            showAlert("URL đã được sao chép!", "success");
+        }).catch(() => {
+            showAlert("Không thể sao chép URL!", "error");
+        });
+    }
+
+    function editImageName(publicId) {
+        const newName = prompt("Nhập tên mới cho ảnh:", "");
+        if (newName && newName.trim()) {
+            updateImageName(publicId, newName.trim());
+        } else {
+            showAlert("Vui lòng nhập tên hợp lệ!", "error");
+        }
+    }
+
+    function updateImages(publicId) {
+        const inputFile     = document.createElement('input');
+        inputFile.type      = 'file';
+        inputFile.accept    = 'image/*';
+        inputFile.addEventListener('change', async function (event) {
+            const file = event.target.files[0];
+            if (!file) {
+                showAlert("Vui lòng chọn ảnh!", "error");
+                return;
+            }
+            await updateImage(publicId, file);
+        });
+        inputFile.click();
+    }
+
+    function progressBar() {
+        document.getElementById("progressBar").classList.remove("hidden");
+        const progressBarInner  = document.getElementById("progressBarInner");
+        let progress            = 0;
+
+        function updateProgress() {
+            if (progress < 100) {
+                progress += 1; 
+                progressBarInner.style.width = progress + "%"; 
+                requestAnimationFrame(updateProgress);
+            } else {
+                setTimeout(() => {
+                    document.getElementById("progressBar").classList.add("hidden");
+                }, 1000);
+            }
+        }
+        requestAnimationFrame(updateProgress);
+    }
+
+    async function uploadImages() {
+        let files = document.getElementById("imageUpload").files;
+        if (files.length === 0) {
+            showAlert("Vui lòng chọn ít nhất một ảnh!", "warning");
+            return;
+        }
+
+        let formData = new FormData();
+        for (let file of files) {
+            formData.append("files", file);
+        }
+
+        progressBar();
+        try {
+            let response    = await fetch("/api/cloudinary/upload-multiple", { method: "POST", body: formData });
+            let result      = await response.json();
+            if (result.success) {
+                showAlert("Thêm ảnh thành công!", "success");
+                setTimeout(loadImages, 1500);
+            } else {
+                showAlert("Upload thất bại!", "error");
+            }
+        } catch (error) {
+            console.error("Lỗi:", error);
+            showAlert("Lỗi khi upload ảnh!", "error");
+        }
+    }
+
+    async function updateImageName(publicId, newName) {
+        if (!publicId || !newName) {
+            showAlert("Tên mới hoặc PublicId không hợp lệ!", "error");
+            return;
+        }
+
+        try {
+            let response = await fetch("/api/cloudinary/update-name", {
+                method  : "POST",
+                headers : { "Content-Type": "application/json" },
+                body    : JSON.stringify({ publicId, newName })
+            });
+
+            let result = await response.json();
+            if (result.success) {
+                showAlert("Tên ảnh đã được cập nhật!", "success");
+                setTimeout(loadImages, 1000);
+            } else {
+                showAlert(result.message, "error");
+            }
+        } catch (error) {
+            console.error("❌ Lỗi:", error);
+            showAlert("Không thể cập nhật tên ảnh!", "error");
+        }
+    }
+
+    async function updateImage(publicId, file) {
+        let formData = new FormData();
+        formData.append("file", file);
+        formData.append("publicId", publicId);
+
+        try {
+            let response    = await fetch("/api/cloudinary/update-image", { method: "POST", body: formData });
+            let result      = await response.json();
+            if (result.success) {
+                showAlert("Ảnh đã được cập nhật!", "success");
+                setTimeout(loadImages, 1500);
+            } else {
+                showAlert("Cập nhật ảnh thất bại!", "error");
+            }
+        } catch (error) {
+            console.error("Lỗi:", error);
+            showAlert("Không thể cập nhật ảnh!", "error");
+        }
+    }
+
+    async function deleteImage(publicId) {
+        Swal.fire({
+            title               : "Xác nhận xóa?",
+            text                : "Bạn có chắc chắn muốn xóa ảnh này?",
+            icon                : "warning",
+            showCancelButton    : true,
+            confirmButtonText   : "Xóa",
+            cancelButtonText    : "Hủy",
+            confirmButtonColor  : "#d33",
+            cancelButtonColor   : "#3085d6"
+        }).then(async (result) => {
+            if (result.isConfirmed) {
+                try {
+                    let response    = await fetch(`/api/cloudinary/delete?publicId=${publicId}`, { method: "DELETE" });
+                    let result      = await response.json();
+                    if (result.success) {
+                        showAlert("Ảnh đã được xóa!", "success");
+                        setTimeout(loadImages, 1500);
+                    } else {
+                        showAlert("Xóa ảnh thất bại!", "error");
+                    }
+                } catch (error) {
+                    console.error("Lỗi:", error);
+                    showAlert("Lỗi khi xóa ảnh!", "error");
+                }
+            }
+        });
+    }
+    window.onload = loadImages;
+
+</script>

@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #f9f9f9;
+    }
+    
+    .footer {
+        margin-top: 20px;
+        background-color: white;
+    }
+    
+    .fluid-container {
+        max-width: 1220px;
+        margin: 0 auto;
+        padding: 20px;
+        border-bottom: 1px solid #ececec;
+    }
+    
+    .grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr) 300px 350px;
+        gap: 20px;
+    }
+    
+    .footer-col {
+        margin-top: 40px;
+    }
+    
+    .footer-title {
+        font-size: 14px;
+        font-weight: bold;
+        text-transform: uppercase;
+        margin-bottom: 12px;
+        color: #333;
+    }
+    
+    .footer-content,
+    .list-ship,
+    .list-pay {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+    .footer-content ul{
+        padding: 0;
+    }
+    
+    .footer-content li {
+        list-style: none;
+        margin-bottom: 8px;
+    }
+    
+    .footer-content li a {
+        text-decoration: none;
+        color: #111;
+        font-size: 14px;
+    }
+    
+    .footer-content li a:hover {
+        text-decoration: underline;
+        color: #e30019;
+        cursor: pointer;
+    }
+    
+    .list-ship,
+    .list-pay {
+        display: flex; 
+        gap: 10px;
+    }
+    
+    .list-ship img,
+    .list-pay img {
+        max-width: 73px;
+        height: auto;
+    }
+    
+    .footer__2 {
+        background-color: white;
+    }
+    
+    .social-list {
+        display: block;
+    }
+    .social-list a {
+        margin: 0 7px;
+        text-decoration: none;
+    }
+    
+    .social-list img {
+        width: 32px;
+        height: 32px;
+    }
+    .icon-container {
+        position: relative;
+        left: 16%;
+        top: -47px;
+    }
+
+    </style>
+<body>
+    <div class="footer">
+        <div class="footer__1">
+            <div class="fluid-container">
+                <div class="grid">
+                    <div class="column">
+                        <div class="footer-col">
+                            <div class="footer-title">
+                                <h4>VỀ GEARVN</h4>
+                            </div>
+                            <div class="footer-content">
+                                <ul>
+                                    <li><a>Giới thiệu</a></li>
+                                    <li><a>Tuyển dụng</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="column">
+                        <div class="footer-col">
+                            <div class="footer-title">
+                                <h4>CHÍNH SÁCH</h4>
+                            </div>
+                            <div class="footer-content">
+                                <ul>
+                                    <li><a>Chính sách bảo hành</a></li>
+                                    <li><a>Chính sách giao hàng</a></li>
+                                    <li><a>Chính sách bảo mật</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="column">
+                        <div class="footer-col">
+                            <div class="footer-title">
+                                <h4>THÔNG TIN</h4>
+                            </div>
+                            <div class="footer-content">
+                                <ul>
+                                    <li><a>Hệ thống cửa hàng</a></li>
+                                    <li><a>Hướng dẫn mua hàng</a></li>
+                                    <li><a>Hướng dẫn thanh toán</a></li>
+                                    <li><a>Hướng dẫn trả góp</a></li>
+                                    <li><a>Tra cứu địa chỉ bảo hành</a></li>
+                                    <li><a>Dịch vụ vệ sinh miễn phí</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="column">
+                        <div class="footer-col">
+                            <div class="footer-title">
+                                <h4>TỔNG ĐÀI HỖ TRỢ (MIỄN PHÍ GỌI)</h4>
+                            </div>
+                            <div class="footer-content">
+                                <div class="list-info">
+                                    <p><span>Mua hàng: </span><a style="color:  #1982F9;font-weight: 600;">1234.5678</a></p>
+                                    <p><span>Bảo hành: </span><a style="color:  #1982F9;font-weight: 600;">4321.8765</a></p>
+                                    <p><span>Khiếu nại: </span><a style="color:  #1982F9;font-weight: 600;">8765.4321</a></p>
+                                    <p><span>Email: </span><a style="color:  #1982F9;font-weight: 600;margin-left: 27px;">cskh@pcbest.com</a></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="column">
+                        <div class="footer-col">
+                            <div class="footer-title">
+                                <h4>ĐƠN VỊ VẬN CHUYỂN</h4>
+                            </div>
+                            <div class="footer-content">
+                                <ul class="list-ship">
+                                    <li><img src="//theme.hstatic.net/200000722513/1001065590/14/ship_1.png?v=423"
+                                            alt="Hình thức vận chuyển 1" sizes="73px"></li>
+                                    <li><img src="//theme.hstatic.net/200000722513/1001065590/14/ship_2.png?v=423"
+                                            alt="Hình thức vận chuyển 2" sizes="73px"></li>
+                                    <li><img src="//theme.hstatic.net/200000722513/1001065590/14/ship_3.png?v=423"
+                                            alt="Hình thức vận chuyển 3" sizes="73px"></li>
+                                    <li><img src="//theme.hstatic.net/200000722513/1001065590/14/ship_4.png?v=423"
+                                            alt="Hình thức vận chuyển 4" sizes="73px"></li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="footer-col">
+                            <div class="footer-title">
+                                <h4>CÁCH THỨC THANH TOÁN</h4>
+                            </div>
+                            <div class="footer-content">
+                                <ul class="list-pay">
+                                    <li><img src="//theme.hstatic.net/200000722513/1001065590/14/pay_1.png?v=423"
+                                            alt="Phương thức thanh toán 1" sizes="73px"></li>
+                                    <li><img src="//theme.hstatic.net/200000722513/1001065590/14/pay_2.png?v=423"
+                                            alt="Phương thức thanh toán 2" sizes="73px"></li>
+                                    <li><img src="//theme.hstatic.net/200000722513/1001065590/14/pay_3.png?v=423"
+                                            alt="Phương thức thanh toán 3" sizes="73px"></li>
+                                    <li><img src="//theme.hstatic.net/200000722513/1001065590/14/pay_4.png?v=423"
+                                            alt="Phương thức thanh toán 4" sizes="73px"></li>
+    
+                                </ul>
+                                <ul class="list-pay">
+                                    <li><img src="//theme.hstatic.net/200000722513/1001065590/14/pay_5.png?v=423"
+                                            alt="Phương thức thanh toán 5" sizes="73px"></li>
+                                    <li><img src="//theme.hstatic.net/200000722513/1001065590/14/pay_6.png?v=423"
+                                            alt="Phương thức thanh toán 6" sizes="73px"></li>
+                                    <li><img src="//theme.hstatic.net/200000722513/1001065590/14/pay_7.png?v=423"
+                                            alt="Phương thức thanh toán 7" sizes="73px"></li>
+                                    <li><img src="//theme.hstatic.net/200000722513/1001065590/14/pay_8.png?v=423"
+                                            alt="Phương thức thanh toán 8" sizes="73px"></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    
+        <div class="footer__2">
+            <div class="fluid-container">
+                <div class="line flex">
+                    <h4>KẾT NỐI VỚI CHÚNG TÔI</h4>
+                    <div class="icon-container flex">
+                        <div class="social-list">
+                            <a href="#">
+                                <img src="https://file.hstatic.net/200000636033/file/facebook_1_0e31d70174824ea184c759534430deec.png"
+                                    width="32px"">
+                            </a>
+                            <a href="#">
+                                <img src="https://file.hstatic.net/200000722513/file/tiktok-logo_fe1e020f470a4d679064cec31bc676e4.png"
+                                    width="32px"">
+                            </a>
+                            <a href="#">
+                                <img src="https://file.hstatic.net/200000636033/file/youtube_1_d8de1f41ca614424aca55aa0c2791684.png"
+                                    width="32px"">
+                            </a>
+                            <a href="#">
+                                <img src="https://file.hstatic.net/200000722513/file/2023-06-07_11.08.09_2bc09900263b4b1c8935646b4a7b2d32.jpg"
+                                    width="32px"">
+                            </a>
+                            <a href="#">
+                                <img src="https://file.hstatic.net/200000636033/file/group_1_54d23abd89b74ead806840aa9458661d.png"
+                                    width="32px"">
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

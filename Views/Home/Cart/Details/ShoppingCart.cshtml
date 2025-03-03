@@ -1,0 +1,342 @@
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Giỏ hàng</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'primary': '#EF4444',
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+
+<body class="bg-gray-50 min-h-screen">
+    <main class="max-w-3xl mx-auto p-4">
+                <!-- Back Button -->
+        <a href="/" class="inline-flex items-center text-blue-600 ">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                stroke="currentColor" class="w-5 h-5 mr-1">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
+            </svg>
+            Mua thêm sản phẩm
+        </a>
+        <!-- Checkout Steps -->
+        <div class="w-full bg-rose-50 p-4 mb-8 rounded-lg">
+            <div class="flex justify-between items-center max-w-3xl mx-auto">
+                <div class="flex items-center">
+                    <div class="flex flex-col items-center">
+                        <div class="rounded-full p-2 bg-primary text-white">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                                stroke="currentColor" class="w-5 h-5">
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                    d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 00-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 00-16.536-1.84M7.5 14.25L5.106 5.272M6 20.25a.75.75 0 11-1.5 0 .75.75 0 011.5 0zm12.75 0a.75.75 0 11-1.5 0 .75.75 0 011.5 0z" />
+                            </svg>
+                        </div>
+                        <span class="text-sm mt-1 text-primary">Giỏ hàng</span>
+                    </div>
+                    <div class="h-[2px] w-16 mx-2 bg-gray-200"></div>
+                </div>
+                <div class="flex items-center">
+                    <div class="flex flex-col items-center">
+                        <div class="rounded-full p-2 bg-gray-200">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                                stroke="currentColor" class="w-5 h-5">
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                    d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z" />
+                            </svg>
+                        </div>
+                        <span class="text-sm mt-1 text-gray-500">Thông tin đặt hàng</span>
+                    </div>
+                    <div class="h-[2px] w-16 mx-2 bg-gray-200"></div>
+                </div>
+                <div class="flex items-center">
+                    <div class="flex flex-col items-center">
+                        <div class="rounded-full p-2 bg-gray-200">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                                stroke="currentColor" class="w-5 h-5">
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                    d="M2.25 8.25h19.5M2.25 9h19.5m-16.5 5.25h6m-6 2.25h3m-3.75 3h15a2.25 2.25 0 002.25-2.25V6.75A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25v10.5A2.25 2.25 0 004.5 19.5z" />
+                            </svg>
+                        </div>
+                        <span class="text-sm mt-1 text-gray-500">Thanh toán</span>
+                    </div>
+                    <div class="h-[2px] w-16 mx-2 bg-gray-200"></div>
+                </div>
+                <div class="flex items-center">
+                    <div class="flex flex-col items-center">
+                        <div class="rounded-full p-2 bg-gray-200">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                                stroke="currentColor" class="w-5 h-5">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" />
+                            </svg>
+                        </div>
+                        <span class="text-sm mt-1 text-gray-500">Hoàn tất</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Cart Content -->
+        <div class="mt-8">
+            <div class="flex items-center gap-4 border p-4 rounded-lg bg-white">
+                <div id="cart-items"></div>
+            </div>
+
+            <div class="mt-8 space-y-4 bg-white p-4 rounded-lg">
+                <!-- Add coupon code section -->
+                <div class="border-b pb-4">
+                    <button onclick="toggleCoupon()"
+                        class="flex items-center text-blue-600 hover:text-blue-700 transition-colors duration-200">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                            stroke="currentColor" class="w-5 h-5 mr-2">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                d="M21 11.25v8.25a1.5 1.5 0 01-1.5 1.5H5.25a1.5 1.5 0 01-1.5-1.5v-8.25M12 4.875A2.625 2.625 0 109.375 7.5H12m0-2.625V7.5m0-2.625A2.625 2.625 0 1114.625 7.5H12m0 0V21m-8.625-9.75h18c.621 0 1.125-.504 1.125-1.125v-1.5c0-.621-.504-1.125-1.125-1.125h-18c-.621 0-1.125.504-1.125 1.125v1.5c0 .621.504 1.125 1.125 1.125z" />
+                        </svg>
+                        Sử dụng mã giảm giá
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                            stroke="currentColor" class="w-4 h-4 ml-2 transition-transform duration-200"
+                            id="couponArrow">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
+                        </svg>
+                    </button>
+
+                    <div id="couponForm" class="hidden mt-4 transition-all duration-300 ease-in-out">
+                        <div class="flex gap-2">
+                            <input type="text" placeholder="Nhập mã giảm giá/Phiếu mua hàng"
+                                class="flex-1 border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent">
+                            <button
+                                class="bg-blue-500 hover:bg-blue-600 text-white px-6 py-2 rounded-md transition-colors duration-200">
+                                Áp dụng
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mt-8 space-y-4 bg-white p-4 rounded-lg">
+                    <div class="flex justify-between">
+                        <span>Phí vận chuyển:</span>
+                        <span class="text-green-600 shipping-fee">Miễn phí</span>
+                    </div>
+                    <div class="flex justify-between text-lg font-medium">
+                        <span>Tổng tiền:</span>
+                        <span class="text-primary text-2xl" id="total-price">0đ</span>
+                    </div>
+                <form id="orderForm" asp-controller="home" asp-action="ProductDetail" method="get">
+                    <button type="submit"
+                        class="block w-full bg-primary hover:bg-red-600 text-white text-center py-2 rounded"
+                        onclick="return handleOrderClick(event)">
+                        ĐẶT HÀNG NGAY
+                    </button>
+                </form>
+
+                </div>
+            </div>
+    </main>
+</body>
+<script>
+        function toggleCoupon() {
+            const couponForm = document.getElementById('couponForm');
+            const arrow = document.getElementById('couponArrow');
+            
+            if (couponForm.classList.contains('hidden')) {
+                couponForm.classList.remove('hidden');
+                couponForm.classList.add('block');
+                arrow.style.transform = 'rotate(180deg)';
+            } else {
+                couponForm.classList.add('hidden');
+                couponForm.classList.remove('block');
+                arrow.style.transform = 'rotate(0deg)';
+            }
+        }
+    </script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        renderCart();
+    });
+
+    function renderCart() {
+        let cart = JSON.parse(localStorage.getItem("shoppingCart")) || [];
+        let cartContainer = document.getElementById("cart-items");
+        cartContainer.innerHTML = "";
+
+        if (cart.length === 0) {
+            cartContainer.innerHTML = "<p>Giỏ hàng của bạn đang trống!</p>";
+            return;
+        }
+
+        cart.forEach(item => {
+            let productElement = document.createElement("div");
+            productElement.classList.add("flex", "items-center", "gap-4", "p-4", "rounded-lg", "bg-white");
+
+        productElement.innerHTML = `
+            <div class="flex flex-col items-center">
+                <img src="${item.imageThumbnail}" alt="${item.productName}" class="w-24 h-24 rounded-lg object-cover border border-gray-200">
+                <button class="remove text-gray-600 mt-2 flex items-center" data-id="${item.productID}">
+                    <svg width="17" height="16" viewBox="0 0 17 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M9.58036 11.75H10.1696C10.317 11.75 10.4643 11.6328 10.4643 11.4688V6.40625C10.4643 6.26563 10.317 6.125 10.1696 6.125H9.58036C9.40848 6.125 9.28571 6.26563 9.28571 6.40625V11.4688C9.28571 11.6328 9.40848 11.75 9.58036 11.75ZM13.6071 3.875H11.5692L10.7344 2.5625C10.5379 2.23438 10.1451 2 9.72768 2H7.24777C6.83036 2 6.4375 2.23438 6.24107 2.5625L5.40625 3.875H3.39286C3.17188 3.875 3 4.0625 3 4.25V4.625C3 4.83594 3.17188 5 3.39286 5H3.78571V12.875C3.78571 13.5078 4.30134 14 4.96429 14H12.0357C12.6741 14 13.2143 13.5078 13.2143 12.875V5H13.6071C13.8036 5 14 4.83594 14 4.625V4.25C14 4.0625 13.8036 3.875 13.6071 3.875ZM7.19866 3.19531C7.22321 3.17188 7.27232 3.125 7.32143 3.125C7.32143 3.125 7.32143 3.125 7.34598 3.125H9.65402C9.70313 3.125 9.75223 3.17188 9.77679 3.19531L10.1942 3.875H6.78125L7.19866 3.19531ZM12.0357 12.875H4.96429V5H12.0357V12.875ZM6.83036 11.75H7.41964C7.56696 11.75 7.71429 11.6328 7.71429 11.4688V6.40625C7.71429 6.26563 7.56696 6.125 7.41964 6.125H6.83036C6.65848 6.125 6.53571 6.26563 6.53571 6.40625V11.4688C6.53571 11.6328 6.65848 11.75 6.83036 11.75Z" fill="#6D6E72"></path>
+                    </svg> Xóa
+                </button>
+            </div>
+            <div class="flex-1">
+                <h3 class="font-medium min-w-[295px]">${item.productName}</h3>
+            </div>
+            <div class="flex items-center">
+                <button class="decrease px-2 py-1 border rounded" data-id="${item.productID}" ${item.quantity === 1 ? 'disabled' : ''}>-</button>
+                <input type="number" class="w-16 text-center border rounded px-2 py-1" value="${item.quantity}" readonly>
+                <button class="increase px-2 py-1 border rounded" data-id="${item.productID}">+</button>
+            </div>
+            <div class="text-right min-w-[120px]">
+                <div class="font-medium text-primary text-xl">${item.priceAfterDiscount}</div>
+                <div class="text-gray-500 line-through ">${item.priceBeforeDiscount}</div>
+            </div>
+        `;
+
+
+            cartContainer.appendChild(productElement);
+        });
+        updateTotalPrice();
+        attachEventListeners();
+    }
+
+    function attachEventListeners() {
+        document.querySelectorAll(".increase").forEach(button => {
+            button.addEventListener("click", function () {
+                updateQuantity(this.dataset.id, 1);
+            });
+        });
+
+        document.querySelectorAll(".decrease").forEach(button => {
+            button.addEventListener("click", function () {
+                updateQuantity(this.dataset.id, -1);
+            });
+        });
+
+        document.querySelectorAll(".remove").forEach(button => {
+            button.addEventListener("click", function () {
+                removeItem(this.dataset.id);
+            });
+        });
+    }
+
+    function updateQuantity(productID, change) {
+        let cart = JSON.parse(localStorage.getItem("shoppingCart")) || [];
+        let product = cart.find(item => item.productID == productID);
+
+        if (product) {
+            // Đảm bảo số lượng không giảm dưới 1
+            if (product.quantity + change >= 1) {
+                product.quantity += change;
+            }
+        }
+
+        localStorage.setItem("shoppingCart", JSON.stringify(cart));
+        renderCart();
+        updateCartCount();
+        updateTotalPrice();
+    }
+
+    function removeItem(productID) {
+        let cart = JSON.parse(localStorage.getItem("shoppingCart")) || [];
+        cart = cart.filter(item => item.productID != productID);
+        localStorage.setItem("shoppingCart", JSON.stringify(cart));
+        renderCart();
+        updateCartCount();
+    }
+
+    function updateCartCount() {
+        let cart = JSON.parse(localStorage.getItem("shoppingCart")) || [];
+        let totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+        document.querySelector(".cart-notice").textContent = totalItems;
+    }
+    
+function updateTotalPrice() {
+    let cart = JSON.parse(localStorage.getItem("shoppingCart")) || [];
+    let totalPrice = cart.reduce((sum, item) => sum + (parseFloat(item.priceAfterDiscount.replace(/[^\d]/g, '')) * item.quantity), 0);
+
+    // Tính phí vận chuyển
+    let shippingFee = totalPrice >= 5000000 ? 0 : 40000; // Miễn phí vận chuyển nếu tổng tiền > 5 triệu, nếu không thì tính 40k
+
+    // Lưu phí vận chuyển vào localStorage
+    localStorage.setItem("shippingFee", shippingFee);
+
+    // Cập nhật tổng tiền và phí vận chuyển
+    totalPrice += shippingFee;
+
+    // Lưu tổng tiền vào localStorage
+    localStorage.setItem("totalPrice", totalPrice);
+
+    // Hiển thị tổng tiền đã tính (bao gồm phí vận chuyển)
+    document.getElementById("total-price").textContent = totalPrice.toLocaleString() + "đ";
+
+    // Hiển thị phí vận chuyển
+    let shippingText = shippingFee === 0 ? "Miễn phí" : shippingFee.toLocaleString() + "đ";
+    document.querySelector(".shipping-fee").textContent = shippingText;
+}
+
+
+async function handleOrderClick(event) {
+    event.preventDefault(); // Ngăn chặn form submit ngay lập tức
+
+    const tokens = localStorage.getItem("accessToken");
+    const username = localStorage.getItem("username");
+
+    if (!tokens || !username) {
+        // Nếu chưa đăng nhập, hiển thị cảnh báo và yêu cầu đăng nhập
+        Swal.fire({
+            icon: "warning",
+            title: "Bạn cần đăng nhập",
+            text: "Vui lòng đăng nhập để tiếp tục đặt hàng.",
+            confirmButtonText: "Đăng nhập"
+        }).then((result) => {
+            if (result.isConfirmed) {
+                window.location.href = "@Url.Action("Login", "Account")"; // Chuyển hướng đến trang đăng nhập
+            }
+        });
+
+        return false; // Dừng lại, không cho form submit
+    }
+
+    // Nếu đã đăng nhập, kiểm tra token còn hạn hay không
+    const { token, expiresAt } = JSON.parse(tokens);
+    const currentTime = new Date().getTime();
+
+    if (currentTime > expiresAt) {
+        // Token đã hết hạn, xóa khỏi localStorage và yêu cầu đăng nhập lại
+        localStorage.removeItem("accessToken");
+        localStorage.removeItem("username");
+
+        Swal.fire({
+            icon: "error",
+            title: "Phiên đăng nhập đã hết hạn",
+            text: "Vui lòng đăng nhập lại để tiếp tục.",
+            confirmButtonText: "Đăng nhập"
+        }).then((result) => {
+            if (result.isConfirmed) {
+                window.location.href = "@Url.Action("Login", "Account")"; // Điều hướng đến trang đăng nhập
+            }
+        });
+
+        return false; // Dừng lại, không cho form submit
+    }
+
+    // Nếu đã đăng nhập hợp lệ
+    setTimeout(function() {
+        document.getElementById("orderForm").submit();
+    }, 1000); // 1 giây
+
+}
+
+</script>
+</html>

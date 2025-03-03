@@ -1,0 +1,52 @@
+.gallery {
+    background-color: #f1f0f1;
+    padding-bottom: 40px;
+}
+
+.container-gallery {
+    max-width: 1187px;
+    margin-left: 160px;
+    border-radius: 3px;
+    background-color: white;
+    padding: 20px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.title {
+    font-weight: 600;
+    font-size: 24px;
+}
+
+.title span {
+    color: #333;
+    font-size: 24px;
+}
+
+/* Grid container */
+.grid-container {
+    display: grid;
+    grid-template-columns: repeat(10, 1fr);
+    gap: 20px;
+    padding-top: 20px;
+}
+
+/* Item styles */
+.item-icon {
+    text-align: center;
+    cursor: pointer;
+}
+
+.item-img img {
+    width: 84px;
+    height: 84px;
+    object-fit: contain;
+}
+
+.item-title h3 {
+    color: #333;
+    font-size: 12px;
+}
+
+hr {
+    opacity: 0.2;
+}

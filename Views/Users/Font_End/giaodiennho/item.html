@@ -1,0 +1,757 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Navigation Menu</title>
+    <style>
+.container-item {
+    max-width: 1280px;
+    background-color: cyan;
+    padding: 0 10px;
+    margin-left: auto;
+    margin-right: auto;
+    padding-bottom: 3%;
+}
+
+.container-item .section-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 0;
+}
+
+.container-item .box-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.container-item .box-header .hTitle {
+  margin: 0;
+}
+.container-item .hTitle {
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 20px;
+    line-height: 36px;
+    color: var(--titlecolor);
+    margin-bottom: 0;
+    white-space: initial;
+    overflow: hidden;
+    -webkit-box-orient: vertical;
+    display: -webkit-box;
+}
+
+.box-header .hTitle a {
+  font-size: 18px;
+  font-weight: 700;
+  color: #333;
+  text-decoration: none;
+}
+
+.box-subHeader {
+  display: flex;
+  align-items: center;
+}
+
+.shTitle {
+    font-weight: 600;
+    line-height: 22px;
+    padding-left: 21px;
+    margin: 0 0 0 20px;
+    display: flex;
+    align-items: center;
+    position: relative;
+}
+
+.section-heading .shTitle:before {
+    content: "";
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    margin: auto;
+    width: 1px;
+    height: 85%;
+    background: #97999D;
+}
+
+.box-subHeader .shTitle {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0;
+  font-size: 18px;
+  color: #000000;
+}
+
+.box-subHeader svg {
+  width: 22px;
+  height: 16px;
+}
+
+.box-right {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+
+.cate-list {
+  display: flex;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  gap: 16px;
+}
+
+.cate-list a {
+    cursor: pointer;
+    position: relative;
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 22px;
+    color: #333333;
+    padding: 5px 13px;
+    white-space: nowrap;
+}
+
+.cate-list a:hover {
+  color: #FF3C53;
+}
+
+.button-more {
+    cursor: pointer;
+    display: flex;
+    margin-right: 20px;
+    align-items: center;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 22px;
+    color: #1982F9;
+}
+
+.button-more:hover {
+    color: #FF3C53;
+}
+
+
+.product-section-item {
+  display: flex;
+  gap: 8px;
+  overflow: hidden;
+  position: relative;
+}
+
+.product-slider-wrapper {
+  display: flex;
+  transition: transform 0.5s ease-in-out;
+}
+
+
+/* Nut */
+
+.slider-prev, .slider-next {
+    cursor: pointer;
+    position: absolute;
+    width: 32px;
+    height: 32px;
+    top: 40%;
+    transform: translateY(-50%);
+    border: none;
+    background: #ECECEC;
+    z-index: 2;
+    outline: none;
+    border-radius: 50%;
+    padding: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    -webkit-transition: all 0.2s;
+    transition: all 0.2s;
+    box-shadow: 0px 0px 4.80687px rgba(0, 0, 0, 0.2)
+}
+
+.slider-prev {
+    left: 7.7%;
+
+}
+
+.slider-next {
+    right: 8%;
+}
+
+
+
+            .product-card-item {
+    cursor: pointer;
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    flex: 0 0 218px;
+    padding: 15px;
+    position: relative;
+    margin-left: 6px;
+    margin-bottom: 10px
+}
+
+.product-card-item img {
+    max-width: 100%;
+    border-radius: 8px;
+    min-height: 212px; /* Đặt chiều cao tối thiểu */
+    object-fit: cover; /* Đảm bảo nội dung ảnh được bao phủ đầy đủ */
+}
+
+.product-title-item {
+    font-size: 14px;
+    font-weight: bold;
+    margin: 10px 0;
+    overflow: hidden; /* Ẩn phần văn bản vượt quá */
+    display: -webkit-box; /* Sử dụng để hỗ trợ line-clamp */
+    -webkit-line-clamp: 2; /* Số dòng tối đa được hiển thị */
+    -webkit-box-orient: vertical; /* Đặt hướng của box */
+    text-overflow: ellipsis; /* Thêm dấu "..." nếu văn bản vượt quá */
+    word-wrap: break-word; /* Chia từ nếu cần */
+}
+
+.product-price-item {
+    margin: 10px 0;
+    font-size: 18px;
+    text-align: left;
+}
+
+.product-price-item .old-price-item {
+    text-decoration: line-through;
+    color: #999;
+    display: block; /* Đặt giá cũ trên một dòng riêng */
+    font-size: 13px;
+}
+
+.product-price-item .current-price-container-item {
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+    margin-top: 4px; /* Khoảng cách với giá cũ */
+}
+
+.product-price-item .current-price-item {
+    color: #dc0000;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.product-price-item .discount-item {
+    padding: 0 4px;
+    background: #FFEDED;
+    border-radius: 2px;
+    color: #E30019;
+    border: 1px solid #E30019;
+    line-height: 16px;
+    font-size: 13px;
+    margin-left: 10px;
+}
+
+.product-rating-item {
+    margin: 10px 0;
+    color: #FF8A00;
+    font-size: 13px;
+    text-align: left;
+}
+
+.product-rating-item .rating-item { 
+  font-weight: 600;
+}
+
+.product-rating-item .review-count-item {
+    color: #FF8A00;
+    color: #555;
+    margin-left: 5px;
+}
+
+.product-sold-item {
+    margin: 10px 0;
+    font-size: 14px;
+    color: #dc0000;
+    font-weight: bold;
+}
+
+.sticker_left_bottom-item .suaanh-item {
+    position: absolute;
+    z-index: 1;
+    top: 35%;
+    left: 0;
+    display: flex;
+    align-items: flex-end;
+    min-height: 0px;
+    height: 62px;
+}
+
+.specs-container-item {
+    background: #ECECEC;
+    border-radius: 8px;
+    padding: 7px;
+    display: flex;
+    gap: 16px;
+    max-width: 200px;
+    margin: 20px auto;
+    flex-wrap: wrap;
+}
+
+.specs-container-item .spec-item-item {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.specs-container-item .spec-item-item svg {
+    width: 12px;
+    height: 12px;
+}
+
+.specs-container-item .spec-text-item {
+    color: #4b5563;
+    font-weight: 550;
+    font-size: 12px;
+}
+
+    </style>
+</head>
+<body>
+    <div class="container-item">
+        <button class="slider-prev"><svg width="18" height="18" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" x="0px" y="0px" viewBox="0 0 50 50" enable-background="new 0 0 50 50" xml:space="preserve"><metadata><!--?xpacket begin="&#65279;" id="W5M0MpCehiHzreSzNTczkc9d"?--><x:xmpmeta xmlns:x="adobe:ns:meta/" x:xmptk="Adobe XMP Core 5.3-c011 66.145661, 2012/02/06-14:56:27"></x:xmpmeta><!--?xpacket end="w"?--></metadata><g display="none"><rect x="1" y="1" display="inline" fill="#000000" width="48" height="48"></rect></g><g><g><polygon points="34.675,47.178 12.497,25 34.675,2.822 37.503,5.65 18.154,25 37.503,44.35   "></polygon></g></g></svg>
+        </button>
+        <button class="slider-next"><svg width="18" height="18" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" x="0px" y="0px" viewBox="0 0 24 24" style="enable-background:new 0 0 24 24;" xml:space="preserve"><polygon points="6.379,20.908 7.546,22.075 17.621,12 7.546,1.925 6.379,3.092 15.287,12 "></polygon></svg>
+        </button>
+        <div class="section-heading">	
+					<div class="box-left">	
+						<div class="box-header">
+							<h2 class="hTitle">PC bán chạy </h2>
+						</div>
+						<div class="box-subHeader">
+							<h3 class="shTitle">
+								<svg viewBox="0 0 22 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+									<path d="M18.5 4H16V2C16 0.9 15.1 0 14 0H2C0.9 0 0 0.9 0 2V11C0 12.1 0.9 13 2 13C2 14.66 3.34 16 5 16C6.66 16 8 14.66 8 13H14C14 14.66 15.34 16 17 16C18.66 16 20 14.66 20 13H21C21.55 13 22 12.55 22 12V8.67C22 8.24 21.86 7.82 21.6 7.47L19.3 4.4C19.11 4.15 18.81 4 18.5 4ZM5 14C4.45 14 4 13.55 4 13C4 12.45 4.45 12 5 12C5.55 12 6 12.45 6 13C6 13.55 5.55 14 5 14ZM18.5 5.5L20.46 8H16V5.5H18.5ZM17 14C16.45 14 16 13.55 16 13C16 12.45 16.45 12 17 12C17.55 12 18 12.45 18 13C18 13.55 17.55 14 17 14Z" fill="#FF3C53"></path>
+								</svg>
+								Trả góp 0%
+							</h3>
+						</div>
+					</div>
+					<div class="box-right">
+						<div class="box-cate">
+							<ul class="cate-list">
+								<li><a >PC I3</a></li>
+								<li><a >PC I5</a></li>
+								<li><a >PC I7</a></li>
+								<li><a >PC I9</a></li>
+								<li><a >PC R3</a></li>
+								<li><a >PC R5</a></li>
+								<li><a >PC R7</a></li>
+								<li><a >PC R9</a></li>
+
+							</ul>
+						</div>
+						<div class="box-link">
+							<a class="button-more">Xem tất cả</a>
+						</div>
+					</div>
+				</div>
+                
+        <div class="product-section-item">
+            <div class="product-slider-wrapper">
+                        <!-- Product Card 1 -->
+                        <div class="product-card-item">
+                            <img src="https://product.hstatic.net/200000722513/product/asus_ai_4_b6877310c7a148708397d8967a3eac4b_grande.png" alt="Product Image">
+                            <span class="sticker_left_bottom-item">
+                                <img class="suaanh-item" src="https://file.hstatic.net/200000722513/file/tag_bo_qua_5_trieu_d84af224989c45c5a17ca29544664be3.png" alt="icon">
+                            </span>
+                            <div class="product-title-item">ĐẦU</div>
+                            <div class="specs-container-item">
+                                <div class="spec-item-item">
+                                    <!-- CPU -->
+                                    <span class="spec-text-item">i7 14700K</span>
+                                </div>
+                        
+                                <div class="spec-item-item">
+                                    <!-- VGA -->
+                                    <span class="spec-text-item">RTX 4060 Ti</span>
+                                </div>
+                        
+                                <div class="spec-item-item">
+                                    <!-- MAIN -->
+                                    <span class="spec-text-item">Z790</span>
+                                </div>
+                        
+                                <div class="spec-item-item">
+                                    <!-- RAM -->
+                                    <span class="spec-text-item">32GB</span>
+                                </div>
+                        
+                                <div class="spec-item-item">
+                                    <!-- SSD -->
+                                    <span class="spec-text-item">1TB</span>
+                                </div>
+                            </div>
+                            <div class="product-price-item">
+                                <span class="old-price-item">71.220.000₫</span>
+                                <div class="current-price-container-item">
+                                    <span class="current-price-item">62.590.000₫</span>
+                                    <span class="discount-item">-12%</span>
+                                </div>
+                            </div>
+                            <div class="product-rating-item"> 
+                                <span class="rating-item">5.0 ★</span>
+                                <span class="review-count-item">(4 đánh giá)</span>
+                            </div>
+                        </div>
+                        <!-- Product Card 2 -->
+                        <div class="product-card-item">
+                            <img src="https://product.hstatic.net/200000722513/product/asus_ai_4_b6877310c7a148708397d8967a3eac4b_grande.png" alt="Product Image">
+                            <span class="sticker_left_bottom-item">
+                                <img class="suaanh-item" src="https://file.hstatic.net/200000722513/file/tag_bo_qua_5_trieu_d84af224989c45c5a17ca29544664be3.png" alt="icon">
+                            </span>
+                            <div class="product-title-item">2</div>
+                            <div class="specs-container-item">
+                                <div class="spec-item-item">
+                                    <!-- CPU -->
+                                    <span class="spec-text-item">i7 14700K</span>
+                                </div>
+                        
+                                <div class="spec-item-item">
+                                    <!-- VGA -->
+                                    <span class="spec-text-item">RTX 4060 Ti</span>
+                                </div>
+                        
+                                <div class="spec-item-item">
+                                    <!-- MAIN -->
+                                    <span class="spec-text-item">Z790</span>
+                                </div>
+                        
+                                <div class="spec-item-item">
+                                    <!-- RAM -->
+                                    <span class="spec-text-item">32GB</span>
+                                </div>
+                        
+                                <div class="spec-item-item">
+                                    <!-- SSD -->
+                                    <span class="spec-text-item">1TB</span>
+                                </div>
+                            </div>
+                            <div class="product-price-item">
+                                <span class="old-price-item">71.220.000₫</span>
+                                <div class="current-price-container-item">
+                                    <span class="current-price-item">62.590.000₫</span>
+                                    <span class="discount-item">-12%</span>
+                                </div>
+                            </div>
+                            <div class="product-rating-item"> 
+                                <span class="rating-item">5.0 ★</span>
+                                <span class="review-count-item">(4 đánh giá)</span>
+                            </div>
+                        </div>
+                        <!-- Product Card 3 -->
+                        <div class="product-card-item">
+                            <img src="https://product.hstatic.net/200000722513/product/asus_ai_4_b6877310c7a148708397d8967a3eac4b_grande.png" alt="Product Image">
+                            <span class="sticker_left_bottom-item">
+                                <img class="suaanh-item" src="https://file.hstatic.net/200000722513/file/tag_bo_qua_5_trieu_d84af224989c45c5a17ca29544664be3.png" alt="icon">
+                            </span>
+                            <div class="product-title-item">3</div>
+                            <div class="specs-container-item">
+                                <div class="spec-item-item">
+                                    <!-- CPU -->
+                                    <span class="spec-text-item">i7 14700K</span>
+                                </div>
+                        
+                                <div class="spec-item-item">
+                                    <!-- VGA -->
+                                    <span class="spec-text-item">RTX 4060 Ti</span>
+                                </div>
+                        
+                                <div class="spec-item-item">
+                                    <!-- MAIN -->
+                                    <span class="spec-text-item">Z790</span>
+                                </div>
+                        
+                                <div class="spec-item-item">
+                                    <!-- RAM -->
+                                    <span class="spec-text-item">32GB</span>
+                                </div>
+                        
+                                <div class="spec-item-item">
+                                    <!-- SSD -->
+                                    <span class="spec-text-item">1TB</span>
+                                </div>
+                            </div>
+                            <div class="product-price-item">
+                                <span class="old-price-item">71.220.000₫</span>
+                                <div class="current-price-container-item">
+                                    <span class="current-price-item">62.590.000₫</span>
+                                    <span class="discount-item">-12%</span>
+                                </div>
+                            </div>
+                            <div class="product-rating-item"> 
+                                <span class="rating-item">5.0 ★</span>
+                                <span class="review-count-item">(4 đánh giá)</span>
+                            </div>
+                        </div>
+                        <!-- Product Card 4 -->
+                        <div class="product-card-item">
+                            <img src="https://product.hstatic.net/200000722513/product/asus_ai_4_b6877310c7a148708397d8967a3eac4b_grande.png" alt="Product Image">
+                            <span class="sticker_left_bottom-item">
+                                <img class="suaanh-item" src="https://file.hstatic.net/200000722513/file/tag_bo_qua_5_trieu_d84af224989c45c5a17ca29544664be3.png" alt="icon">
+                            </span>
+                            <div class="product-title-item">4</div>
+                            <div class="specs-container-item">
+                                <div class="spec-item-item">
+                                    <!-- CPU -->
+                                    <span class="spec-text-item">i7 14700K</span>
+                                </div>
+                        
+                                <div class="spec-item-item">
+                                    <!-- VGA -->
+                                    <span class="spec-text-item">RTX 4060 Ti</span>
+                                </div>
+                        
+                                <div class="spec-item-item">
+                                    <!-- MAIN -->
+                                    <span class="spec-text-item">Z790</span>
+                                </div>
+                        
+                                <div class="spec-item-item">
+                                    <!-- RAM -->
+                                    <span class="spec-text-item">32GB</span>
+                                </div>
+                        
+                                <div class="spec-item-item">
+                                    <!-- SSD -->
+                                    <span class="spec-text-item">1TB</span>
+                                </div>
+                            </div>
+                            <div class="product-price-item">
+                                <span class="old-price-item">71.220.000₫</span>
+                                <div class="current-price-container-item">
+                                    <span class="current-price-item">62.590.000₫</span>
+                                    <span class="discount-item">-12%</span>
+                                </div>
+                            </div>
+                            <div class="product-rating-item"> 
+                                <span class="rating-item">5.0 ★</span>
+                                <span class="review-count-item">(4 đánh giá)</span>
+                            </div>
+                        </div>
+                        <!-- Product Card 5 -->
+                        <div class="product-card-item">
+                            <img src="https://product.hstatic.net/200000722513/product/asus_ai_4_b6877310c7a148708397d8967a3eac4b_grande.png" alt="Product Image">
+                            <span class="sticker_left_bottom-item">
+                                <img class="suaanh-item" src="https://file.hstatic.net/200000722513/file/tag_bo_qua_5_trieu_d84af224989c45c5a17ca29544664be3.png" alt="icon">
+                            </span>
+                            <div class="product-title-item">5</div>
+                            <div class="specs-container-item">
+                                <div class="spec-item-item">
+                                    <!-- CPU -->
+                                    <span class="spec-text-item">i7 14700K</span>
+                                </div>
+                        
+                                <div class="spec-item-item">
+                                    <!-- VGA -->
+                                    <span class="spec-text-item">RTX 4060 Ti</span>
+                                </div>
+                        
+                                <div class="spec-item-item">
+                                    <!-- MAIN -->
+                                    <span class="spec-text-item">Z790</span>
+                                </div>
+                        
+                                <div class="spec-item-item">
+                                    <!-- RAM -->
+                                    <span class="spec-text-item">32GB</span>
+                                </div>
+                        
+                                <div class="spec-item-item">
+                                    <!-- SSD -->
+                                    <span class="spec-text-item">1TB</span>
+                                </div>
+                            </div>
+                            <div class="product-price-item">
+                                <span class="old-price-item">71.220.000₫</span>
+                                <div class="current-price-container-item">
+                                    <span class="current-price-item">62.590.000₫</span>
+                                    <span class="discount-item">-12%</span>
+                                </div>
+                            </div>
+                            <div class="product-rating-item"> 
+                                <span class="rating-item">5.0 ★</span>
+                                <span class="review-count-item">(4 đánh giá)</span>
+                            </div>
+                        </div>
+                        <!-- Product Card 6 -->
+                        <div class="product-card-item">
+                                                    <img src="https://product.hstatic.net/200000722513/product/asus_ai_4_b6877310c7a148708397d8967a3eac4b_grande.png" alt="Product Image">
+                                                    <span class="sticker_left_bottom-item">
+                                                        <img class="suaanh-item" src="https://file.hstatic.net/200000722513/file/tag_bo_qua_5_trieu_d84af224989c45c5a17ca29544664be3.png" alt="icon">
+                                                    </span>
+                                                    <div class="product-title-item">6</div>
+                                                    <div class="specs-container-item">
+                                                        <div class="spec-item-item">
+                                                            <!-- CPU -->
+                                                            <span class="spec-text-item">i7 14700K</span>
+                                                        </div>
+                                                
+                                                        <div class="spec-item-item">
+                                                            <!-- VGA -->
+                                                            <span class="spec-text-item">RTX 4060 Ti</span>
+                                                        </div>
+                                                
+                                                        <div class="spec-item-item">
+                                                            <!-- MAIN -->
+                                                            <span class="spec-text-item">Z790</span>
+                                                        </div>
+                                                
+                                                        <div class="spec-item-item">
+                                                            <!-- RAM -->
+                                                            <span class="spec-text-item">32GB</span>
+                                                        </div>
+                                                
+                                                        <div class="spec-item-item">
+                                                            <!-- SSD -->
+                                                            <span class="spec-text-item">1TB</span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="product-price-item">
+                                                        <span class="old-price-item">71.220.000₫</span>
+                                                        <div class="current-price-container-item">
+                                                            <span class="current-price-item">62.590.000₫</span>
+                                                            <span class="discount-item">-12%</span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="product-rating-item"> 
+                                                        <span class="rating-item">5.0 ★</span>
+                                                        <span class="review-count-item">(4 đánh giá)</span>
+                                                    </div>
+                        </div>
+                        <!-- Product Card 7 -->
+                        <div class="product-card-item">
+                            <img src="https://product.hstatic.net/200000722513/product/asus_ai_4_b6877310c7a148708397d8967a3eac4b_grande.png" alt="Product Image">
+                            <span class="sticker_left_bottom-item">
+                                <img class="suaanh-item" src="https://file.hstatic.net/200000722513/file/tag_bo_qua_5_trieu_d84af224989c45c5a17ca29544664be3.png" alt="icon">
+                            </span>
+                            <div class="product-title-item">CUỐI</div>
+                            <div class="specs-container-item">
+                                <div class="spec-item-item">
+                                    <!-- CPU -->
+                                    <span class="spec-text-item">i7 14700K</span>
+                                </div>
+                        
+                                <div class="spec-item-item">
+                                    <!-- VGA -->
+                                    <span class="spec-text-item">RTX 4060 Ti</span>
+                                </div>
+                        
+                                <div class="spec-item-item">
+                                    <!-- MAIN -->
+                                    <span class="spec-text-item">Z790</span>
+                                </div>
+                        
+                                <div class="spec-item-item">
+                                    <!-- RAM -->
+                                    <span class="spec-text-item">32GB</span>
+                                </div>
+                        
+                                <div class="spec-item-item">
+                                    <!-- SSD -->
+                                    <span class="spec-text-item">1TB</span>
+                                </div>
+                            </div>
+                            <div class="product-price-item">
+                                <span class="old-price-item">71.220.000₫</span>
+                                <div class="current-price-container-item">
+                                    <span class="current-price-item">62.590.000₫</span>
+                                    <span class="discount-item">-12%</span>
+                                </div>
+                            </div>
+                            <div class="product-rating-item"> 
+                                <span class="rating-item">5.0 ★</span>
+                                <span class="review-count-item">(4 đánh giá)</span>
+                            </div>
+                        </div>
+        </div>
+        </div>
+    </div>
+</body>
+</html>
+<script>
+    const sliderWrapper = document.querySelector('.product-slider-wrapper');
+    const sliderItems = document.querySelectorAll('.product-card-item');
+    const prevBtn = document.querySelector('.slider-prev');
+    const nextBtn = document.querySelector('.slider-next');
+
+    let currentIndex = 0;
+    const itemWidth = sliderItems[0].offsetWidth + 8; // Cộng khoảng cách giữa các sản phẩm
+    let isTransitioning = false; // Biến để kiểm tra xem slider có đang trong quá trình chuyển động không
+
+    // Hàm để cập nhật vị trí slider
+    const updateSliderPosition = () => {
+        sliderWrapper.style.transition = 'transform 0.5s ease'; // Thêm hiệu ứng chuyển động
+        sliderWrapper.style.transform = `translateX(-${itemWidth}px)`;
+    };
+
+    // Hàm thiết lập vị trí ban đầu của các phần tử
+    const initializeSlider = () => {
+        const lastItem = sliderWrapper.lastElementChild;
+        sliderWrapper.prepend(lastItem);
+        sliderWrapper.style.transition = 'none';
+        sliderWrapper.style.transform = `translateX(-${itemWidth}px)`;
+    };
+
+    // Hàm xử lý khi nhấn nút "Next"
+    const handleNext = () => {
+        if (isTransitioning) return; // Nếu đang trong quá trình chuyển động, không làm gì
+        isTransitioning = true; // Đánh dấu là đang chuyển động
+
+        sliderWrapper.style.transition = 'transform 0.5s ease';
+        sliderWrapper.style.transform = `translateX(-${2 * itemWidth}px)`;
+
+        sliderWrapper.addEventListener(
+            'transitionend',
+            () => {
+                const firstItem = sliderWrapper.firstElementChild;
+                sliderWrapper.appendChild(firstItem);
+                sliderWrapper.style.transition = 'none';
+                sliderWrapper.style.transform = `translateX(-${itemWidth}px)`;
+
+                isTransitioning = false; // Sau khi chuyển động xong, cho phép thao tác tiếp
+            },
+            { once: true }
+        );
+    };
+
+    // Hàm xử lý khi nhấn nút "Prev"
+    const handlePrev = () => {
+        if (isTransitioning) return; // Nếu đang trong quá trình chuyển động, không làm gì
+        isTransitioning = true; // Đánh dấu là đang chuyển động
+
+        sliderWrapper.style.transition = 'transform 0.5s ease';
+        sliderWrapper.style.transform = `translateX(0px)`;
+
+        sliderWrapper.addEventListener(
+            'transitionend',
+            () => {
+                const lastItem = sliderWrapper.lastElementChild;
+                sliderWrapper.prepend(lastItem);
+                sliderWrapper.style.transition = 'none';
+                sliderWrapper.style.transform = `translateX(-${itemWidth}px)`;
+
+                isTransitioning = false; // Sau khi chuyển động xong, cho phép thao tác tiếp
+            },
+            { once: true }
+        );
+    };
+
+    // Gán sự kiện cho các nút
+    nextBtn.addEventListener('click', handleNext);
+    prevBtn.addEventListener('click', handlePrev);
+
+    // Thiết lập vị trí ban đầu
+    initializeSlider();
+</script>
+  

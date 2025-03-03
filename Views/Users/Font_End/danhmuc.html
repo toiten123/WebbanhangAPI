@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Filter Interface</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 p-4">
+    <!-- Filter Button -->
+    <button class="flex items-center gap-2 px-4 py-2 bg-white border border-gray-300 rounded-lg hover:bg-gray-50">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z" />
+        </svg>
+        Bộ lọc
+    </button>
+
+    <!-- Filter Modal -->
+    <div class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+        <div class="bg-white rounded-lg p-6 max-w-4xl w-full max-h-[90vh] overflow-y-auto">
+            <!-- Header -->
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-lg font-semibold">Bộ lọc</h2>
+                <button class="p-2 hover:bg-gray-100 rounded-full">
+                    <span class="text-sm">Đóng</span>
+                </button>
+            </div>
+
+            <!-- Filter Content -->
+            <div class="space-y-8">
+                <!-- Row 1 -->
+                <div class="grid grid-cols-3 gap-8">
+                    <div>
+                        <h3 class="text-sm font-medium mb-4">Tình trạng sản phẩm</h3>
+                        <button class="px-4 py-2 border border-gray-300 rounded-full text-sm hover:bg-gray-50">
+                            Hiện sản phẩm hết hàng
+                        </button>
+                    </div>
+
+                    <div>
+                        <h3 class="text-sm font-medium mb-4">Giá</h3>
+                        <div class="space-y-4">
+                            <div class="flex justify-between text-sm mb-2">
+                                <span>15.790.000đ</span>
+                                <span>54.990.000đ</span>
+                            </div>
+                            <div class="relative">
+                                <div class="h-1 bg-gray-200 rounded-full">
+                                    <div class="absolute h-1 bg-green-500 rounded-full left-0 right-0"></div>
+                                </div>
+                                <input type="range" class="absolute inset-0 w-full opacity-0 cursor-pointer" min="15790000" max="54990000" value="15790000">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div>
+                        <h3 class="text-sm font-medium mb-4">Hãng</h3>
+                        <span class="inline-block px-4 py-2 border border-gray-300 rounded-full text-sm">
+                            ASUS
+                        </span>
+                    </div>
+                </div>
+
+                <!-- Row 2 -->
+                <div class="grid grid-cols-3 gap-8">
+                    <div>
+                        <h3 class="text-sm font-medium mb-4">CPU</h3>
+                        <div class="flex flex-wrap gap-2">
+                            <span class="px-4 py-2 border border-gray-300 rounded-full text-sm">AMD Ryzen 5</span>
+                            <span class="px-4 py-2 border border-gray-300 rounded-full text-sm">Intel Core i5</span>
+                            <span class="px-4 py-2 border border-gray-300 rounded-full text-sm">Ultra 5-125H</span>
+                        </div>
+                    </div>
+
+                    <div>
+                        <h3 class="text-sm font-medium mb-4">RAM</h3>
+                        <div class="flex gap-2">
+                            <span class="px-4 py-2 border border-gray-300 rounded-full text-sm">16 GB</span>
+                            <span class="px-4 py-2 border border-gray-300 rounded-full text-sm">8 GB</span>
+                        </div>
+                    </div>
+
+                    <div>
+                        <h3 class="text-sm font-medium mb-4">SSD</h3>
+                        <span class="inline-block px-4 py-2 border border-gray-300 rounded-full text-sm">
+                            512 GB
+                        </span>
+                    </div>
+                </div>
+
+                <!-- Row 3 -->
+                <div class="grid grid-cols-3 gap-8">
+                    <div>
+                        <h3 class="text-sm font-medium mb-4">Kích thước màn hình</h3>
+                        <span class="inline-block px-4 py-2 border border-gray-300 rounded-full text-sm">
+                            14 inch
+                        </span>
+                    </div>
+
+                    <div>
+                        <h3 class="text-sm font-medium mb-4">Nhu cầu sử dụng</h3>
+                        <span class="inline-block px-4 py-2 border border-gray-300 rounded-full text-sm">
+                            Văn phòng
+                        </span>
+                    </div>
+
+                    <div>
+                        <h3 class="text-sm font-medium mb-4">VGA</h3>
+                        <div class="flex gap-2">
+                            <span class="px-4 py-2 border border-gray-300 rounded-full text-sm">AMD Radeon</span>
+                            <span class="px-4 py-2 border border-gray-300 rounded-full text-sm">IRIS</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="flex justify-center gap-4 pt-4">
+                    <button class="px-8 py-2 border border-red-500 text-red-500 rounded-md hover:bg-red-50">
+                        Bỏ chọn
+                    </button>
+                    <button class="px-8 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600">
+                        Xem kết quả
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

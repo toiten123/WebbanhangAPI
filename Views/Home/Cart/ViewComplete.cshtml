@@ -1,0 +1,49 @@
+@{
+    ViewData["Title"] = "Products";
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - PCBestMVC</title>
+    <link rel="stylesheet" href="~/assets/css/style.css"            asp-append-version="true">
+    <link rel="stylesheet" href="~/assets/font/css/all.css"         asp-append-version="true">
+    <link rel="stylesheet" href="~/assets/css/base.css"             asp-append-version="true">
+    <link rel="stylesheet" href="~/assets/css/footer.css"           asp-append-version="true">
+    <link rel="stylesheet" href="~/assets/css/product.css"          asp-append-version="true">
+    <link rel="stylesheet" href="~/assets/css/gallery.css"          asp-append-version="true">
+    <link rel="stylesheet" href="~/assets/css/directory.css"        asp-append-version="true">
+    <link rel="stylesheet" href="~/assets/css/slidercowndown.css"   asp-append-version="true">
+    <link rel="stylesheet" href="~/assets/css/login.css"            asp-append-version="true">
+    <link rel="preconnect" href="https://fonts.gstatic.com"         asp-append-version="true">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet" asp-append-version="true">
+</head>
+<style>
+      .header-fixed {
+    top: 6.8%;
+  }
+
+  .menu-login {
+      top: 2%;
+  }
+  .giubandau {
+    background-color: #ffffff;
+  }
+  .social-list img {
+    display: inline;
+  }
+  .icon-container {
+      left: 0%;
+    top: -4px;
+  }
+</style>
+
+<body>
+    <partial name="Partials/_Header"/>
+    <partial name="Cart/Details/Complete"/>
+    <partial name="Partials/_Footer"/>
+    <partial name="Partials/_Script2"/>
+</body>
+</html>

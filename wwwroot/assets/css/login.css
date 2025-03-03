@@ -1,0 +1,146 @@
+.auth-title {
+    text-align: center;
+    font-size: 30px;
+    font-weight: 700;
+    margin-bottom: 40px;
+    color: #213555;
+}
+
+.form-group {
+    margin-bottom: 16px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    color: #3E5879;
+    font-size: 14px;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 8px 12px;
+    border: 1px solid;
+    border-radius: 4px;
+    font-size: 14px;
+    background-color: white;
+}
+
+.form-group input:focus {
+    outline: none;
+    border-color: #213555;
+    box-shadow: 0 0 0 1px #213555;
+}
+
+.password-container {
+    position: relative;
+}
+
+.password-toggle {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #3E5879;
+}
+
+.submit-btn {
+    width: 100%;
+    padding: 10px;
+    background-color: #213555;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-weight: 500;
+    cursor: pointer;
+    margin-bottom: 24px;
+    transition: background-color 0.2s;
+}
+
+.submit-btn:hover {
+    background-color: #3E5879;
+}
+
+.divider {
+    position: relative;
+    text-align: center;
+    margin: 24px 0;
+}
+
+.divider::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 50%;
+    width: 100%;
+    height: 1px;
+    background-color: #D8C4B6;
+}
+
+.divider span {
+    background-color: white;
+    padding: 0 8px;
+    color: #3E5879;
+    font-size: 14px;
+    position: relative;
+    z-index: 1;
+}
+
+.social-buttons {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 24px;
+}
+
+.social-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 8px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: all 0.2s;
+}
+
+.google-btn {
+    border: 1px solid #D8C4B6;
+    background-color: white;
+    color: #213555;
+}
+
+.google-btn:hover {
+    background-color: #F5EFE7;
+    border-color: #3E5879;
+}
+
+.facebook-btn {
+    background-color: #213555;
+    color: white;
+    border: none;
+}
+
+.facebook-btn:hover {
+    background-color: #3E5879;
+}
+
+.auth-link {
+    text-align: center;
+    font-size: 14px;
+    color: #3E5879;
+}
+
+.auth-link a {
+    color: #213555;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.auth-link a:hover {
+    text-decoration: underline;
+}

@@ -1,0 +1,752 @@
+/* Common */
+ul {
+  list-style-type: none;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  font-family: "Roboto", sans-serif;
+}
+
+/* Main
+.header-full {
+  background-color: #ffffff;
+} */
+.list-banners {
+  position: relative; /* Đặt position thành relative để kích hoạt z-index */
+  padding-left: 120px;
+  height: auto;
+  background: #324459;
+  z-index: 52; /* Bây giờ z-index sẽ có tác dụng */
+}
+.bannerquangcao {
+  position: absolute;
+  left: 0;
+  z-index: 0;
+}
+.bannerquangcao img {
+  width: 100px;
+  height: 300px;
+  margin-top: 136px;
+  margin-left: 12px;
+}
+.bannerquangcao2 {
+  position: absolute;
+  right: 0;
+}
+.bannerquangcao2 img {
+  width: 100px;
+  height: 300px;
+  margin-top: 136px;
+  margin-right: 12px;
+}
+
+
+.giubandau {
+  max-width: 1280px;
+  background-color: #f1f0f1;
+  padding: 70px 10px;
+          margin-left: auto;
+          margin-right: auto;
+          padding-bottom: 3%;
+} 
+.maunen {
+background: #213555;
+}
+.maunendanhmuc {
+  background: #ffffff;
+}
+/* Khung ban đầu của thẻ */
+.header-fixed {
+  width: 100%;
+  background-color: #f1f0f1;
+  position: absolute; /* Đặt là absolute để giữ vị trí cố định */
+  top: 7.8%;
+  left: 0;
+  box-sizing: border-box;
+  z-index: 52;
+}
+
+/* Khi đã thay đổi thành fixed */
+.header-fixed.fixed {
+  position: fixed; /* Lớp này sẽ được thêm khi cuộn */
+  z-index: 5;
+  top: 0;
+  left: 0;
+  z-index: 52;
+}
+
+
+.header-fixed .header {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  padding-top: 0.7%;
+}
+
+.header-fixed .header .logo {
+  width: 170px;
+}
+
+.header-fixed .header .logo .logo-link {
+  color: transparent;
+  text-decoration: none;
+}
+
+.header-fixed .header .logo .logo-link .logo-img {
+  width: 90%;
+}
+
+.header-fixed .header .right-header {
+  margin-left: 16px;
+}
+
+.header-fixed .header .right-header .top-header {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.header-fixed .header .right-header .top-header .search {
+  width: 550px;
+  background-color: #fff;
+  border-radius: 20px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.header-fixed .header .right-header .top-header .search .search-area {
+  -webkit-box-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  width: 90%;
+  height: 36px;
+  border-radius: 20px;
+  padding-left: 12px;
+  border: none;
+}
+
+.header-fixed .header .right-header .top-header .search .search-area:focus {
+  outline: none;
+}
+
+.header-fixed .header .right-header .top-header .search .search-icon {
+  width: 40px;
+  height: 100%;
+  background-color: #324459;;
+  border-top-right-radius: 20px;
+  border-bottom-right-radius: 20px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.header-fixed .header .right-header .top-header .search .search-icon:hover {
+  cursor: pointer;
+}
+
+
+.header-fixed .header .right-header .top-header .search .search-icon i {
+  color: #fff;
+  font-size: 13px;
+}
+
+.header-fixed .header .right-header .top-header .account {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  width: 40.5%;
+}
+
+.header-fixed .header .right-header .top-header .account .header-top-right {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  padding: 0 16px;
+  text-decoration: none;
+  color: #ffffff;
+  font-size: 11px;
+  text-transform: uppercase;
+  font-weight: bold;
+  text-align: center;
+}
+
+.header-fixed .header .right-header .top-header .account .header-top-right i {
+  font-size: 24px;
+  padding-right: 8px;
+  line-height: 36px;
+}
+
+.header-fixed .header .right-header .top-header .account .header-top-right .icon-has-notice {
+  position: relative;
+}
+
+.header-fixed .header .right-header .top-header .account .header-top-right .icon-has-notice .cart-notice {
+  line-height: 16px;
+  position: absolute;
+  top: 0;
+  right: 3px;
+  padding: 0 5px;
+  border-radius: 50%;
+  background-color: #ea1c00;
+  color: #fff;
+  font-weight: 200;
+  font-size: 9px;
+}
+
+.header-fixed .header .right-header .top-header .account .header-top-right .header-right-text {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.header-fixed .header .bot-header {
+  margin: 8px 0 4px 20px;
+}
+
+.header-fixed .header .bot-header .info {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.header-fixed .header .bot-header .info .info-text {
+  font-size: 14px;
+  color: #ea1c00;
+  text-decoration: none;
+  font-weight: 700;
+  text-transform: uppercase;
+  padding-right: 25px;
+  border-right: 2px solid #ea1c00;
+  margin-right: 25px;
+}
+
+.header-fixed .header .bot-header .info .info-text i {
+  padding-right: 8px;
+  font-size: 16px;
+}
+
+.header-fixed .header .bot-header .info li:last-child a {
+  border: none;
+}
+
+.header-fixed .sub-header {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  padding: 16px 0 5px 0;
+}
+
+.header-fixed .sub-header .product-catalog {
+  width: 228px;
+  height: 32px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  background-color: #505050;
+  color: #fff;
+  border-radius: 4px;
+  font-size: 13px;
+}
+
+.header-fixed .sub-header .product-catalog i {
+  padding: 0 4px;
+}
+
+.header-fixed .sub-header .header-navigation-list {
+  width: calc(100% - 170px);
+  margin-left: 4px;
+}
+
+.header-fixed .sub-header .header-navigation-list .header-navigation-item {
+  width: 234.5px;
+  height: 32px;
+  border: 1px solid #959495;
+  display: -webkit-inline-box;
+  display: -ms-inline-flexbox;
+  display: inline-flex;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  text-decoration: none;
+  color: #213555;
+  border-radius: 4px;
+  font-size: 11px;
+  font-weight: 500;
+  text-transform: uppercase;
+  margin-left: 4px;
+}
+
+.header-fixed .sub-header .header-navigation-list .header-navigation-item i {
+  padding-right: 8px;
+  font-size: 15px;
+  color: #464545;
+}
+
+.header-fixed .sub-header .header-navigation-list .header-navigation-item:hover {
+  background-color: #ea1c00;
+  color: #fff;
+}
+
+.header-content {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.catalog-list {
+  background-color: #fff;
+  margin-left: 8px;
+  width: 217px;
+  border-radius: 4px;
+  max-height: 600px;
+  position: relative;
+}
+
+
+.catalog-item-link {
+  text-decoration: none;
+  color: #505050;
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.catalog-item-content {
+  display: flex; /* Dùng Flexbox để sắp xếp ngang */
+  align-items: center; /* Căn giữa theo chiều dọc */
+}
+
+.icon-danhmuc {
+  margin-left: 8px;
+  margin-right: 8px; /* Khoảng cách giữa icon và chữ */
+  display: flex; /* Đảm bảo icon luôn nằm gọn */
+  align-items: center;
+  color: #000;
+}
+
+.catalog-name {
+  color:#000;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+
+.catalog-item-link i {
+  padding-right: 8px;
+  padding-left: 8px;
+  font-size: 17px;
+  color: #4b4b4b;
+}
+.catalog-item {
+  padding: 8px 0;
+  font-size: 14px;
+}
+
+.products-of-catalog {
+  position: absolute;
+  content: "";
+  display: none;
+  width: 975px;
+  height: 503px;
+  max-height:503px;
+  background-color: #fff;
+  top: 0;
+  left: 217px;
+  z-index: 1;
+}
+.catalog-item:hover {
+  
+  background-color: #ea1c00;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+.catalog-item:hover i {
+  color: #000000;
+}
+
+.catalog-item:hover .catalog-name {
+  color: #fff;
+}
+
+.catalog-item:hover .products-of-catalog {
+  display: block;
+}
+
+.product-catalog-container {
+  width: 100%;
+  height: 100%;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.product-of-catalog-content {
+  width: calc(1110px - 180px);
+  height: 100%;
+}
+
+.product-of-catalog-banner {
+  width: 180px;
+  height: 100%;
+}
+
+.product-of-catalog-link img {
+  max-width: 180px;
+  height: 100%;
+}
+.product-catalog {
+  cursor: pointer;
+}
+
+
+
+ .header-banner {
+  margin-left: 2px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.slider {
+  margin-left: 12px;
+}
+
+.main-slider {
+  position: relative;
+  overflow: hidden;
+  width: 650px;
+  height: 325px;
+  border-radius: 8px;
+}
+
+.list-slider {
+  width: 100%;
+  height: 100%;
+}
+
+.list-slider::after {
+  content: "";
+  display: block;
+  clear: both;
+}
+
+.slider-item {
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  opacity: 0;
+  transition: opacity 0.7s ease-in-out, filter 0.3s ease-in-out;
+}
+
+.slider-item.active {
+  opacity: 1;
+  filter: brightness(1);
+}
+.active.effect {
+  filter: brightness(1);
+}
+
+.slider-link {
+  display: block;
+  height: 100%;
+}
+
+.slider-img {
+  width: 100%;
+  height: 100%;
+}
+
+.slider-icon {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  height: 100%;
+  font-size: 50px;
+  padding: 0 10px 0 10px;
+  position: absolute;
+  top: 50%;
+  -webkit-transform: translateY(-50%);
+  transform: translateY(-50%);
+  cursor: pointer;
+  color: #fff;
+}
+
+.slider-icon.right {
+  right: 0;
+}
+
+
+
+.sub-slider {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.sub-slider-img {
+  width: 320px;
+  height: 151px;
+}
+.sub-banner {
+  padding-left: 8px;
+}
+.sub-banner-img {
+  width: 309px;
+  height: 151px;
+}
+.sub-banner-link1 .sub-banner-img {
+  margin-top: 1%;
+}
+.sub-banner-link2 .sub-banner-img {
+  margin-top: 2.5%;
+}
+
+.sub-banner-link3 .sub-banner-img {
+  margin-top: 1%;
+}
+.sub-slider-link2 .sub-slider-img {
+  margin-left: 3%;
+}
+
+.container-banner {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  margin-top: 8px;
+  margin-bottom: 24px;
+  width: 100%;
+}
+
+.container-banner-img {
+  width: 296px;
+  height: 140px;
+  border-radius: 8px;
+}
+
+/*# sourceMappingURL=style.css.map */
+/* Đăng nhập đăng kí  */
+.menu-login {
+  position: absolute;
+  right: 7%;
+  top: 4.3%;
+}
+
+/* Nút đăng nhập */
+.menu-login .btn-login {
+  display: flex;
+  align-items: center;
+  padding: 10px 6px;
+  font-size: 11px;
+  font-weight: bold;
+  background-color: #213555;
+  color: #ffffff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  gap: 8px; /* Khoảng cách giữa SVG và chữ */
+}
+
+.menu-login .btn-login svg {
+  width: 20px; /* Điều chỉnh kích thước SVG nhỏ lại */
+  height: 20px;
+  fill: none;
+}
+
+
+/* Popup */
+.menu-login .login-popup {
+  position: absolute;
+  top: 50px;
+  right: -2%;
+  width: 320px;
+  background-color: white;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  padding: 20px;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.menu-login .login-popup svg {
+  position: absolute;
+  width: 24px; /* Điều chỉnh kích thước SVG */
+  height: 24px;
+  left: 6%;
+  top: 11%;
+}
+
+.menu-login .login-popup p {
+  font-size: 16px;
+  margin-bottom: 20px;
+  margin-left: 35px;
+}
+
+.menu-login .buttons {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.menu-login .btn {
+  width: 48%;
+  padding: 10px;
+  font-size: 14px;
+  font-weight: bold;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.menu-login .btn-login-popup {
+  background-color:#213555;
+  color: white;
+}
+
+.menu-login .btn-register-popup {
+  background-color: #fff;
+  color: black;
+  border: 2px solid #000;
+}
+
+.menu-login .help-link svg {
+  position: absolute;
+  width: 24px; /* Điều chỉnh kích thước SVG */
+  height: 24px;
+  left: 6%;
+  top: 74%;
+}
+
+.menu-login .help-link {
+  font-size: 14px;
+  color: #000;
+  text-decoration: none;
+  margin-left: 35px;
+}
+
+.menu-login .help-link:hover {
+  text-decoration: underline;
+}
+
+/* Hiện popup khi hover */
+.menu-login:hover .login-popup {
+  opacity: 1;
+  visibility: visible;
+}
+
+
+
+
+/* danh mục laptop */
+.container-danhmuc {
+    max-width: 1280px;
+    background-color: #ffffff;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 20px;
+}
+
+.laptop-menu-danhmuc {
+    width: 120%;
+}
+
+.menu-row-danhmuc {
+  margin-top: 20px;
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 50px;
+}
+
+.menu-column-danhmuc {
+    flex: 1;
+    padding: 0 15px;
+}
+
+.menu-title-danhmuc {
+    color: #E30019;
+    font-weight: 600;
+    margin-bottom: 8px;
+    display: block;
+    font-size: 15px;
+}
+
+.menu-list-danhmuc {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.menu-list-danhmuc li {
+    font-size: 12px;
+    margin-bottom: 10px;
+    color: #000;
+    cursor: pointer;
+}
+
+.menu-list-danhmuc li:hover {
+    color: #ff0000;
+}
+
+.series-row-danhmuc {
+    border-top: 1px solid #eee;
+    padding-top: 20px;
+}
+
+
+.container-hinhdep {
+  max-width: 1288px;
+  margin-left: 140px;
+  margin-right: 153px;
+  padding: 20px;
+  display: flex;
+  gap: 16px; /* Khoảng cách giữa các phần tử */
+}
+
+.container-hinhdep .left-hinhdep {
+  flex: 2; /* Chiếm 2 phần */
+}
+
+.container-hinhdep .right-hinhdep {
+  flex: 1; /* Chiếm 1 phần */
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.container-hinhdep .banner-hinhdep img {
+  width: 100%;
+  height: 100%;
+  border-radius: 8px; /* Bo góc ảnh */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Đổ bóng nhẹ */
+}

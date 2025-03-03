@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Danh muc</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .popover {
+            display: none;
+        }
+        
+        .popover.active {
+            display: block;
+        }
+
+        .dropdown-content {
+            display: none;
+        }
+
+        .dropdown.active .dropdown-content {
+            display: block;
+        }
+
+        /* Custom range slider styling */
+        .price-slider {
+            -webkit-appearance: none;
+            width: 100%;
+            height: 4px;
+            background: #e5e7eb;
+            border-radius: 2px;
+            outline: none;
+        }
+
+        .price-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 16px;
+            height: 16px;
+            background: #3b82f6;
+            border-radius: 50%;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="w-full border-b">
+        <div class="container mx-auto flex flex-wrap gap-2 p-2">
+            <!-- Bộ lọc -->
+            <div class="relative">
+                <button class="flex items-center gap-2 px-4 py-2 border rounded-md hover:bg-gray-50">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M3 6h18M6 12h12m-9 6h6"/>
+                    </svg>
+                    Bộ lọc
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M6 9l6 6 6-6"/>
+                    </svg>
+                </button>
+                <div class="popover absolute top-full left-0 mt-2 w-80 bg-white rounded-md shadow-lg z-50 border ">
+                    <div class="space-y-4 fixed flex items-center border ">
+
+                        <div class="bg-white rounded-lg p-6 max-w-4xl w-full max-h-[90vh] rounded-md shadow-lg">
+                            <!-- Header -->
+                            <div class="flex justify-between items-center mb-6">
+                                <h2 class="text-lg font-semibold">Bộ lọc</h2>
+                                <button class="text-gray-400 hover:text-gray-600">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M18 6L6 18M6 6l12 12"/>
+                                    </svg>
+                                </button>
+                            </div>
+                
+                            <!-- Filter Content -->
+                            <div class="space-y-8">
+                                <!-- Row 1 -->
+                                <div class="grid grid-cols-3 gap-8">
+                                    <div>
+                                        <h3 class="text-sm font-medium mb-4">Tình trạng sản phẩm</h3>
+                                        <button class="px-4 py-2 border border-gray-300 rounded-full text-sm hover:bg-gray-50">
+                                            Hiện sản phẩm hết hàng
+                                        </button>
+                                    </div>
+                
+                                    <div>
+                                        <h3 class="text-sm font-medium mb-4">Giá</h3>
+                                        <div class="space-y-4">
+                                            <div class="flex justify-between text-sm mb-2">
+                                                <span>15.790.000đ</span>
+                                                <span>54.990.000đ</span>
+                                            </div>
+                                            <div class="relative">
+                                                    <input type="range" class="price-slider" min="1" max="99999999" value="8490000">
+                                            </div>
+                                        </div>
+                                    </div>
+                
+                                    <div>
+                                        <h3 class="text-sm font-medium mb-4">Hãng</h3>
+                                        <span class="inline-block px-4 py-2 border border-gray-300 rounded-full text-sm">
+                                            ASUS
+                                        </span>
+                                    </div>
+                                </div>
+                
+                                <!-- Row 2 -->
+                                <div class="grid grid-cols-3 gap-8">
+                                    <div>
+                                        <h3 class="text-sm font-medium mb-4">CPU</h3>
+                                        <div class="flex flex-wrap gap-2">
+                                            <span class="px-4 py-2 border border-gray-300 rounded-full text-sm">AMD Ryzen 5</span>
+                                            <span class="px-4 py-2 border border-gray-300 rounded-full text-sm">Intel Core i5</span>
+                                            <span class="px-4 py-2 border border-gray-300 rounded-full text-sm">Ultra 5-125H</span>
+                                        </div>
+                                    </div>
+                
+                                    <div>
+                                        <h3 class="text-sm font-medium mb-4">RAM</h3>
+                                        <div class="flex gap-2">
+                                            <span class="px-4 py-2 border border-gray-300 rounded-full text-sm">16 GB</span>
+                                            <span class="px-4 py-2 border border-gray-300 rounded-full text-sm">8 GB</span>
+                                        </div>
+                                    </div>
+                
+                                    <div>
+                                        <h3 class="text-sm font-medium mb-4">SSD</h3>
+                                        <span class="inline-block px-4 py-2 border border-gray-300 rounded-full text-sm">
+                                            512 GB
+                                        </span>
+                                    </div>
+                                </div>
+                
+                                <!-- Row 3 -->
+                                <div class="grid grid-cols-3 gap-8">
+                                    <div>
+                                        <h3 class="text-sm font-medium mb-4">Kích thước màn hình</h3>
+                                        <span class="inline-block px-4 py-2 border border-gray-300 rounded-full text-sm">
+                                            14 inch
+                                        </span>
+                                    </div>
+                
+                                    <div>
+                                        <h3 class="text-sm font-medium mb-4">Nhu cầu sử dụng</h3>
+                                        <span class="inline-block px-4 py-2 border border-gray-300 rounded-full text-sm">
+                                            Văn phòng
+                                        </span>
+                                    </div>
+                
+                                    <div>
+                                        <h3 class="text-sm font-medium mb-4">VGA</h3>
+                                        <div class="flex gap-2">
+                                            <span class="px-4 py-2 border border-gray-300 rounded-full text-sm">AMD Radeon</span>
+                                            <span class="px-4 py-2 border border-gray-300 rounded-full text-sm">IRIS</span>
+                                        </div>
+                                    </div>
+                                </div>
+                
+                                <!-- Action Buttons -->
+                                <div class="flex justify-center gap-4 pt-4">
+                                    <button class="px-8 py-2 border border-red-500 text-red-500 rounded-md hover:bg-red-50">
+                                        Bỏ chọn
+                                    </button>
+                                    <button class="px-8 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600">
+                                        Xem kết quả
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tình trạng sản phẩm -->
+            <div class="relative">
+                <button class="flex items-center gap-2 px-4 py-2 border rounded-md hover:bg-gray-50">
+                    Tình trạng sản phẩm
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M6 9l6 6 6-6"/>
+                    </svg>
+                </button>
+                <div class="popover absolute top-full left-0 mt-2 w-80 bg-white rounded-md shadow-lg z-50 border">
+                    <div class="p-4 space-y-4">
+                        <div class="flex justify-between items-center">
+                            <h3 class="font-medium">Tình trạng sản phẩm</h3>
+                            <button class="text-gray-400 hover:text-gray-600">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M18 6L6 18M6 6l12 12"/>
+                                </svg>
+                            </button>
+                        </div>
+                        <div class="space-y-2">
+                            <label class="flex items-center space-x-2">
+                                <input type="checkbox" class="rounded border-gray-300">
+                                <span>Hiện sản phẩm hết hàng</span>
+                            </label>
+                        </div>
+                        <div class="flex gap-2">
+                            <button class="flex-1 px-4 py-2 border rounded-md hover:bg-gray-50">Bỏ chọn</button>
+                            <button class="flex-1 px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600">Xem kết quả</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Giá -->
+            <div class="relative">
+                <button class="flex items-center gap-2 px-4 py-2 border rounded-md hover:bg-gray-50">
+                    Giá
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M6 9l6 6 6-6"/>
+                    </svg>
+                </button>
+                <div class="popover absolute top-full left-0 mt-2 w-80 bg-white rounded-md shadow-lg z-50 border">
+                    <div class="p-4 space-y-4">
+                        <div class="flex justify-between items-center">
+                            <h3 class="font-medium">Giá</h3>
+                            <button class="text-gray-400 hover:text-gray-600">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M18 6L6 18M6 6l12 12"/>
+                                </svg>
+                            </button>
+                        </div>
+                        <div class="space-y-4">
+                            <input type="range" class="price-slider" min="8490000" max="52990000" value="8490000">
+                            <div class="flex justify-between">
+                                <div class="border rounded p-2">8.490.000đ</div>
+                                <div class="border rounded p-2">52.990.000đ</div>
+                            </div>
+                        </div>
+                        <div class="flex gap-2">
+                            <button class="flex-1 px-4 py-2 border rounded-md hover:bg-gray-50">Bỏ chọn</button>
+                            <button class="flex-1 px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600">Xem kết quả</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Hãng -->
+            <div class="relative">
+                <button class="flex items-center gap-2 px-4 py-2 border rounded-md hover:bg-gray-50">
+                    Hãng
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M6 9l6 6 6-6"/>
+                    </svg>
+                </button>
+                <div class="popover absolute top-full left-0 mt-2 w-80 bg-white rounded-md shadow-lg z-50 border">
+                    <div class="p-4 space-y-4">
+                        <div class="flex justify-between items-center">
+                            <h3 class="font-medium">Hãng</h3>
+                            <button class="text-gray-400 hover:text-gray-600">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M18 6L6 18M6 6l12 12"/>
+                                </svg>
+                            </button>
+                        </div>
+                        <div class="space-y-2">
+                            <button class="w-full px-4 py-2 text-left border rounded-md hover:bg-gray-50">ACER</button>
+                            <button class="w-full px-4 py-2 text-left border rounded-md hover:bg-gray-50">Không thương hiệu</button>
+                        </div>
+                        <div class="flex gap-2">
+                            <button class="flex-1 px-4 py-2 border rounded-md hover:bg-gray-50">Bỏ chọn</button>
+                            <button class="flex-1 px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600">Xem kết quả</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- CPU -->
+            <div class="relative">
+                <button class="flex items-center gap-2 px-4 py-2 border rounded-md hover:bg-gray-50">
+                    CPU
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M6 9l6 6 6-6"/>
+                    </svg>
+                </button>
+                <div class="popover absolute top-full left-0 mt-2 w-80 bg-white rounded-md shadow-lg z-50 border">
+                    <div class="p-4 space-y-4">
+                        <div class="flex justify-between items-center">
+                            <h3 class="font-medium">CPU</h3>
+                            <button class="text-gray-400 hover:text-gray-600">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M18 6L6 18M6 6l12 12"/>
+                                </svg>
+                            </button>
+                        </div>
+                        <div class="space-y-2">
+                            <button class="w-full px-4 py-2 text-left border rounded-md hover:bg-gray-50">Intel Core i5</button>
+                        </div>
+                        <div class="flex gap-2">
+                            <button class="flex-1 px-4 py-2 border rounded-md hover:bg-gray-50">Bỏ chọn</button>
+                            <button class="flex-1 px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600">Xem kết quả</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Kích thước màn hình -->
+            <div class="relative">
+                <button class="flex items-center gap-2 px-4 py-2 border rounded-md hover:bg-gray-50">
+                    Kích thước màn hình
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M6 9l6 6 6-6"/>
+                    </svg>
+                </button>
+                <div class="popover absolute top-full left-0 mt-2 w-80 bg-white rounded-md shadow-lg z-50 border">
+                    <div class="p-4 space-y-4">
+                        <div class="flex justify-between items-center">
+                            <h3 class="font-medium">Kích thước màn hình</h3>
+                            <button class="text-gray-400 hover:text-gray-600">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M18 6L6 18M6 6l12 12"/>
+                                </svg>
+                            </button>
+                        </div>
+                        <div class="space-y-2">
+                            <button class="w-full px-4 py-2 text-left border rounded-md hover:bg-gray-50">15.6 inch</button>
+                        </div>
+                        <div class="flex gap-2">
+                            <button class="flex-1 px-4 py-2 border rounded-md hover:bg-gray-50">Bỏ chọn</button>
+                            <button class="flex-1 px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600">Xem kết quả</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- RAM -->
+            <div class="relative">
+                <button class="flex items-center gap-2 px-4 py-2 border rounded-md hover:bg-gray-50">
+                    RAM
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M6 9l6 6 6-6"/>
+                    </svg>
+                </button>
+                <div class="popover absolute top-full left-0 mt-2 w-80 bg-white rounded-md shadow-lg z-50 border">
+                    <div class="p-4 space-y-4">
+                        <div class="flex justify-between items-center">
+                            <h3 class="font-medium">RAM</h3>
+                            <button class="text-gray-400 hover:text-gray-600">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M18 6L6 18M6 6l12 12"/>
+                                </svg>
+                            </button>
+                        </div>
+                        <div class="space-y-2">
+                            <button class="w-full px-4 py-2 text-left border rounded-md hover:bg-gray-50">8 GB</button>
+                        </div>
+                        <div class="flex gap-2">
+                            <button class="flex-1 px-4 py-2 border rounded-md hover:bg-gray-50">Bỏ chọn</button>
+                            <button class="flex-1 px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600">Xem kết quả</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SSD -->
+            <div class="relative">
+                <button class="flex items-center gap-2 px-4 py-2 border rounded-md hover:bg-gray-50">
+                    SSD
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M6 9l6 6 6-6"/>
+                    </svg>
+                </button>
+                <div class="popover absolute top-full left-0 mt-2 w-80 bg-white rounded-md shadow-lg z-50 border">
+                    <div class="p-4 space-y-4">
+                        <div class="flex justify-between items-center">
+                            <h3 class="font-medium">SSD</h3>
+                            <button class="text-gray-400 hover:text-gray-600">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M18 6L6 18M6 6l12 12"/>
+                                </svg>
+                            </button>
+                        </div>
+                        <div class="space-y-2">
+                            <button class="w-full px-4 py-2 text-left border rounded-md hover:bg-gray-50">512 GB</button>
+                        </div>
+                        <div class="flex gap-2">
+                            <button class="flex-1 px-4 py-2 border rounded-md hover:bg-gray-50">Bỏ chọn</button>
+                            <button class="flex-1 px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600">Xem kết quả</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- VGA -->
+            <div class="relative">
+                <button class="flex items-center gap-2 px-4 py-2 border rounded-md hover:bg-gray-50">
+                    VGA
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M6 9l6 6 6-6"/>
+                    </svg>
+                </button>
+                <div class="popover absolute top-full left-0 mt-2 w-80 bg-white rounded-md shadow-lg z-50 border">
+                    <div class="p-4 space-y-4">
+                        <div class="flex justify-between items-center">
+                            <h3 class="font-medium">VGA</h3>
+                            <button class="text-gray-400 hover:text-gray-600">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M18 6L6 18M6 6l12 12"/>
+                                </svg>
+                            </button>
+                        </div>
+                        <div class="space-y-2">
+                            <button class="w-full px-4 py-2 text-left border rounded-md hover:bg-gray-50">IRIS</button>
+                        </div>
+                        <div class="flex gap-2">
+                            <button class="flex-1 px-4 py-2 border rounded-md hover:bg-gray-50">Bỏ chọn</button>
+                            <button class="flex-1 px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600">Xem kết quả</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sắp xếp -->
+            <div class="ml-auto relative">
+                <div class="flex items-center gap-2">
+                    <span class="text-sm text-gray-500">Xếp theo:</span>
+                    <div class="dropdown relative">
+                        <button class="flex items-center gap-2 px-4 py-2 border rounded-md hover:bg-gray-50">
+                            Nổi bật
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M6 9l6 6 6-6"/>
+                            </svg>
+                        </button>
+                        <div class="dropdown-content absolute top-full right-0 mt-2 w-48 bg-white rounded-md shadow-lg z-50 border">
+                            <button class="w-full px-4 py-2 text-left hover:bg-gray-50">Nổi bật</button>
+                            <button class="w-full px-4 py-2 text-left hover:bg-gray-50">Tên từ A-Z</button>
+                            <button class="w-full px-4 py-2 text-left hover:bg-gray-50">Tên từ Z-A</button>
+                            <button class="w-full px-4 py-2 text-left hover:bg-gray-50">Giá tăng dần</button>
+                            <button class="w-full px-4 py-2 text-left hover:bg-gray-50">Giá giảm dần</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Toggle popover visibility
+        document.querySelectorAll('button').forEach(button => {
+            button.addEventListener('click', (e) => {
+                const parent = e.currentTarget.closest('.relative');
+                if (!parent) return;
+                
+                const popover = parent.querySelector('.popover');
+                if (!popover) return;
+
+                // Close all other popovers
+                document.querySelectorAll('.popover.active').forEach(p => {
+                    if (p !== popover) p.classList.remove('active');
+                });
+
+                popover.classList.toggle('active');
+            });
+        });
+
+        // Close popovers when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest('.relative')) {
+                document.querySelectorAll('.popover.active').forEach(popover => {
+                    popover.classList.remove('active');
+                });
+            }
+        });
+
+        // Toggle dropdown
+        document.querySelectorAll('.dropdown').forEach(dropdown => {
+            dropdown.addEventListener('click', (e) => {
+                e.currentTarget.classList.toggle('active');
+                e.stopPropagation();
+            });
+        });
+
+        // Close dropdowns when clicking outside
+        document.addEventListener('click', () => {
+            document.querySelectorAll('.dropdown.active').forEach(dropdown => {
+                dropdown.classList.remove('active');
+            });
+        });
+    </script>
+</body>
+</html>

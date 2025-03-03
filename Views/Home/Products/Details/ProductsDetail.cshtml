@@ -1,0 +1,209 @@
+@* Sử dụng thư viện Alpine.js *@
+
+<div x-data="productSpecs()" x-init="fetchProduct()" class="mt-16">
+    <div class="border-b border-gray-200">
+        <nav class="-mb-px flex space-x-8" aria-label="Tabs">
+            <button @@click="activeTab = 'specs'"
+                :class="{'border-red-500 text-red-600': activeTab === 'specs', 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300': activeTab !== 'specs'}"
+                class="whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm">
+                Thông số kỹ thuật
+            </button>
+            <button @@click="activeTab = 'description'"
+                :class="{'border-red-500 text-red-600': activeTab === 'description', 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300': activeTab !== 'description'}"
+                class="whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm">
+                Mô tả
+            </button>
+            <button @@click="activeTab = 'reviews'"
+                :class="{'border-red-500 text-red-600': activeTab === 'reviews', 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300': activeTab !== 'reviews'}"
+                class="whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm">
+                Đánh giá
+            </button>
+        </nav>
+    </div>
+
+    <!-- Nội dung của từng tab -->
+    <div class="mt-6">
+        <!-- Tab Thông số kỹ thuật -->
+        <div x-show="activeTab === 'specs'" x-cloak>
+            <div class="bg-white rounded-lg border p-6">
+                <table class="w-full">
+                    <tbody>
+                        <template x-for="attribute in attributes.filter(attr => attr.attributeName !== 'NULL')" :key="attribute.attributeID">
+                            <tr class="border-b">
+                                <td class="py-4 w-1/4 font-medium text-blue-600" x-text="attribute.productAttributeName"></td>
+                                <td class="py-4 w-1/2" x-text="attribute.attributeName"></td>
+                            </tr>
+                        </template>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Tab Mô tả -->
+        <div x-show="activeTab === 'description'" x-cloak>
+            <div class="bg-white rounded-lg border p-6">
+                <h2 class="text-lg font-semibold text-gray-800">Mô tả sản phẩm</h2>
+                <p class="mt-4 text-gray-600" x-text="description"></p>
+            </div>
+        </div>
+        <div x-show="activeTab === 'reviews'" x-cloak>
+            <div class="bg-white rounded-lg border p-6">
+                <div class="flex items-center gap-8 mb-8">
+                    <div class="text-center">
+                        <div class="text-4xl font-bold text-red-600">5.0/5</div>
+                        <div class="flex items-center justify-center">
+                            <i class="fas fa-star text-yellow-400"></i>
+                            <i class="fas fa-star text-yellow-400"></i>
+                            <i class="fas fa-star text-yellow-400"></i>
+                            <i class="fas fa-star text-yellow-400"></i>
+                            <i class="fas fa-star text-yellow-400"></i>
+                        </div>
+                        <div class="text-sm text-gray-500 mt-1">(3) đánh giá & nhận xét</div>
+                    </div>
+                    <div class="flex-1 space-y-2">
+                        <div class="flex items-center gap-2">
+                            <span class="w-3">5</span>
+                            <i class="fas fa-star text-yellow-400"></i>
+                            <div class="flex-1 h-2 bg-gray-200 rounded-full overflow-hidden">
+                                <div class="h-full bg-yellow-400 rounded-full" style="width: 100%"></div>
+                            </div>
+                            <span class="w-16 text-right">3 đánh giá</span>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <span class="w-3">4</span>
+                            <i class="fas fa-star text-yellow-400"></i>
+                            <div class="flex-1 h-2 bg-gray-200 rounded-full overflow-hidden">
+                                <div class="h-full bg-yellow-400 rounded-full" style="width: 0%"></div>
+                            </div>
+                            <span class="w-16 text-right">0 đánh giá</span>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <span class="w-3">3</span>
+                            <i class="fas fa-star text-yellow-400"></i>
+                            <div class="flex-1 h-2 bg-gray-200 rounded-full overflow-hidden">
+                                <div class="h-full bg-yellow-400 rounded-full" style="width: 0%"></div>
+                            </div>
+                            <span class="w-16 text-right">0 đánh giá</span>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <span class="w-3">2</span>
+                            <i class="fas fa-star text-yellow-400"></i>
+                            <div class="flex-1 h-2 bg-gray-200 rounded-full overflow-hidden">
+                                <div class="h-full bg-yellow-400 rounded-full" style="width: 0%"></div>
+                            </div>
+                            <span class="w-16 text-right">0 đánh giá</span>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <span class="w-3">1</span>
+                            <i class="fas fa-star text-yellow-400"></i>
+                            <div class="flex-1 h-2 bg-gray-200 rounded-full overflow-hidden">
+                                <div class="h-full bg-yellow-400 rounded-full" style="width: 0%"></div>
+                            </div>
+                            <span class="w-16 text-right">0 đánh giá</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="space-y-6">
+                    <div class="border-b pb-6">
+                        <div class="flex items-center gap-2">
+                            <span class="font-medium">Minh Tiến</span>
+                            <span class="text-gray-500 text-sm">24-12-2024</span>
+                        </div>
+                        <div class="flex items-center">
+                            <i class="fas fa-star text-yellow-400"></i>
+                            <i class="fas fa-star text-yellow-400"></i>
+                            <i class="fas fa-star text-yellow-400"></i>
+                            <i class="fas fa-star text-yellow-400"></i>
+                            <i class="fas fa-star text-yellow-400"></i>
+                        </div>
+                        <p class="mt-2">được tặng 2 thanh ram là có lắp vô máy chưa ad, nếu mua thêm ổ cứng ssd
+                            thì có gắn vô dùm không? hay phải tự mình gắn, còn cài win còn nữa?</p>
+                        <div class="mt-4 bg-gray-50 p-4 rounded-lg">
+                            <div class="flex items-center gap-2">
+                                <span class="font-medium text-red-600">Admin</span>
+                                <span class="text-gray-500 text-sm">26-12-2024</span>
+                            </div>
+                            <p class="mt-2">Dạ RAM mới lúc lắp máy mình cho lắp luôn ạ, hoặc nếu Anh Minh Tiến
+                                có nhu cầu nâng cấp mình có thể nâng cấp ngay lúc lắp máy, về việc gắn thêm ổ
+                                cứng PCBEST sẽ hỗ trợ mình gắn luôn, cài win cũng vậy ạ. Anh Tiến để lại thông
+                                tin (SĐT ...) để PCBEST gọi lại tư vấn cho mình rõ hơn ạ.</p>
+                        </div>
+                    </div>
+                    <div class="border-b pb-6">
+                        <div class="flex items-center gap-2">
+                            <span class="font-medium">Bảo Hoàng</span>
+                            <span class="text-gray-500 text-sm">25-11-2024</span>
+                        </div>
+                        <div class="flex items-center">
+                            <i class="fas fa-star text-yellow-400"></i>
+                            <i class="fas fa-star text-yellow-400"></i>
+                            <i class="fas fa-star text-yellow-400"></i>
+                            <i class="fas fa-star text-yellow-400"></i>
+                            <i class="fas fa-star text-yellow-400"></i>
+                        </div>
+                        <p class="mt-2">Lên tảng nước aio thì sao admin nhỉ</p>
+                        <div class="mt-4 bg-gray-50 p-4 rounded-lg">
+                            <div class="flex items-center gap-2">
+                                <span class="font-medium text-red-600">Admin</span>
+                                <span class="text-gray-500 text-sm">26-11-2024</span>
+                            </div>
+                            <p class="mt-2">Dạ được, Anh Bảo Hoàng tham khảo tản nước này nhé:
+                                https://pcbest.com/products/tan-nhiet-cooler-master-masterliquid-ml240l-core-argb-white
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <button class="w-full mt-6 bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">
+                    Gửi đánh giá của bạn
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+ function productSpecs() {
+        return {
+            activeTab: 'specs',
+            attributes: [],
+            description: "", // Biến lưu mô tả sản phẩm
+
+            async fetchProduct() {
+                const urlParams = new URLSearchParams(window.location.search);
+                const productID = urlParams.get("productID");
+
+                if (!productID) {
+                    console.error("⚠ Không tìm thấy productID trên URL.");
+                    return;
+                }
+
+                try {
+                    const response = await fetch(`/api/Product/${productID}`);
+                    
+                    if (!response.ok) {
+                        throw new Error(`❌ API lỗi: ${response.status} - ${response.statusText}`);
+                    }
+
+                    const productDTO = await response.json();
+
+                    if (!productDTO || !productDTO.attributes || !productDTO.product) {
+                        throw new Error("⚠ API không trả về dữ liệu sản phẩm hợp lệ.");
+                    }
+
+                    // Lưu danh sách thuộc tính vào biến attributes
+                    this.attributes = productDTO.attributes;
+
+                    // Lưu mô tả sản phẩm
+                    this.description = productDTO.product.description;
+
+                    console.log("✅ Danh sách thuộc tính:", this.attributes);
+                    console.log("✅ Mô tả sản phẩm:", this.description);
+
+                } catch (error) {
+                    console.error(error.message);
+                }
+            }
+        }
+    }
+</script>

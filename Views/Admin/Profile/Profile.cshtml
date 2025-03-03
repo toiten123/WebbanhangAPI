@@ -1,0 +1,80 @@
+<main class="h-full overflow-y-auto">
+    <div class="container px-6 mx-auto grid">
+        <h2 class="my-6 text-2xl font-semibold text-gray-700 dark:text-gray-200">
+            Thông tin hồ sơ cá nhân
+        </h2>
+
+        <div class="p-6 bg-white rounded-lg shadow-md dark:bg-gray-800">
+            <form>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="flex flex-col items-center">
+                        <label class="block text-sm font-medium text-gray-600 dark:text-gray-300 mb-2">Ảnh đại diện</label>
+                        <div class="relative w-32 h-32 mb-4">
+                            <img src="https://images.unsplash.com/photo-1502378735452-bc7d86632805?ixlib=rb-0.3.5&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=200&fit=max&s=aa3a807e1bbdfd4364d1f449eaa96d82" alt="Profile Avatar" class="rounded-full shadow">
+                            <label class="absolute bottom-0 right-0 bg-gray-600 text-white p-2 rounded-full cursor-pointer hover:bg-gray-700">
+                                <input type="file" class="hidden" />
+                                <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+                                </svg>
+                            </label>
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-600 dark:text-gray-300">Họ và tên</label>
+                        <input type="text" placeholder="Nhập họ và tên" class="w-full px-4 py-3 text-sm bg-gray-50 border rounded-lg shadow-sm focus:ring focus:ring-purple-500 dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-purple-400" />
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-600 dark:text-gray-300">Email</label>
+                        <input type="email" placeholder="Nhập email" class="w-full px-4 py-3 text-sm bg-gray-50 border rounded-lg shadow-sm focus:ring focus:ring-purple-500 dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-purple-400" />
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-600 dark:text-gray-300">Số điện thoại</label>
+                        <input type="tel" placeholder="Nhập số điện thoại" class="w-full px-4 py-3 text-sm bg-gray-50 border rounded-lg shadow-sm focus:ring focus:ring-purple-500 dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-purple-400" />
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-600 dark:text-gray-300">Địa chỉ</label>
+                        <input type="text" placeholder="Nhập địa chỉ" class="w-full px-4 py-3 text-sm bg-gray-50 border rounded-lg shadow-sm focus:ring focus:ring-purple-500 dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-purple-400" />
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-600 dark:text-gray-300">Ngày sinh</label>
+                        <input type="date" class="w-full px-4 py-3 text-sm bg-gray-50 border rounded-lg shadow-sm focus:ring focus:ring-purple-500 dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-purple-400" />
+                    </div>
+                </div>
+
+                <div class="flex justify-end mt-6 gap-4">
+                    <button type="submit" class="px-6 py-3 text-sm font-medium text-white bg-green-500 rounded-md hover:bg-green-600 focus:ring focus:ring-green-300">
+                        Lưu thay đổi
+                    </button>
+                    <button type="button" class="px-6 py-3 text-sm font-medium text-white bg-red-500 rounded-md hover:bg-red-600 focus:ring focus:ring-red-300">
+                        Hủy bỏ
+                    </button>
+                </div>
+            </form>
+        </div>
+        <div class="mt-8 p-6 bg-white rounded-lg shadow-md dark:bg-gray-800">
+            <h3 class="text-lg font-semibold text-gray-700 dark:text-gray-200 mb-4">Lịch sử thay đổi</h3>
+            <table class="min-w-full bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg">
+                <thead>
+                    <tr class="w-full bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 uppercase text-sm leading-normal">
+                        <th class="py-3 px-6 text-left" >Thời gian</th>
+                        <th class="py-3 px-6 text-left">Nội dung thay đổi</th>
+                    </tr>
+                </thead>
+                <tbody class="text-gray-600 dark:text-gray-300 text-sm font-light">
+                    <tr class="border-b border-gray-200 dark:border-gray-700">
+                        <td class="py-3 px-6 text-left whitespace-nowrap">12/01/2025 10:30 AM</td>
+                        <td class="py-3 px-6 text-left">Thay đổi mật khẩu</td>
+                    </tr>
+                    <tr class="border-b border-gray-200 dark:border-gray-700">
+                        <td class="py-3 px-6 text-left whitespace-nowrap">10/01/2025 3:45 PM</td>
+                        <td class="py-3 px-6 text-left">Cập nhật địa chỉ</td>
+                    </tr>
+                    <tr>
+                        <td class="py-3 px-6 text-left whitespace-nowrap">08/01/2025 2:15 PM</td>
+                        <td class="py-3 px-6 text-left">Thêm số điện thoại mới</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</main>

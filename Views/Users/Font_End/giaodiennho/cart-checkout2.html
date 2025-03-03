@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout Form</title>
+    <style>
+        body {
+            font-family: 'SF Pro Display', 'Arial', sans-serif;
+            background-color: #f1f0f1;
+        }
+
+        .thongtindathang-container {
+            padding: 15px;
+        }
+
+        .thongtindathang-container .back-link {
+            margin-left: 30%;
+            margin-bottom: 1%;
+            display: inline-flex;
+            gap: 8px;
+            color: #1982F9;
+            text-decoration: none;
+            font-size: 16px;
+        }
+
+        .thongtindathang-container .back-arrow {
+            font-size: 16px;
+            line-height: 1;
+        }
+
+        .thongtindathang-container .checkout-container {
+            max-width: 600px;
+            margin: 0 auto;
+            background: white;
+            padding: 8px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .thongtindathang-container .steps {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            background-color: #fff1f1;
+            padding: 20px;
+            border-radius: 8px;
+        }
+
+        .thongtindathang-container .step {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+            flex: 1;
+        }
+
+        .thongtindathang-container .step:not(:last-child)::after {
+            content: "";
+            position: absolute;
+            right: -50%;
+            top: 20px;
+            width: 100%;
+            height: 2px;
+            border-top: 2px dashed #ccc;
+        }
+
+        .thongtindathang-container .step-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #ffffff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 8px;
+        }
+
+        .thongtindathang-container .step.active .step-icon {
+            background: #E30019;
+            color: white;
+            z-index: 1;
+        }
+
+        .thongtindathang-container .step-text {
+            font-size: 16px;
+            color: #666;
+        }
+
+        .thongtindathang-container .section {
+            margin-bottom: 24px;
+        }
+
+        .thongtindathang-container .section-title {
+            font-size: 18px;
+            font-weight: 500;
+            margin-bottom: 16px;
+        }
+
+        /* Form Controls */
+        .thongtindathang-container .form-group {
+            margin-bottom: 16px;
+        }
+
+        .thongtindathang-container .radio-group {
+            display: flex;
+            gap: 16px;
+            margin-bottom: 16px;
+        }
+
+        .thongtindathang-container .radio-label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+        }
+
+        .thongtindathang-container .input-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin-bottom: 16px;
+        }
+
+        input[type="text"],
+        input[type="tel"],
+        input[type="email"],
+        select,
+        textarea {
+            width: 90%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+
+        select {
+            appearance: none;
+            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+            background-repeat: no-repeat;
+            background-position: right 12px center;
+            background-size: 16px;
+        }
+
+        textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        .thongtindathang-container .checkbox-label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+        }
+
+        /* Shipping Option */
+        .thongtindathang-container .shipping-option {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-bottom: 16px;
+            border-radius: 8px;
+            margin-bottom: 16px;
+        }
+
+        /* Summary */
+        .thongtindathang-container .summary {
+            margin-top: 24px;
+        }
+
+        .thongtindathang-container .summary-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+        }
+
+        .thongtindathang-container .total-price {
+            color: #E30019;
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+        /* Button */
+        .thongtindathang-container .order-button {
+            width: 100%;
+            padding: 16px;
+            background: #E30019;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 24px;
+        }
+
+        .thongtindathang-container .order-button:hover {
+            background: #cc0017;
+        }
+
+        .thongtindathang-container .payment-note {
+            text-align: center;
+            color: #666;
+            font-size: 14px;
+            margin-top: 12px;
+        }
+
+        .thongtindathang-container .coupon {
+            margin: 20px 0;
+        }
+
+        .thongtindathang-container .coupon-btn {
+            padding: 8px 16px;
+            color: #007bff;
+            background: none;
+            border: none;
+            cursor: pointer;
+        }
+
+        .thongtindathang-container .summary {
+            margin-top: 20px;
+        }
+
+        .thongtindathang-container .summary-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+
+        .thongtindathang-container .checkout-btn {
+            width: 100%;
+            padding: 20px;
+            background: #E30019;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 20px;
+            margin-bottom: 20px;
+        }
+
+        .thongtindathang-container .delete-btn {
+            margin-top: 2.5%;
+            margin-left: 2.6%;
+            color: #666;
+            background: none;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .thongtindathang-container .section-order {
+            margin-bottom: 3%;
+        }
+
+        hr {
+            border: 1px solid #ddd;
+            opacity: 0.5;
+        }
+
+
+
+        /* Custom Checkbox Styling */
+        .thongtindathang-container .checkbox-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 16px;
+        }
+
+        .thongtindathang-container .custom-checkbox {
+            position: relative;
+            display: inline-block;
+        }
+
+        .thongtindathang-container .custom-checkbox input {
+            position: absolute;
+            opacity: 0;
+            cursor: pointer;
+            height: 0;
+            width: 0;
+        }
+
+        .thongtindathang-container .checkmark {
+            position: relative;
+            display: inline-block;
+            height: 20px;
+            width: 20px;
+            background-color: #fff;
+            border: 2px solid #ccc;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .thongtindathang-container .custom-checkbox input:checked ~ .checkmark {
+            background-color: #2196F3;
+            border-color: #2196F3;
+        }
+
+        .thongtindathang-container .checkmark:after {
+            content: "";
+            position: absolute;
+            display: none;
+            left: 6px;
+            top: 2px;
+            width: 5px;
+            height: 10px;
+            border: solid white;
+            border-width: 0 2px 2px 0;
+            transform: rotate(45deg);
+        }
+
+        .thongtindathang-container .custom-checkbox input:checked ~ .checkmark:after {
+            display: block;
+        }
+
+        /* Invoice Form Styling */
+        .thongtindathang-container .invoice-form {
+            display: block; /* To support transition */
+            max-height: 0;
+            opacity: 0;
+            overflow: hidden;
+            background-color: #f5f5f5;
+            padding: 0 20px;
+            border-radius: 8px;
+            margin-top: 16px;
+            transition: max-height 0.5s ease, opacity 0.5s ease, padding 0.5s ease;
+        }
+
+        .thongtindathang-container .invoice-form.active {
+            max-height: 500px; /* Adjust according to content height */
+            opacity: 1;
+            padding: 20px;
+            background: #ECECEC;
+        }
+
+        .thongtindathang-container .form-group {
+            margin-bottom: 16px;
+        }
+
+        .thongtindathang-container .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            padding-right: 5.5%;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="thongtindathang-container">
+        <a href="#" class="back-link">
+            <span class="back-arrow">
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M10.5 12L5.5 8L10.5 4" stroke="#1982F9" stroke-linecap="round" stroke-linejoin="round">
+                    </path>
+                </svg>
+            </span>
+            Trở về
+        </a>
+
+        <div class="checkout-container">
+            <div class="steps">
+                <div class="step active">
+                    <div class="step-icon">
+                        <svg viewBox="0 0 29 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <circle cx="14.5215" cy="14" r="14" fill="#E30019"></circle>
+                            <path
+                                d="M21.4353 10.9187C21.3355 10.8254 21.2167 10.7514 21.0859 10.7009C20.9551 10.6505 20.8147 10.6247 20.6731 10.625H18.5192V10.125C18.5192 9.19674 18.1221 8.3065 17.4152 7.65013C16.7084 6.99375 15.7497 6.625 14.75 6.625C13.7503 6.625 12.7916 6.99375 12.0848 7.65013C11.3779 8.3065 10.9808 9.19674 10.9808 10.125V10.625H8.82692C8.54131 10.625 8.26739 10.7304 8.06542 10.9179C7.86346 11.1054 7.75 11.3598 7.75 11.625V18.375C7.75 19.5937 8.86058 20.625 10.1731 20.625H19.3269C19.9618 20.6252 20.5715 20.3947 21.0258 19.9828C21.2543 19.7803 21.4364 19.5369 21.5608 19.2673C21.6853 18.9977 21.7497 18.7074 21.75 18.4141V11.625C21.7504 11.4938 21.7228 11.3638 21.6688 11.2426C21.6148 11.1214 21.5355 11.0113 21.4353 10.9187ZM17.3242 14.1875L14.3088 17.6875C14.2593 17.745 14.1967 17.7915 14.1256 17.824C14.0544 17.8564 13.9764 17.8738 13.8972 17.875H13.8885C13.8107 17.875 13.7338 17.8594 13.6632 17.8292C13.5925 17.7989 13.5298 17.7549 13.4792 17.7L12.1869 16.2975C12.141 16.2476 12.106 16.1898 12.0841 16.1273C12.0622 16.0649 12.0538 15.9991 12.0593 15.9336C12.0648 15.8681 12.0841 15.8043 12.1162 15.7458C12.1482 15.6873 12.1924 15.6352 12.2462 15.5925C12.2999 15.5498 12.3622 15.5174 12.4294 15.4971C12.4966 15.4767 12.5675 15.4689 12.638 15.474C12.7085 15.4791 12.7773 15.497 12.8403 15.5268C12.9033 15.5566 12.9594 15.5976 13.0054 15.6475L13.875 16.5909L16.4835 13.5625C16.5728 13.4589 16.7027 13.3925 16.8447 13.3778C16.9867 13.3632 17.1291 13.4015 17.2407 13.4844C17.3523 13.5673 17.4238 13.6879 17.4396 13.8198C17.4554 13.9516 17.4141 14.0839 17.3249 14.1875H17.3242ZM17.4423 10.625H12.0577V10.125C12.0577 9.46196 12.3413 8.82607 12.8462 8.35723C13.3512 7.88839 14.036 7.625 14.75 7.625C15.464 7.625 16.1488 7.88839 16.6537 8.35723C17.1587 8.82607 17.4423 9.46196 17.4423 10.125V10.625Z"
+                                fill="white"></path>
+                        </svg>
+                    </div>
+                    <div class="step-text">Giỏ hàng</div>
+                </div>
+                <div class="step active">
+                    <div class="step-icon">
+                        <svg viewBox="0 0 29 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <circle cx="14.4009" cy="14" r="13.5" stroke="none"></circle>
+                            <path d="M20.0009 9H8.80088C8.02878 9 7.40088 9.56062 7.40088 10.25V17.75C7.40088 18.4394 8.02878 19 8.80088 19H20.0009C20.773 19 21.4009 18.4394 21.4009 17.75V10.25C21.4009 9.56062 20.773 9 20.0009 9ZM12.1014 11.5C12.9071 11.5 13.5014 12.0306 13.5014 12.75C13.5014 13.4694 12.9071 14 12.1014 14C11.2957 14 10.7014 13.4694 10.7014 12.75C10.7014 12.0306 11.295 11.5 12.1014 11.5ZM14.7019 16.5H9.50088V16.2094C9.50088 15.3512 10.6741 14.4688 12.1014 14.4688C13.5287 14.4688 14.7019 15.3512 14.7019 16.2094V16.5ZM19.3009 15.875H16.5009V14.625H19.3009V15.875ZM19.3009 13.375H15.8009V12.125H19.3009V13.375Z" fill="#ffffff"></path>
+                        </svg>
+                    </div>
+                    <div class="step-text">Thông tin đặt hàng</div>
+                </div>
+                <div class="step">
+                    <div class="step-icon">
+                        <svg viewBox="0 0 29 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <circle cx="14.1709" cy="14" r="13.5" stroke="#535353"></circle>
+                            <path
+                                d="M7.16553 10.6667C7.16553 10.2246 7.34987 9.80072 7.678 9.48816C8.00614 9.17559 8.45118 9 8.91523 9H19.4134C19.8775 9 20.3225 9.17559 20.6507 9.48816C20.9788 9.80072 21.1631 10.2246 21.1631 10.6667V11.5H7.16553V10.6667ZM7.16553 13.1667V17.3333C7.16553 17.7754 7.34987 18.1993 7.678 18.5118C8.00614 18.8244 8.45118 19 8.91523 19H19.4134C19.8775 19 20.3225 18.8244 20.6507 18.5118C20.9788 18.1993 21.1631 17.7754 21.1631 17.3333V13.1667H7.16553ZM9.79008 14.8333H10.6649C10.897 14.8333 11.1195 14.9211 11.2835 15.0774C11.4476 15.2337 11.5398 15.4457 11.5398 15.6667V16.5C11.5398 16.721 11.4476 16.933 11.2835 17.0893C11.1195 17.2455 10.897 17.3333 10.6649 17.3333H9.79008C9.55805 17.3333 9.33553 17.2455 9.17147 17.0893C9.0074 16.933 8.91523 16.721 8.91523 16.5V15.6667C8.91523 15.4457 9.0074 15.2337 9.17147 15.0774C9.33553 14.9211 9.55805 14.8333 9.79008 14.8333Z"
+                                fill="#535353"></path>
+                        </svg>
+                    </div>
+                    <div class="step-text">Thanh toán</div>
+                </div>
+                <div class="step">
+                    <div class="step-icon">
+                        <svg viewBox="0 0 29 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <circle cx="14.4321" cy="14" r="13.5" stroke="#535353"></circle>
+                            <path
+                                d="M13.0988 17.1818L10.4321 14.6364L11.3721 13.7391L13.0988 15.3809L17.4921 11.1873L18.4321 12.0909M14.4321 7L8.43213 9.54545V13.3636C8.43213 16.8955 10.9921 20.1982 14.4321 21C17.8721 20.1982 20.4321 16.8955 20.4321 13.3636V9.54545L14.4321 7Z"
+                                fill="#535353"></path>
+                        </svg>
+                    </div>
+                    <div class="step-text">Hoàn tất</div>
+                </div>
+            </div>
+
+        <!-- Form -->
+        <form>
+            <!-- Customer Information -->
+            <div class="section">
+                <h2 class="section-title">Thông tin khách mua hàng</h2>
+                <div class="radio-group">
+                    <label class="radio-label">
+                        <input type="radio" name="gender" value="anh" checked>
+                        Anh
+                    </label>
+                    <label class="radio-label">
+                        <input type="radio" name="gender" value="chi">
+                        Chị
+                    </label>
+                </div>
+                <div class="input-row">
+                    <div class="form-group">
+                        <input type="text" placeholder="Nhập họ tên" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="tel" placeholder="Nhập số điện thoại" required>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Delivery Method -->
+            <div class="section">
+                <h2 class="section-title">Chọn cách nhận hàng</h2>
+                <label class="radio-label">
+                    <input type="radio" name="delivery" value="delivery" checked>
+                    Giao hàng tận nơi
+                </label>
+            </div>
+
+            <!-- Address -->
+            <div class="section" style="background: #ECECEC;padding: 15px;padding-top: 4%; padding-left: 5%;">
+                <div class="input-row">
+                    <select required>
+                        <option value="">Chọn Tỉnh, Thành phố</option>
+                        <option value="hanoi">Hà Nội</option>
+                        <option value="hcm">TP. Hồ Chí Minh</option>
+                    </select>
+                    <select required>
+                        <option value="">Chọn Quận, Huyện</option>
+                    </select>
+                </div>
+                <div class="input-row">
+                    <select required>
+                        <option value="">Chọn Phường, Xã</option>
+                    </select>
+                    <input type="text" placeholder="Số nhà, tên đường" required style="width: 81.2%";>
+                </div>
+            </div>
+
+            <!-- Additional Notes -->
+            <div class="section">
+                <input type="text" placeholder="Lưu ý, yêu cầu khác (Không bắt buộc)" required style="width: 95%";>
+            </div>
+
+            <!-- Invoice -->
+            <div class="section">
+                <label class="checkbox-wrapper">
+                    <span class="custom-checkbox">
+                        <input type="checkbox" id="invoiceToggle">
+                        <span class="checkmark"></span>
+                    </span>
+                    Xuất hoá đơn cho đơn hàng
+                </label>
+                <div class="invoice-form" id="invoiceForm">
+                    <div class="form-group">
+                        <input type="text" id="company" placeholder="Tên công ty">
+                    </div>
+        
+                    <div class="form-group">
+                        <input type="text" id="address" placeholder="Địa chỉ công ty">
+                    </div>
+        
+                    <div class="form-row">
+                        <div class="form-group">
+                            <input type="text" id="tax" placeholder="Mã số thuế">
+                        </div>
+                        <div class="form-group"> 
+                            <input type="email" id="email" placeholder="Email">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Shipping Service -->
+            <div class="section">
+                <h2 class="section-title">Dịch vụ giao hàng</h2>
+                <div class="shipping-option">
+                    <label class="radio-label">
+                        <input type="radio" name="shipping" checked>
+                        Miễn phí vận chuyển (Giao hàng tiêu chuẩn)
+                    </label>
+                    <span>0đ</span>
+                </div>
+                <hr>
+            </div>
+
+            <!-- Summary -->
+            <div class="summary">
+                <div class="summary-row">
+                    <span>Phí vận chuyển:</span>
+                    <span>Miễn phí</span>
+                </div>
+                <div class="summary-row">
+                    <strong>Tổng tiền:</strong>
+                    <span class="total-price">27.990.000đ</span>
+                </div>
+            </div>
+
+            <!-- Order Button -->
+            <button type="submit" class="order-button">ĐẶT HÀNG NGAY</button>
+            <p class="payment-note">Bạn có thể chọn hình thức thanh toán sau khi đặt hàng</p>
+        </form>
+        </div>
+    </div>
+</body>
+
+</html>
+<script>
+    const invoiceToggle = document.getElementById('invoiceToggle');
+        const invoiceForm = document.getElementById('invoiceForm');
+
+        invoiceToggle.addEventListener('change', function() {
+            if (this.checked) {
+                invoiceForm.classList.add('active');
+            } else {
+                invoiceForm.classList.remove('active');
+            }
+        });
+</script>

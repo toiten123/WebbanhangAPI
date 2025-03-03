@@ -1,0 +1,580 @@
+<script>
+document.addEventListener('DOMContentLoaded', async () => {
+    const urlParams     = new URLSearchParams(window.location.search);
+    const productId     = urlParams.get('id');
+    const response      = await fetch(`/api/Product/${productId}`);
+    const productDatas   = await response.json();
+    if (!productDatas || !productDatas.product) {
+        console.error("❌ Dữ liệu không hợp lệ");
+        return;
+    }
+    document.getElementById('productForm').addEventListener('submit', async function (event) {
+        event.preventDefault();
+        let productName         = document.getElementById('productName').value.trim();
+        let folderName          = productName.replace(/\s+/g, '_');
+        let currentThumbnailUrl = productDatas.product.imageThumbnail || '';
+        let currentImageUrls    = productDatas.product.imageData || [];   
+        let thumbnailFile       = document.getElementById('thumbnailUpload').files[0];
+        let thumbnailUrl        = currentThumbnailUrl;
+        if (thumbnailFile) {
+            thumbnailUrl = await uploadImageToCloudinary(thumbnailFile, folderName, 0.7);
+        } else {
+            console.log("❌ Không có ảnh thumbnail được chọn, giữ ảnh cũ!");
+            return;
+        }
+
+        let imageDataList = [];
+        if (selectedFiles.length > 0) {
+            for (let file of selectedFiles) {
+                let imageUrl = await uploadImageToCloudinary(file, folderName, 0.8);
+                if (imageUrl) {
+                    imageDataList.push(imageUrl);
+                }
+            }
+        } else {
+            imageDataList = currentImageUrls;
+        }
+        const productData   = gatherProductData();
+        const attributes    = gatherAttributes();
+        const requestData   = {
+            product         : productData,
+            attributes      : attributes,
+            imageData       : imageDataList,
+            imageThumbnail  : thumbnailUrl,
+        };
+        await updateProduct(requestData);
+    });
+});
+
+async function updateProduct(requestData) {
+    const productId                 = new URLSearchParams(window.location.search).get('id');
+    requestData.product.ProductID   = parseInt(productId);
+    const response = await fetch(`/api/Product/${productId}`, {
+        method  : 'PUT',
+        headers : {'Content-Type': 'application/json'},
+        body    : JSON.stringify(requestData)
+    });
+    if (response.ok) {
+        alert("Cập nhật sản phẩm thành công!");
+        window.location.href = '/admin/products'; 
+    } else {
+        alert("Có lỗi xảy ra khi cập nhật sản phẩm.");
+    }
+}
+
+function gatherProductData() {
+    return {
+        productName         : document.getElementById('productName').value.trim(),
+        manufacturer        : document.getElementById('manufacturer').value.trim(),
+        priceOriginal       : getNumberFromFormattedInput('currentPrice'),
+        discountPercentage  : getFormattedPercentage('discountPercentage'),
+        priceAfterDiscount  : getNumberFromFormattedInput('discountedPrice'),
+        quantity            : parseInt(document.getElementById('quantity').value) || 0, 
+        description         : document.getElementById('description').value.trim(),
+        loai                : document.getElementById('productType').value
+    };
+}
+
+function getNumberFromFormattedInput(id) {
+    const input = document.getElementById(id).value.replace(/\./g, '');
+    return parseFloat(input);
+}
+
+function getFormattedPercentage(id) {
+    return parseFloat(document.getElementById(id).value.trim()) || 0;
+}
+
+
+</script>
+
+<script>
+    async function compressImage(file, quality) {
+        return new Promise((resolve) => {
+            const reader    = new FileReader();
+            reader.readAsDataURL(file);
+            reader.onload   = (event) => {
+                const img   = new Image();
+                img.src     = event.target.result;
+                img.onload  = () => {
+                    const canvas        = document.createElement('canvas');
+                    const ctx           = canvas.getContext('2d');
+                    const MAX_WIDTH     = 1024;
+                    const MAX_HEIGHT    = 1024;
+                    let width           = img.width;
+                    let height          = img.height;
+                    
+                    if (width > MAX_WIDTH || height > MAX_HEIGHT) {
+                        if (width > height) {
+                            height *= MAX_WIDTH / width;
+                            width = MAX_WIDTH;
+                        } else {
+                            width *= MAX_HEIGHT / height;
+                            height = MAX_HEIGHT;
+                        }
+                    }
+                    
+                    canvas.width    = width;
+                    canvas.height   = height;
+                    ctx.drawImage(img, 0, 0, width, height);
+                    
+                    canvas.toBlob((blob) => {
+                        resolve(blob);
+                    }, file.type, quality);
+                    
+                };
+            };
+        });
+    }
+
+    async function uploadImageToCloudinary(file, folderName, quality) {
+        let compressedFile  = await compressImage(file, quality);
+        let formData        = new FormData();
+        formData.append('file', compressedFile, file.name);
+        formData.append('upload_preset', 'my_preset');
+        formData.append('folder', folderName);
+        
+        let response = await fetch('https://api.cloudinary.com/v1_1/de8emj0f5/image/upload', {
+            method  : 'POST',
+            body    : formData
+        });
+        
+        let data = await response.json();
+        if (data.secure_url) {
+            return data.secure_url;
+        } else {
+            console.error("Không thể tải ảnh lên Cloudinary", data);
+            return null;
+        }
+    }
+</script>
+
+<script>
+    let selectedFiles = [];
+    document.addEventListener('DOMContentLoaded', (event) => {
+        const imageUpload   = document.getElementById('imageUpload');
+        const imagePreview  = document.getElementById('imagePreview');
+        const uploadArea    = imageUpload.parentElement;
+        let fileIdCounter   = 0;
+        uploadArea.addEventListener('click', () => imageUpload.click());
+        imageUpload.addEventListener('change', function (e) {
+            if (this.files) {
+                imagePreview.classList.remove('hidden');
+                Array.from(this.files).forEach((file) => {
+                    file._id = fileIdCounter++;
+                    selectedFiles.push(file);
+        
+                    const reader        = new FileReader();
+                    reader.onload       = function (e) {
+                        const div       = document.createElement('div');
+                        div.className   = 'relative group';
+                        div.setAttribute('data-file-id', file._id);
+                        div.innerHTML   = `
+                            <img src="${e.target.result}" alt="Image preview" class="object-cover w-full h-full rounded">
+                            <button type="button" class="absolute top-0 right-0 text-white rounded-full p-1 text-xs opacity-0 group-hover:opacity-100 transition-opacity" onclick="removeImage(event, this)">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        `;
+                        imagePreview.appendChild(div);
+                    }
+                    reader.readAsDataURL(file);
+                });
+                this.value = '';
+            }
+        });
+        
+        window.removeImage  = function (event, button) {
+            event.stopPropagation();
+            const div       = button.parentElement;
+            const fileId    = div.getAttribute('data-file-id');
+            selectedFiles   = selectedFiles.filter(file => file._id != fileId);
+            div.remove();
+            if (imagePreview.children.length === 0) {
+                imagePreview.classList.add('hidden');
+            }
+        }
+
+    });
+
+    document.addEventListener('DOMContentLoaded', (event) => {
+        const thumbnailUpload   = document.getElementById('thumbnailUpload');
+        const thumbnailPreview  = document.getElementById('thumbnailPreview');
+        const thumbnailArea     = thumbnailUpload.parentElement;
+        thumbnailArea.addEventListener('click', () => thumbnailUpload.click());
+        thumbnailUpload.addEventListener('change', function(e) {
+            if (this.files && this.files.length > 0) {
+                thumbnailPreview.innerHTML = '';
+                thumbnailPreview.classList.remove('hidden');
+                
+                const file          = this.files[0];
+                const reader        = new FileReader();
+                reader.onload       = function(e) {
+                    const div       = document.createElement('div');
+                    div.className   = 'relative group';
+                    div.innerHTML   = `
+                        <img src="${e.target.result}" alt="Thumbnail preview" class="object-cover w-full h-full rounded">
+                        <button type="button" class="absolute top-0 right-0 text-white rounded-full p-1 text-xs opacity-0 group-hover:opacity-100 transition-opacity" onclick="removeThumbnailImage()">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    `;
+                    thumbnailPreview.appendChild(div);
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+
+        window.removeThumbnailImage = function() {
+            thumbnailPreview.innerHTML  = '';
+            thumbnailPreview.classList.add('hidden');
+            thumbnailUpload.value       = ''; 
+        };
+    });
+
+</script>
+
+<script>
+    function gatherAttributes() {
+    let attributes = [];
+    let productType = document.getElementById('productType').value; 
+    if (productType === 'pc') {
+            attributes.push({ productAttributeName: "Mainboard", attributeName: document.getElementById('pcMainboard').value.trim(), attributeSummary: document.getElementById('pcMainboardSummary').value.trim() });
+            attributes.push({ productAttributeName: "CPU", attributeName: document.getElementById('pcCPU').value.trim(), attributeSummary: document.getElementById('pcCPUSummary').value.trim() });
+            attributes.push({ productAttributeName: "VGA", attributeName: document.getElementById('pcVGA').value.trim(), attributeSummary: document.getElementById('pcVGASummary').value.trim() });
+            attributes.push({ productAttributeName: "SSD", attributeName: document.getElementById('pcSSD').value.trim(), attributeSummary: document.getElementById('pcSSDSummary').value.trim() });
+            attributes.push({ productAttributeName: "HDD", attributeName: document.getElementById('pcHDD').value.trim(), attributeSummary: document.getElementById('pcHDDSummary').value.trim() });
+            attributes.push({ productAttributeName: "PSU", attributeName: document.getElementById('pcPSU').value.trim(), attributeSummary: document.getElementById('pcPSUSummary').value.trim() });
+            attributes.push({ productAttributeName: "Case", attributeName: document.getElementById('pcCase').value.trim(), attributeSummary: document.getElementById('pcCaseSummary').value.trim() });
+            attributes.push({ productAttributeName: "Fan", attributeName: document.getElementById('pcFan').value.trim(), attributeSummary: document.getElementById('pcFanSummary').value.trim() });
+            attributes.push({ productAttributeName: "RAM", attributeName: document.getElementById('pcRAM').value.trim(), attributeSummary: document.getElementById('pcRAMSummary').value.trim() });
+        }
+        else if (productType === 'laptop') {
+            attributes.push({ productAttributeName: "CPU", attributeName: document.getElementById('laptopCPU').value.trim(), attributeSummary: document.getElementById('laptopCPUSummary').value.trim() });
+            attributes.push({ productAttributeName: "RAM", attributeName: document.getElementById('laptopRAM').value.trim(), attributeSummary: document.getElementById('laptopRAMSummary').value.trim() });
+            attributes.push({ productAttributeName: "SSD", attributeName: document.getElementById('laptopStorage').value.trim(), attributeSummary: document.getElementById('laptopStorageSummary').value.trim() });
+            attributes.push({ productAttributeName: "VGA", attributeName: document.getElementById('laptopVGA').value.trim(), attributeSummary: document.getElementById('laptopVGASummary').value.trim() });
+            attributes.push({ productAttributeName: "Màn hình", attributeName: document.getElementById('laptopScreen').value.trim(), attributeSummary: document.getElementById('laptopScreenSummary').value.trim() });
+            attributes.push({ productAttributeName: "Hệ điều hành", attributeName: document.getElementById('laptopOS').value.trim(), attributeSummary: document.getElementById('laptopOSSummary').value.trim() });
+            attributes.push({ productAttributeName: "Pin", attributeName: document.getElementById('laptopBattery').value.trim(), attributeSummary: document.getElementById('laptopBatterySummary').value.trim() });
+            attributes.push({ productAttributeName: "Trọng lượng", attributeName: document.getElementById('laptopWeight').value.trim(), attributeSummary: document.getElementById('laptopWeightSummary').value.trim() });
+            attributes.push({ productAttributeName: "Tần số quét", attributeName: document.getElementById('refreshRate').value.trim(), attributeSummary: document.getElementById('refreshRateSummary').value.trim() });
+        }
+
+        else if (productType === 'keyboard') {
+            attributes.push({ productAttributeName: "Loại bàn phím", attributeName: document.getElementById('keyboardType').value.trim(), attributeSummary: document.getElementById('keyboardTypeSummary').value.trim() });
+            attributes.push({ productAttributeName: "Switch", attributeName: document.getElementById('keyboardSwitch').value.trim(), attributeSummary: document.getElementById('keyboardSwitchSummary').value.trim() });
+            attributes.push({ productAttributeName: "Kết nối", attributeName: document.getElementById('keyboardConnection').value.trim(), attributeSummary: document.getElementById('keyboardConnectionSummary').value.trim() });
+            attributes.push({ productAttributeName: "Kích thước", attributeName: document.getElementById('keyboardSize').value.trim(), attributeSummary: document.getElementById('keyboardSizeSummary').value.trim() });
+            attributes.push({ productAttributeName: "Bảng mạch", attributeName: document.getElementById('keyboardCircuit').value.trim(), attributeSummary: document.getElementById('keyboardCircuitSummary').value.trim() });
+            attributes.push({ productAttributeName: "Chất liệu", attributeName: document.getElementById('keyboardMaterial').value.trim(), attributeSummary: document.getElementById('keyboardMaterialSummary').value.trim() });
+            attributes.push({ productAttributeName: "Keycaps", attributeName: document.getElementById('keyboardFeatures').value.trim(), attributeSummary: document.getElementById('keyboardFeaturesSummary').value.trim() });
+        }
+
+        else if (productType === 'monitor') {
+            attributes.push({ productAttributeName: "Kích thước", attributeName: document.getElementById('monitorSize').value.trim(), attributeSummary: document.getElementById('monitorSizeSummary').value.trim() });
+            attributes.push({ productAttributeName: "Loại panel", attributeName: document.getElementById('monitorPanel').value.trim(), attributeSummary: document.getElementById('monitorPanelSummary').value.trim() });
+            attributes.push({ productAttributeName: "Độ phân giải", attributeName: document.getElementById('monitorResolution').value.trim(), attributeSummary: document.getElementById('monitorResolutionSummary').value.trim() });
+            attributes.push({ productAttributeName: "Tần số quét", attributeName: document.getElementById('monitorRefreshRate').value.trim(), attributeSummary: document.getElementById('monitorRefreshRateSummary').value.trim() });
+            attributes.push({ productAttributeName: "Độ sáng", attributeName: document.getElementById('monitorBrightness').value.trim(), attributeSummary: document.getElementById('monitorBrightnessSummary').value.trim() });
+            attributes.push({ productAttributeName: "Cổng kết nối", attributeName: document.getElementById('monitorPorts').value.trim(), attributeSummary: document.getElementById('monitorPortsSummary').value.trim() });
+            attributes.push({ productAttributeName: "Màu sắc", attributeName: document.getElementById('monitorColor').value.trim(), attributeSummary: document.getElementById('monitorColorSummary').value.trim() });
+            attributes.push({ productAttributeName: "Tấm nền", attributeName: document.getElementById('monitorFeatures').value.trim(), attributeSummary: document.getElementById('monitorFeaturesSummary').value.trim() });
+        }
+
+        else if (productType === 'hub') {
+            attributes.push({ productAttributeName: "Đầu vào", attributeName: document.getElementById('hubInput').value.trim(), attributeSummary: document.getElementById('hubInputSummary').value.trim() });
+            attributes.push({ productAttributeName: "Đầu ra", attributeName: document.getElementById('hubOutput').value.trim(), attributeSummary: document.getElementById('hubOutputSummary').value.trim() });
+            attributes.push({ productAttributeName: "Tốc độ hỗ trợ", attributeName: document.getElementById('hubSpeed').value.trim(), attributeSummary: document.getElementById('hubSpeedSummary').value.trim() });
+            attributes.push({ productAttributeName: "Màu sắc", attributeName: document.getElementById('hubColor').value.trim(), attributeSummary: document.getElementById('hubColorSummary').value.trim() });
+            attributes.push({ productAttributeName: "Chất liệu", attributeName: document.getElementById('hubMaterial').value.trim(), attributeSummary: document.getElementById('hubMaterialSummary').value.trim() });
+            attributes.push({ productAttributeName: "Kích thước", attributeName: document.getElementById('hubSize').value.trim(), attributeSummary: document.getElementById('hubSizeSummary').value.trim() });
+            attributes.push({ productAttributeName: "Trọng lượng", attributeName: document.getElementById('hubWeight').value.trim(), attributeSummary: document.getElementById('hubWeightSummary').value.trim() });
+            attributes.push({ productAttributeName: "Tương thích hệ điều hành", attributeName: document.getElementById('hubOSCompatibility').value.trim(), attributeSummary: document.getElementById('hubOSCompatibilitySummary').value.trim() });
+            attributes.push({ productAttributeName: "Công suất", attributeName: document.getElementById('hubPower').value.trim(), attributeSummary: document.getElementById('hubPowerSummary').value.trim() });
+        }
+
+        else if (productType === 'cable') {
+            attributes.push({ productAttributeName: "Loại cáp", attributeName: document.getElementById('cableType').value.trim(), attributeSummary: document.getElementById('cableTypeSummary').value.trim() });
+            attributes.push({ productAttributeName: "Công suất hỗ trợ", attributeName: document.getElementById('cablePowerSupport').value.trim(), attributeSummary: document.getElementById('cablePowerSupportSummary').value.trim() });
+            attributes.push({ productAttributeName: "Chiều dài", attributeName: document.getElementById('cableLength').value.trim(), attributeSummary: document.getElementById('cableLengthSummary').value.trim() });
+            attributes.push({ productAttributeName: "Chất liệu vỏ", attributeName: document.getElementById('cableMaterial').value.trim(), attributeSummary: document.getElementById('cableMaterialSummary').value.trim() });
+            attributes.push({ productAttributeName: "Tốc độ truyền dữ liệu", attributeName: document.getElementById('cableDataSpeed').value.trim(), attributeSummary: document.getElementById('cableDataSpeedSummary').value.trim() });
+            attributes.push({ productAttributeName: "Tương thích", attributeName: document.getElementById('cableCompatibility').value.trim(), attributeSummary: document.getElementById('cableCompatibilitySummary').value.trim() });
+            attributes.push({ productAttributeName: "Màu sắc", attributeName: document.getElementById('cableColor').value.trim(), attributeSummary: document.getElementById('cableColorSummary').value.trim() });
+        }
+
+        else if (productType === 'charger') {
+            attributes.push({ productAttributeName: "Cổng sạc", attributeName: document.getElementById('chargerPorts').value.trim(), attributeSummary: document.getElementById('chargerPortsSummary').value.trim() });
+            attributes.push({ productAttributeName: "Công suất", attributeName: document.getElementById('chargerPower').value.trim(), attributeSummary: document.getElementById('chargerPowerSummary').value.trim() });
+            attributes.push({ productAttributeName: "Tính năng", attributeName: document.getElementById('chargerFeatures').value.trim(), attributeSummary: document.getElementById('chargerFeaturesSummary').value.trim() });
+            attributes.push({ productAttributeName: "Tương thích", attributeName: document.getElementById('chargerCompatibility').value.trim(), attributeSummary: document.getElementById('chargerCompatibilitySummary').value.trim() });
+            attributes.push({ productAttributeName: "Màu sắc", attributeName: document.getElementById('chargerColor').value.trim(), attributeSummary: document.getElementById('chargerColorSummary').value.trim() });
+        }
+        else if (productType === 'headphone') {
+            attributes.push({ productAttributeName: "Loại tai nghe", attributeName: document.getElementById('headphoneType').value.trim(), attributeSummary: document.getElementById('headphoneTypeSummary').value.trim() });
+            attributes.push({ productAttributeName: "Kết nối", attributeName: document.getElementById('headphoneConnection').value.trim(), attributeSummary: document.getElementById('headphoneConnectionSummary').value.trim() });
+            attributes.push({ productAttributeName: "Driver", attributeName: document.getElementById('headphoneDriver').value.trim(), attributeSummary: document.getElementById('headphoneDriverSummary').value.trim() });
+            attributes.push({ productAttributeName: "Dải tần số", attributeName: document.getElementById('headphoneFrequency').value.trim(), attributeSummary: document.getElementById('headphoneFrequencySummary').value.trim() });
+            attributes.push({ productAttributeName: "Trở kháng", attributeName: document.getElementById('headphoneImpedance').value.trim(), attributeSummary: document.getElementById('headphoneImpedanceSummary').value.trim() });
+            attributes.push({ productAttributeName: "Độ nhạy", attributeName: document.getElementById('headphoneSensitivity').value.trim(), attributeSummary: document.getElementById('headphoneSensitivitySummary').value.trim() });
+            attributes.push({ productAttributeName: "Microphone", attributeName: document.getElementById('headphoneMic').value.trim(), attributeSummary: document.getElementById('headphoneMicSummary').value.trim() });
+            attributes.push({ productAttributeName: "Pin", attributeName: document.getElementById('headphoneBattery').value.trim(), attributeSummary: document.getElementById('headphoneBatterySummary').value.trim() });
+            attributes.push({ productAttributeName: "Trọng lượng", attributeName: document.getElementById('headphoneWeight').value.trim(), attributeSummary: document.getElementById('headphoneWeightSummary').value.trim() });
+            attributes.push({ productAttributeName: "Tương thích", attributeName: document.getElementById('headphoneCompatibility').value.trim(), attributeSummary: document.getElementById('headphoneCompatibilitySummary').value.trim() });
+            attributes.push({ productAttributeName: "Phụ kiện đi kèm", attributeName: document.getElementById('headphoneAccessories').value.trim(), attributeSummary: document.getElementById('headphoneAccessoriesSummary').value.trim() });
+            attributes.push({ productAttributeName: "Màu sắc", attributeName: document.getElementById('headphoneColor').value.trim(), attributeSummary: document.getElementById('headphoneColorSummary').value.trim() });
+        }
+
+        else if (productType === 'handheld') {
+            attributes.push({ productAttributeName: "Màn hình", attributeName: document.getElementById('handheldScreen').value.trim(), attributeSummary: document.getElementById('handheldScreenSummary').value.trim() });
+            attributes.push({ productAttributeName: "CPU", attributeName: document.getElementById('handheldCPU').value.trim(), attributeSummary: document.getElementById('handheldCPUSummary').value.trim() });
+            attributes.push({ productAttributeName: "GPU", attributeName: document.getElementById('handheldGPU').value.trim(), attributeSummary: document.getElementById('handheldGPUSummary').value.trim() });
+            attributes.push({ productAttributeName: "RAM", attributeName: document.getElementById('handheldRAM').value.trim(), attributeSummary: document.getElementById('handheldRAMSummary').value.trim() });
+            attributes.push({ productAttributeName: "SSD", attributeName: document.getElementById('handheldStorage').value.trim(), attributeSummary: document.getElementById('handheldStorageSummary').value.trim() });
+            attributes.push({ productAttributeName: "Pin", attributeName: document.getElementById('handheldBattery').value.trim(), attributeSummary: document.getElementById('handheldBatterySummary').value.trim() });
+            attributes.push({ productAttributeName: "Kết nối", attributeName: document.getElementById('handheldConnectivity').value.trim(), attributeSummary: document.getElementById('handheldConnectivitySummary').value.trim() });
+            attributes.push({ productAttributeName: "Hệ điều hành", attributeName: document.getElementById('handheldOS').value.trim(), attributeSummary: document.getElementById('handheldOSSummary').value.trim() });
+            attributes.push({ productAttributeName: "Phụ kiện đi kèm", attributeName: document.getElementById('handheldAccessories').value.trim(), attributeSummary: document.getElementById('handheldAccessoriesSummary').value.trim() });
+        }
+
+        else if (productType === 'controller') {
+            attributes.push({ productAttributeName: "Kết nối", attributeName: document.getElementById('controllerConnection').value.trim(), attributeSummary: document.getElementById('controllerConnectionSummary').value.trim() });
+            attributes.push({ productAttributeName: "Tay cầm", attributeName: document.getElementById('controllerGrip').value.trim(), attributeSummary: document.getElementById('controllerGripSummary').value.trim() });
+            attributes.push({ productAttributeName: "Nút bấm", attributeName: document.getElementById('controllerButtons').value.trim(), attributeSummary: document.getElementById('controllerButtonsSummary').value.trim() });
+            attributes.push({ productAttributeName: "Phản hồi nút", attributeName: document.getElementById('controllerFeedback').value.trim(), attributeSummary: document.getElementById('controllerFeedbackSummary').value.trim() });
+            attributes.push({ productAttributeName: "Pin", attributeName: document.getElementById('controllerBattery').value.trim(), attributeSummary: document.getElementById('controllerBatterySummary').value.trim() });
+            attributes.push({ productAttributeName: "Màu sắc", attributeName: document.getElementById('controllerColor').value.trim(), attributeSummary: document.getElementById('controllerColorSummary').value.trim() });
+            attributes.push({ productAttributeName: "Kích thước", attributeName: document.getElementById('controllerSize').value.trim(), attributeSummary: document.getElementById('controllerSizeSummary').value.trim() });
+            attributes.push({ productAttributeName: "Trọng lượng", attributeName: document.getElementById('controllerWeight').value.trim(), attributeSummary: document.getElementById('controllerWeightSummary').value.trim() });
+        }
+
+        else if (productType === 'speaker') {
+            attributes.push({ productAttributeName: "Model", attributeName: document.getElementById('speakerModel').value.trim(), attributeSummary: document.getElementById('speakerModelSummary').value.trim() });
+            attributes.push({ productAttributeName: "Wireless Version", attributeName: document.getElementById('speakerWirelessVersion').value.trim(), attributeSummary: document.getElementById('speakerWirelessVersionSummary').value.trim() });
+            attributes.push({ productAttributeName: "Bluetooth Profile", attributeName: document.getElementById('speakerBluetoothProfile').value.trim(), attributeSummary: document.getElementById('speakerBluetoothProfileSummary').value.trim() });
+            attributes.push({ productAttributeName: "Công suất", attributeName: document.getElementById('speakerPower').value.trim(), attributeSummary: document.getElementById('speakerPowerSummary').value.trim() });
+            attributes.push({ productAttributeName: "Power Supply", attributeName: document.getElementById('speakerPowerSupply').value.trim(), attributeSummary: document.getElementById('speakerPowerSupplySummary').value.trim() });
+            attributes.push({ productAttributeName: "Khoảng cách", attributeName: document.getElementById('speakerRange').value.trim(), attributeSummary: document.getElementById('speakerRangeSummary').value.trim() });
+            attributes.push({ productAttributeName: "Thời gian sử dụng", attributeName: document.getElementById('speakerUsageTime').value.trim(), attributeSummary: document.getElementById('speakerUsageTimeSummary').value.trim() });
+            attributes.push({ productAttributeName: "Thời gian sạc", attributeName: document.getElementById('speakerChargingTime').value.trim(), attributeSummary: document.getElementById('speakerChargingTimeSummary').value.trim() });
+            attributes.push({ productAttributeName: "Dải tần số", attributeName: document.getElementById('speakerFrequencyRange').value.trim(), attributeSummary: document.getElementById('speakerFrequencyRangeSummary').value.trim() });
+            attributes.push({ productAttributeName: "Dung lượng pin", attributeName: document.getElementById('speakerBatteryCapacity').value.trim(), attributeSummary: document.getElementById('speakerBatteryCapacitySummary').value.trim() });
+            attributes.push({ productAttributeName: "Kích thước", attributeName: document.getElementById('speakerSize').value.trim(), attributeSummary: document.getElementById('speakerSizeSummary').value.trim() });
+            attributes.push({ productAttributeName: "Trọng lượng", attributeName: document.getElementById('speakerWeight').value.trim(), attributeSummary: document.getElementById('speakerWeightSummary').value.trim() });
+            attributes.push({ productAttributeName: "Kháng nước", attributeName: document.getElementById('speakerWaterResistance').value.trim(), attributeSummary: document.getElementById('speakerWaterResistanceSummary').value.trim() });
+            attributes.push({ productAttributeName: "Màu sắc", attributeName: document.getElementById('speakerColor').value.trim(), attributeSummary: document.getElementById('speakerColorSummary').value.trim() });
+        }
+
+        else if (productType === 'microphone') {
+            attributes.push({ productAttributeName: "Model", attributeName: document.getElementById('microphoneModel').value.trim(), attributeSummary: document.getElementById('microphoneModelSummary').value.trim() });
+            attributes.push({ productAttributeName: "Loại microphone", attributeName: document.getElementById('microphoneType').value.trim(), attributeSummary: document.getElementById('microphoneTypeSummary').value.trim() });
+            attributes.push({ productAttributeName: "Cổng kết nối", attributeName: document.getElementById('microphonePort').value.trim(), attributeSummary: document.getElementById('microphonePortSummary').value.trim() });
+            attributes.push({ productAttributeName: "Độ nhạy", attributeName: document.getElementById('microphoneSensitivity').value.trim(), attributeSummary: document.getElementById('microphoneSensitivitySummary').value.trim() });
+            attributes.push({ productAttributeName: "Tần số đáp ứng", attributeName: document.getElementById('microphoneFrequency').value.trim(), attributeSummary: document.getElementById('microphoneFrequencySummary').value.trim() });
+            attributes.push({ productAttributeName: "Công suất", attributeName: document.getElementById('microphonePower').value.trim(), attributeSummary: document.getElementById('microphonePowerSummary').value.trim() });
+            attributes.push({ productAttributeName: "Đèn nền", attributeName: document.getElementById('microphoneLighting').value.trim(), attributeSummary: document.getElementById('microphoneLightingSummary').value.trim() });
+            attributes.push({ productAttributeName: "Chiều dài cáp", attributeName: document.getElementById('microphoneCableLength').value.trim(), attributeSummary: document.getElementById('microphoneCableLengthSummary').value.trim() });
+            attributes.push({ productAttributeName: "Kích thước", attributeName: document.getElementById('microphoneSize').value.trim(), attributeSummary: document.getElementById('microphoneSizeSummary').value.trim() });
+            attributes.push({ productAttributeName: "Trọng lượng", attributeName: document.getElementById('microphoneWeight').value.trim(), attributeSummary: document.getElementById('microphoneWeightSummary').value.trim() });
+            attributes.push({ productAttributeName: "Đặc điểm nổi bật", attributeName: document.getElementById('microphoneFeatures').value.trim(), attributeSummary: document.getElementById('microphoneFeaturesSummary').value.trim() });
+        }
+
+        else if (productType === 'camera') {
+            attributes.push({ productAttributeName: "Model", attributeName: document.getElementById('cameraModel').value.trim(), attributeSummary: document.getElementById('cameraModelSummary').value.trim() });
+            attributes.push({ productAttributeName: "Độ phân giải", attributeName: document.getElementById('cameraResolution').value.trim(), attributeSummary: document.getElementById('cameraResolutionSummary').value.trim() });
+            attributes.push({ productAttributeName: "Độ rộng trường nhìn", attributeName: document.getElementById('cameraFieldOfView').value.trim(), attributeSummary: document.getElementById('cameraFieldOfViewSummary').value.trim() });
+            attributes.push({ productAttributeName: "Cảm biến", attributeName: document.getElementById('cameraSensor').value.trim(), attributeSummary: document.getElementById('cameraSensorSummary').value.trim() });
+            attributes.push({ productAttributeName: "Tần số khung hình", attributeName: document.getElementById('cameraFrameRate').value.trim(), attributeSummary: document.getElementById('cameraFrameRateSummary').value.trim() });
+            attributes.push({ productAttributeName: "Cổng kết nối", attributeName: document.getElementById('cameraPort').value.trim(), attributeSummary: document.getElementById('cameraPortSummary').value.trim() });
+            attributes.push({ productAttributeName: "Kích thước", attributeName: document.getElementById('cameraSize').value.trim(), attributeSummary: document.getElementById('cameraSizeSummary').value.trim() });
+            attributes.push({ productAttributeName: "Trọng lượng", attributeName: document.getElementById('cameraWeight').value.trim(), attributeSummary: document.getElementById('cameraWeightSummary').value.trim() });
+        }
+
+        else if (productType === 'mouse') {
+            attributes.push({ productAttributeName: "Loại chuột", attributeName: document.getElementById('mouseType').value.trim(), attributeSummary: document.getElementById('mouseTypeSummary').value.trim() });
+            attributes.push({ productAttributeName: "LED RGB", attributeName: document.getElementById('mouseRGB').value.trim(), attributeSummary: document.getElementById('mouseRGBSummary').value.trim() });
+            attributes.push({ productAttributeName: "DPI", attributeName: document.getElementById('mouseDPI').value.trim(), attributeSummary: document.getElementById('mouseDPISummary').value.trim() });
+            attributes.push({ productAttributeName: "Cảm biến", attributeName: document.getElementById('mouseSensor').value.trim(), attributeSummary: document.getElementById('mouseSensorSummary').value.trim() });
+            attributes.push({ productAttributeName: "Tốc độ phản hồi", attributeName: document.getElementById('mouseResponseRate').value.trim(), attributeSummary: document.getElementById('mouseResponseRateSummary').value.trim() });
+            attributes.push({ productAttributeName: "Màu sắc", attributeName: document.getElementById('mouseColor').value.trim(), attributeSummary: document.getElementById('mouseColorSummary').value.trim() });
+            attributes.push({ productAttributeName: "Nút", attributeName: document.getElementById('mouseButtons').value.trim(), attributeSummary: document.getElementById('mouseButtonsSummary').value.trim() });
+            attributes.push({ productAttributeName: "Dây", attributeName: document.getElementById('mouseCable').value.trim(), attributeSummary: document.getElementById('mouseCableSummary').value.trim() });
+            attributes.push({ productAttributeName: "Thiết kế", attributeName: document.getElementById('mouseDesign').value.trim(), attributeSummary: document.getElementById('mouseDesignSummary').value.trim() });
+            attributes.push({ productAttributeName: "Tương thích", attributeName: document.getElementById('mouseCompatibility').value.trim(), attributeSummary: document.getElementById('mouseCompatibilitySummary').value.trim() });
+            attributes.push({ productAttributeName: "Phần mềm đi kèm", attributeName: document.getElementById('mouseSoftware').value.trim(), attributeSummary: document.getElementById('mouseSoftwareSummary').value.trim() });
+        }
+
+        else if (productType === 'officeMouse') {
+            attributes.push({ productAttributeName: "Loại chuột", attributeName: document.getElementById('officeMouseType').value.trim(), attributeSummary: document.getElementById('officeMouseTypeSummary').value.trim() });
+            attributes.push({ productAttributeName: "Loại pin", attributeName: document.getElementById('officeMouseBatteryType').value.trim(), attributeSummary: document.getElementById('officeMouseBatteryTypeSummary').value.trim() });
+            attributes.push({ productAttributeName: "DPI", attributeName: document.getElementById('officeMouseDPI').value.trim(), attributeSummary: document.getElementById('officeMouseDPISummary').value.trim() });
+            attributes.push({ productAttributeName: "Cảm biến", attributeName: document.getElementById('officeMouseSensor').value.trim(), attributeSummary: document.getElementById('officeMouseSensorSummary').value.trim() });
+            attributes.push({ productAttributeName: "Màu sắc", attributeName: document.getElementById('officeMouseColor').value.trim(), attributeSummary: document.getElementById('officeMouseColorSummary').value.trim() });
+            attributes.push({ productAttributeName: "Thiết kế", attributeName: document.getElementById('officeMouseDesign').value.trim(), attributeSummary: document.getElementById('officeMouseDesignSummary').value.trim() });
+            attributes.push({ productAttributeName: "Số nút", attributeName: document.getElementById('officeMouseButtons').value.trim(), attributeSummary: document.getElementById('officeMouseButtonsSummary').value.trim() });
+            attributes.push({ productAttributeName: "Kết nối", attributeName: document.getElementById('officeMouseConnection').value.trim(), attributeSummary: document.getElementById('officeMouseConnectionSummary').value.trim() });
+            attributes.push({ productAttributeName: "Tương thích", attributeName: document.getElementById('officeMouseCompatibility').value.trim(), attributeSummary: document.getElementById('officeMouseCompatibilitySummary').value.trim() });
+            attributes.push({ productAttributeName: "Đặc điểm nổi bật", attributeName: document.getElementById('officeMouseFeatures').value.trim(), attributeSummary: document.getElementById('officeMouseFeaturesSummary').value.trim() });
+        }
+
+        else if (productType === 'mousePad') {
+            attributes.push({ productAttributeName: "Kích thước", attributeName: document.getElementById('mousePadSize').value.trim(), attributeSummary: document.getElementById('mousePadSizeSummary').value.trim() });
+            attributes.push({ productAttributeName: "Đặc điểm nổi bật", attributeName: document.getElementById('mousePadFeatures').value.trim(), attributeSummary: document.getElementById('mousePadFeaturesSummary').value.trim() });
+        }
+
+        else if (productType === 'chair') {
+            attributes.push({ productAttributeName: "Màu sắc", attributeName: document.getElementById('chairColor').value.trim(), attributeSummary: document.getElementById('chairColorSummary').value.trim() });
+            attributes.push({ productAttributeName: "Loại ghế", attributeName: document.getElementById('chairType').value.trim(), attributeSummary: document.getElementById('chairTypeSummary').value.trim() });
+            attributes.push({ productAttributeName: "Khung ghế", attributeName: document.getElementById('chairFrame').value.trim(), attributeSummary: document.getElementById('chairFrameSummary').value.trim() });
+            attributes.push({ productAttributeName: "Đệm ghế", attributeName: document.getElementById('chairCushion').value.trim(), attributeSummary: document.getElementById('chairCushionSummary').value.trim() });
+            attributes.push({ productAttributeName: "Chất liệu bọc ghế", attributeName: document.getElementById('chairMaterial').value.trim(), attributeSummary: document.getElementById('chairMaterialSummary').value.trim() });
+            attributes.push({ productAttributeName: "Kích thước", attributeName: document.getElementById('chairSize').value.trim(), attributeSummary: document.getElementById('chairSizeSummary').value.trim() });
+            attributes.push({ productAttributeName: "Tính năng", attributeName: document.getElementById('chairFeatures').value.trim(), attributeSummary: document.getElementById('chairFeaturesSummary').value.trim() });
+        }
+
+        else if (productType === 'table') {
+            attributes.push({ productAttributeName: "Màu sắc", attributeName: document.getElementById('tableColor').value.trim(), attributeSummary: document.getElementById('tableColorSummary').value.trim() });
+            attributes.push({ productAttributeName: "Chất liệu", attributeName: document.getElementById('tableMaterial').value.trim(), attributeSummary: document.getElementById('tableMaterialSummary').value.trim() });
+            attributes.push({ productAttributeName: "Tính năng", attributeName: document.getElementById('tableFeatures').value.trim(), attributeSummary: document.getElementById('tableFeaturesSummary').value.trim() });
+            attributes.push({ productAttributeName: "Kích thước", attributeName: document.getElementById('tableSize').value.trim(), attributeSummary: document.getElementById('tableSizeSummary').value.trim() });
+            attributes.push({ productAttributeName: "Loại bàn", attributeName: document.getElementById('tableType').value.trim(), attributeSummary: document.getElementById('tableTypeSummary').value.trim() });
+        }
+
+        else if (productType === 'ssd') {
+            attributes.push({ productAttributeName: "Dung lượng", attributeName: document.getElementById('ssdCapacity').value.trim(), attributeSummary: document.getElementById('ssdCapacitySummary').value.trim() });
+            attributes.push({ productAttributeName: "Loại ổ cứng", attributeName: document.getElementById('ssdType').value.trim(), attributeSummary: document.getElementById('ssdTypeSummary').value.trim() });
+            attributes.push({ productAttributeName: "Chuẩn giao tiếp", attributeName: document.getElementById('ssdInterface').value.trim(), attributeSummary: document.getElementById('ssdInterfaceSummary').value.trim() });
+            attributes.push({ productAttributeName: "Tốc độ đọc tối đa", attributeName: document.getElementById('ssdReadSpeed').value.trim(), attributeSummary: document.getElementById('ssdReadSpeedSummary').value.trim() });
+            attributes.push({ productAttributeName: "Tính năng đặc biệt", attributeName: document.getElementById('ssdFeatures').value.trim(), attributeSummary: document.getElementById('ssdFeaturesSummary').value.trim() });
+        }
+
+        else if (productType === 'hdd') {
+            attributes.push({ productAttributeName: "Mã sản phẩm", attributeName: document.getElementById('hddModel').value.trim(), attributeSummary: document.getElementById('hddModelSummary').value.trim() });
+            attributes.push({ productAttributeName: "Dung lượng lưu trữ", attributeName: document.getElementById('hddCapacity').value.trim(), attributeSummary: document.getElementById('hddCapacitySummary').value.trim() });
+            attributes.push({ productAttributeName: "Chuẩn kết nối", attributeName: document.getElementById('hddInterface').value.trim(), attributeSummary: document.getElementById('hddInterfaceSummary').value.trim() });
+            attributes.push({ productAttributeName: "Tốc độ vòng quay", attributeName: document.getElementById('hddRPM').value.trim(), attributeSummary: document.getElementById('hddRPMSummary').value.trim() });
+            attributes.push({ productAttributeName: "Dung lượng bộ nhớ đệm", attributeName: document.getElementById('hddCache').value.trim(), attributeSummary: document.getElementById('hddCacheSummary').value.trim() });
+            attributes.push({ productAttributeName: "Đặc điểm nổi bật", attributeName: document.getElementById('hddFeatures').value.trim(), attributeSummary: document.getElementById('hddFeaturesSummary').value.trim() });
+        }
+
+        else if (productType === 'ram') {
+            attributes.push({ productAttributeName: "Dung lượng", attributeName: document.getElementById('ramCapacity').value.trim(), attributeSummary: document.getElementById('ramCapacitySummary').value.trim() });
+            attributes.push({ productAttributeName: "Loại RAM", attributeName: document.getElementById('ramType').value.trim(), attributeSummary: document.getElementById('ramTypeSummary').value.trim() });
+            attributes.push({ productAttributeName: "Tốc độ", attributeName: document.getElementById('ramSpeed').value.trim(), attributeSummary: document.getElementById('ramSpeedSummary').value.trim() });
+            attributes.push({ productAttributeName: "Đèn LED", attributeName: document.getElementById('ramLED').value.trim(), attributeSummary: document.getElementById('ramLEDSummary').value.trim() });
+            attributes.push({ productAttributeName: "Điện áp hoạt động", attributeName: document.getElementById('ramVoltage').value.trim(), attributeSummary: document.getElementById('ramVoltageSummary').value.trim() });
+            attributes.push({ productAttributeName: "Tản nhiệt", attributeName: document.getElementById('ramCooling').value.trim(), attributeSummary: document.getElementById('ramCoolingSummary').value.trim() });
+        }
+        else if (productType === 'memoryCard') {
+            attributes.push({ productAttributeName: "Dung lượng lưu trữ", attributeName: document.getElementById('memoryCardCapacity').value.trim(), attributeSummary: document.getElementById('memoryCardCapacitySummary').value.trim() });
+            attributes.push({ productAttributeName: "Loại thẻ", attributeName: document.getElementById('memoryCardType').value.trim(), attributeSummary: document.getElementById('memoryCardTypeSummary').value.trim() });
+            attributes.push({ productAttributeName: "Tốc độ đọc tối đa", attributeName: document.getElementById('memoryCardReadSpeed').value.trim(), attributeSummary: document.getElementById('memoryCardReadSpeedSummary').value.trim() });
+            attributes.push({ productAttributeName: "Tính năng đặc biệt", attributeName: document.getElementById('memoryCardFeatures').value.trim(), attributeSummary: document.getElementById('memoryCardFeaturesSummary').value.trim() });
+        }
+
+        else if (productType === 'vga') {
+            attributes.push({ productAttributeName: "Loại đồ hoạ", attributeName: document.getElementById('vgaType').value.trim(), attributeSummary: document.getElementById('vgaTypeSummary').value.trim() });
+            attributes.push({ productAttributeName: "Giao thức kết nối", attributeName: document.getElementById('vgaInterface').value.trim(), attributeSummary: document.getElementById('vgaInterfaceSummary').value.trim() });
+            attributes.push({ productAttributeName: "Xung nhịp", attributeName: document.getElementById('vgaClockSpeed').value.trim(), attributeSummary: document.getElementById('vgaClockSpeedSummary').value.trim() });
+            attributes.push({ productAttributeName: "Nhân CUDA", attributeName: document.getElementById('vgaCudaCores').value.trim(), attributeSummary: document.getElementById('vgaCudaCoresSummary').value.trim() });
+            attributes.push({ productAttributeName: "Tốc độ bộ nhớ", attributeName: document.getElementById('vgaMemorySpeed').value.trim(), attributeSummary: document.getElementById('vgaMemorySpeedSummary').value.trim() });
+            attributes.push({ productAttributeName: "Bộ nhớ", attributeName: document.getElementById('vgaMemory').value.trim(), attributeSummary: document.getElementById('vgaMemorySummary').value.trim() });
+            attributes.push({ productAttributeName: "Cổng xuất hình", attributeName: document.getElementById('vgaDisplayPorts').value.trim(), attributeSummary: document.getElementById('vgaDisplayPortsSummary').value.trim() });
+            attributes.push({ productAttributeName: "Hỗ trợ HDCP", attributeName: document.getElementById('vgaHdcpSupport').value.trim(), attributeSummary: document.getElementById('vgaHdcpSupportSummary').value.trim() });
+            attributes.push({ productAttributeName: "Tiêu thụ điện", attributeName: document.getElementById('vgaPowerConsumption').value.trim(), attributeSummary: document.getElementById('vgaPowerConsumptionSummary').value.trim() });
+            attributes.push({ productAttributeName: "Kết nối nguồn", attributeName: document.getElementById('vgaPowerConnector').value.trim(), attributeSummary: document.getElementById('vgaPowerConnectorSummary').value.trim() });
+            attributes.push({ productAttributeName: "PSU kiến nghị", attributeName: document.getElementById('vgaRecommendedPsu').value.trim(), attributeSummary: document.getElementById('vgaRecommendedPsuSummary').value.trim() });
+            attributes.push({ productAttributeName: "Kích thước", attributeName: document.getElementById('vgaSize').value.trim(), attributeSummary: document.getElementById('vgaSizeSummary').value.trim() });
+            attributes.push({ productAttributeName: "Trọng lượng", attributeName: document.getElementById('vgaWeight').value.trim(), attributeSummary: document.getElementById('vgaWeightSummary').value.trim() });
+            attributes.push({ productAttributeName: "Phiên bản DirectX hỗ trợ", attributeName: document.getElementById('vgaDirectXVersion').value.trim(), attributeSummary: document.getElementById('vgaDirectXVersionSummary').value.trim() });
+            attributes.push({ productAttributeName: "OpenGL", attributeName: document.getElementById('vgaOpenGLVersion').value.trim(), attributeSummary: document.getElementById('vgaOpenGLVersionSummary').value.trim() });
+            attributes.push({ productAttributeName: "Hỗ trợ màn hình tối đa", attributeName: document.getElementById('vgaMaxDisplays').value.trim(), attributeSummary: document.getElementById('vgaMaxDisplaysSummary').value.trim() });
+            attributes.push({ productAttributeName: "Công nghệ G-Sync", attributeName: document.getElementById('vgaGSync').value.trim(), attributeSummary: document.getElementById('vgaGSyncSummary').value.trim() });
+            attributes.push({ productAttributeName: "Độ phân giải tối đa", attributeName: document.getElementById('vgaMaxResolution').value.trim(), attributeSummary: document.getElementById('vgaMaxResolutionSummary').value.trim() });
+        }
+
+        else if (productType === 'cpuAmd') {
+            attributes.push({ productAttributeName: "Số nhân (Cores)", attributeName: document.getElementById('cpuAmdCores').value.trim(), attributeSummary: document.getElementById('cpuAmdCoresSummary').value.trim() });
+            attributes.push({ productAttributeName: "Số luồng (Threads)", attributeName: document.getElementById('cpuAmdThreads').value.trim(), attributeSummary: document.getElementById('cpuAmdThreadsSummary').value.trim() });
+            attributes.push({ productAttributeName: "Tốc độ xử lý", attributeName: document.getElementById('cpuAmdClockSpeed').value.trim(), attributeSummary: document.getElementById('cpuAmdClockSpeedSummary').value.trim() });
+            attributes.push({ productAttributeName: "Bộ nhớ đệm L1", attributeName: document.getElementById('cpuAmdCacheL1').value.trim(), attributeSummary: document.getElementById('cpuAmdCacheL1Summary').value.trim() });
+            attributes.push({ productAttributeName: "Bộ nhớ đệm L2", attributeName: document.getElementById('cpuAmdCacheL2').value.trim(), attributeSummary: document.getElementById('cpuAmdCacheL2Summary').value.trim() });
+            attributes.push({ productAttributeName: "Bộ nhớ đệm L3", attributeName: document.getElementById('cpuAmdCacheL3').value.trim(), attributeSummary: document.getElementById('cpuAmdCacheL3Summary').value.trim() });
+            attributes.push({ productAttributeName: "Mở khoá để ép xung", attributeName: document.getElementById('cpuAmdUnlocked').value.trim(), attributeSummary: document.getElementById('cpuAmdUnlockedSummary').value.trim() });
+            attributes.push({ productAttributeName: "Công nghệ xử lý cho lõi CPU", attributeName: document.getElementById('cpuAmdTechnology').value.trim(), attributeSummary: document.getElementById('cpuAmdTechnologySummary').value.trim() });
+            attributes.push({ productAttributeName: "Socket", attributeName: document.getElementById('cpuAmdSocket').value.trim(), attributeSummary: document.getElementById('cpuAmdSocketSummary').value.trim() });
+        }
+
+        else if (productType === 'cpuIntel') {
+            attributes.push({ productAttributeName: "Socket", attributeName: document.getElementById('cpuIntelSocket').value.trim(), attributeSummary: document.getElementById('cpuIntelSocketSummary').value.trim() });
+            attributes.push({ productAttributeName: "Dòng CPU", attributeName: document.getElementById('cpuIntelSeries').value.trim(), attributeSummary: document.getElementById('cpuIntelSeriesSummary').value.trim() });
+            attributes.push({ productAttributeName: "Số nhân", attributeName: document.getElementById('cpuIntelCores').value.trim(), attributeSummary: document.getElementById('cpuIntelCoresSummary').value.trim() });
+            attributes.push({ productAttributeName: "Số luồng", attributeName: document.getElementById('cpuIntelThreads').value.trim(), attributeSummary: document.getElementById('cpuIntelThreadsSummary').value.trim() });
+            attributes.push({ productAttributeName: "Tốc độ turbo tối đa của P-core", attributeName: document.getElementById('cpuIntelMaxTurboP').value.trim(), attributeSummary: document.getElementById('cpuIntelMaxTurboPSummary').value.trim() });
+            attributes.push({ productAttributeName: "Tốc độ turbo tối đa của E-core", attributeName: document.getElementById('cpuIntelMaxTurboE').value.trim(), attributeSummary: document.getElementById('cpuIntelMaxTurboESummary').value.trim() });
+            attributes.push({ productAttributeName: "Điện năng tiêu thụ", attributeName: document.getElementById('cpuIntelPower').value.trim(), attributeSummary: document.getElementById('cpuIntelPowerSummary').value.trim() });
+            attributes.push({ productAttributeName: "Loại bộ nhớ", attributeName: document.getElementById('cpuIntelMemory').value.trim(), attributeSummary: document.getElementById('cpuIntelMemorySummary').value.trim() });
+        }
+
+        else if (productType === 'mainboard') {
+            attributes.push({ productAttributeName: "Chipset", attributeName: document.getElementById('mainboardChipset').value.trim(), attributeSummary: document.getElementById('mainboardChipsetSummary').value.trim() });
+            attributes.push({ productAttributeName: "Kích thước", attributeName: document.getElementById('mainboardSize').value.trim(), attributeSummary: document.getElementById('mainboardSizeSummary').value.trim() });
+            attributes.push({ productAttributeName: "Hỗ trợ bộ nhớ", attributeName: document.getElementById('mainboardMemorySupport').value.trim(), attributeSummary: document.getElementById('mainboardMemorySupportSummary').value.trim() });
+            attributes.push({ productAttributeName: "Cổng kết nối", attributeName: document.getElementById('mainboardPorts').value.trim(), attributeSummary: document.getElementById('mainboardPortsSummary').value.trim() });
+            attributes.push({ productAttributeName: "Hỗ trợ GPU", attributeName: document.getElementById('mainboardGpuSupport').value.trim(), attributeSummary: document.getElementById('mainboardGpuSupportSummary').value.trim() });
+        }
+
+        else if (productType === 'case') {
+            attributes.push({ productAttributeName: "Kích thước", attributeName: document.getElementById('caseSize').value.trim(), attributeSummary: document.getElementById('caseSizeSummary').value.trim() });
+            attributes.push({ productAttributeName: "Hỗ trợ mainboard", attributeName: document.getElementById('caseMotherboardSupport').value.trim(), attributeSummary: document.getElementById('caseMotherboardSupportSummary').value.trim() });
+            attributes.push({ productAttributeName: "Chất liệu", attributeName: document.getElementById('caseMaterial').value.trim(), attributeSummary: document.getElementById('caseMaterialSummary').value.trim() });
+            attributes.push({ productAttributeName: "Hệ thống làm mát", attributeName: document.getElementById('caseCoolingSystem').value.trim(), attributeSummary: document.getElementById('caseCoolingSystemSummary').value.trim() });
+            attributes.push({ productAttributeName: "Đèn LED", attributeName: document.getElementById('caseLED').value.trim(), attributeSummary: document.getElementById('caseLEDSummary').value.trim() });
+            attributes.push({ productAttributeName: "Tính năng đặc biệt", attributeName: document.getElementById('caseFeatures').value.trim(), attributeSummary: document.getElementById('caseFeaturesSummary').value.trim() });
+        }
+
+        else if (productType === 'psu') {
+            attributes.push({ productAttributeName: "Công suất", attributeName: document.getElementById('psuPower').value.trim(), attributeSummary: document.getElementById('psuPowerSummary').value.trim() });
+            attributes.push({ productAttributeName: "Tiêu chuẩn hiệu suất", attributeName: document.getElementById('psuEfficiencyStandard').value.trim(), attributeSummary: document.getElementById('psuEfficiencyStandardSummary').value.trim() });
+            attributes.push({ productAttributeName: "Hiệu suất", attributeName: document.getElementById('psuEfficiency').value.trim(), attributeSummary: document.getElementById('psuEfficiencySummary').value.trim() });
+            attributes.push({ productAttributeName: "Quạt", attributeName: document.getElementById('psuFan').value.trim(), attributeSummary: document.getElementById('psuFanSummary').value.trim() });
+            attributes.push({ productAttributeName: "Đầu ra", attributeName: document.getElementById('psuOutput').value.trim(), attributeSummary: document.getElementById('psuOutputSummary').value.trim() });
+            attributes.push({ productAttributeName: "Bảo vệ", attributeName: document.getElementById('psuProtection').value.trim(), attributeSummary: document.getElementById('psuProtectionSummary').value.trim() });
+            attributes.push({ productAttributeName: "Chuẩn kết nối", attributeName: document.getElementById('psuConnectors').value.trim(), attributeSummary: document.getElementById('psuConnectorsSummary').value.trim() });
+            attributes.push({ productAttributeName: "Dây cáp", attributeName: document.getElementById('psuCables').value.trim(), attributeSummary: document.getElementById('psuCablesSummary').value.trim() });
+            attributes.push({ productAttributeName: "Kích thước", attributeName: document.getElementById('psuSize').value.trim(), attributeSummary: document.getElementById('psuSizeSummary').value.trim() });
+            attributes.push({ productAttributeName: "Nhiệt độ hoạt động", attributeName: document.getElementById('psuOperatingTemp').value.trim(), attributeSummary: document.getElementById('psuOperatingTempSummary').value.trim() });
+            attributes.push({ productAttributeName: "Tính năng nổi bật", attributeName: document.getElementById('psuFeatures').value.trim(), attributeSummary: document.getElementById('psuFeaturesSummary').value.trim() });
+        }
+
+        else if (productType === 'cooling') {
+            attributes.push({ productAttributeName: "Loại sản phẩm", attributeName: document.getElementById('coolingType').value.trim(), attributeSummary: document.getElementById('coolingTypeSummary').value.trim() });
+            attributes.push({ productAttributeName: "Kích thước radiator", attributeName: document.getElementById('coolingRadiatorSize').value.trim(), attributeSummary: document.getElementById('coolingRadiatorSizeSummary').value.trim() });
+            attributes.push({ productAttributeName: "Chất liệu radiator", attributeName: document.getElementById('coolingRadiatorMaterial').value.trim(), attributeSummary: document.getElementById('coolingRadiatorMaterialSummary').value.trim() });
+            attributes.push({ productAttributeName: "Quạt", attributeName: document.getElementById('coolingFan').value.trim(), attributeSummary: document.getElementById('coolingFanSummary').value.trim() });
+            attributes.push({ productAttributeName: "Tốc độ quạt", attributeName: document.getElementById('coolingFanSpeed').value.trim(), attributeSummary: document.getElementById('coolingFanSpeedSummary').value.trim() });
+            attributes.push({ productAttributeName: "Độ ồn", attributeName: document.getElementById('coolingNoise').value.trim(), attributeSummary: document.getElementById('coolingNoiseSummary').value.trim() });
+            attributes.push({ productAttributeName: "Lưu lượng gió", attributeName: document.getElementById('coolingAirflow').value.trim(), attributeSummary: document.getElementById('coolingAirflowSummary').value.trim() });
+            attributes.push({ productAttributeName: "Tính năng đặc biệt", attributeName: document.getElementById('coolingFeatures').value.trim(), attributeSummary: document.getElementById('coolingFeaturesSummary').value.trim() });
+        }
+
+        else if (productType === 'officeLaptop') {
+            attributes.push({ productAttributeName: "CPU", attributeName: document.getElementById('officeLaptopCPU').value.trim(), attributeSummary: document.getElementById('officeLaptopCPUSummary').value.trim() });
+            attributes.push({ productAttributeName: "RAM", attributeName: document.getElementById('officeLaptopRAM').value.trim(), attributeSummary: document.getElementById('officeLaptopRAMSummary').value.trim() });
+            attributes.push({ productAttributeName: "Ổ cứng", attributeName: document.getElementById('officeLaptopStorage').value.trim(), attributeSummary: document.getElementById('officeLaptopStorageSummary').value.trim() });
+            attributes.push({ productAttributeName: "Card đồ họa", attributeName: document.getElementById('officeLaptopGPU').value.trim(), attributeSummary: document.getElementById('officeLaptopGPUSummary').value.trim() });
+            attributes.push({ productAttributeName: "Màn hình", attributeName: document.getElementById('officeLaptopScreen').value.trim(), attributeSummary: document.getElementById('officeLaptopScreenSummary').value.trim() });
+            attributes.push({ productAttributeName: "Cổng giao tiếp", attributeName: document.getElementById('officeLaptopPorts').value.trim(), attributeSummary: document.getElementById('officeLaptopPortsSummary').value.trim() });
+            attributes.push({ productAttributeName: "Bàn phím", attributeName: document.getElementById('officeLaptopKeyboard').value.trim(), attributeSummary: document.getElementById('officeLaptopKeyboardSummary').value.trim() });
+            attributes.push({ productAttributeName: "Audio", attributeName: document.getElementById('officeLaptopAudio').value.trim(), attributeSummary: document.getElementById('officeLaptopAudioSummary').value.trim() });
+            attributes.push({ productAttributeName: "Chuẩn LAN", attributeName: document.getElementById('officeLaptopLAN').value.trim(), attributeSummary: document.getElementById('officeLaptopLANSummary').value.trim() });
+            attributes.push({ productAttributeName: "Chuẩn WiFi", attributeName: document.getElementById('officeLaptopWiFi').value.trim(), attributeSummary: document.getElementById('officeLaptopWiFiSummary').value.trim() });
+            attributes.push({ productAttributeName: "Bluetooth", attributeName: document.getElementById('officeLaptopBluetooth').value.trim(), attributeSummary: document.getElementById('officeLaptopBluetoothSummary').value.trim() });
+            attributes.push({ productAttributeName: "Hệ điều hành", attributeName: document.getElementById('officeLaptopOS').value.trim(), attributeSummary: document.getElementById('officeLaptopOSSummary').value.trim() });
+            attributes.push({ productAttributeName: "Pin / Trọng lượng", attributeName: document.getElementById('officeLaptopBatteryWeight').value.trim(), attributeSummary: document.getElementById('officeLaptopBatteryWeightSummary').value.trim() });
+            attributes.push({ productAttributeName: "Màu sắc", attributeName: document.getElementById('officeLaptopColor').value.trim(), attributeSummary: document.getElementById('officeLaptopColorSummary').value.trim() });
+            attributes.push({ productAttributeName: "Chất liệu", attributeName: document.getElementById('officeLaptopMaterial').value.trim(), attributeSummary: document.getElementById('officeLaptopMaterialSummary').value.trim() });
+        }
+    return attributes; 
+}
+
+
+</script>

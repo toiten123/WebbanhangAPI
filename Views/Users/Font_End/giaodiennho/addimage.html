@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Banner Layout</title>
+    <style>
+        /* Đặt kiểu chung cho toàn bộ trang */
+
+        .container-hinhdep {
+            max-width: 1220px;
+            margin: 0 auto;
+            padding: 20px;
+            display: flex;
+            gap: 16px; /* Khoảng cách giữa các phần tử */
+        }
+
+        .container-hinhdep .left-hinhdep {
+            flex: 2; /* Chiếm 2 phần */
+        }
+
+        .container-hinhdep .right-hinhdep {
+            flex: 1; /* Chiếm 1 phần */
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .container-hinhdep .banner-hinhdep img {
+            width: 100%;
+            height: 100%;
+            border-radius: 8px; /* Bo góc ảnh */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Đổ bóng nhẹ */
+        }
+    </style>
+</head>
+<body>
+    <div class="container-hinhdep">
+        <!-- Banner lớn bên trái -->
+        <div class="left-hinhdep">
+            <a href="#" class="banner-hinhdep">
+                <img 
+                    src="https://file.hstatic.net/200000722513/file/banner_1580x510.jpg" 
+                    alt="Gaming Monitor Promotion"
+                >
+            </a>
+        </div>
+        
+        <!-- Hai banner nhỏ bên phải -->
+        <div class="right-hinhdep">
+            <a href="#" class="banner-hinhdep">
+                <img 
+                    src="https://file.hstatic.net/200000722513/file/banner_790x250_tai_nghe_6f6dcb17d3a54fcc88b3de96762d2d41.jpg" 
+                    alt="Headphone Promotion"
+                >
+            </a>
+            <a href="#" class="banner-hinhdep">
+                <img 
+                    src="https://file.hstatic.net/200000722513/file/bot_promotion_banner_small_2_2ad55c2345c64fbfb87dab4957b33914.png" 
+                    alt="PC Poseidon Promotion"
+                >
+            </a>
+        </div>
+    </div>
+</body>
+</html>

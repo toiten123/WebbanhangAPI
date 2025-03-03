@@ -1,0 +1,49 @@
+/* CSS cho lớp phủ */
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.8);
+    z-index: 50;
+    /* Để lớp phủ nằm trên các phần tử khác */
+    display: none;
+    /* Mặc định không hiển thị */
+}
+
+/* Khi lớp phủ được kích hoạt */
+.overlay.active {
+    display: block;
+}
+
+/* Wrapper để chứa danh mục sản phẩm */
+.header-content-grid-wrapper {
+    position: relative;
+    z-index: 51;
+    /* Để các danh mục sản phẩm nổi lên trên lớp phủ */
+}
+
+/* Hiển thị các bản sao grid__row row */
+.grid__row.row.clone {
+    position: fixed;
+    /* Giữ vị trí cố định */
+    display: grid;
+    gap: 20px;
+    transform: translate(-1%, -11%);
+    /* Căn giữa hoàn toàn */
+    z-index: 52;
+    /* Để chắc chắn danh mục luôn nổi lên */
+    background-color: white;
+    border-radius: 8px;
+}
+
+/* Ẩn bản sao ban đầu */
+.grid__row.row.clone {
+    display: none;
+}
+
+/* Khi bản sao được hiển thị */
+.grid__row.row.clone.active {
+    display: grid;
+}

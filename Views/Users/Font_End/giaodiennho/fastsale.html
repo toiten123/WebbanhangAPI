@@ -1,0 +1,531 @@
+    <!DOCTYPE html>
+    <html lang="vi">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Countdown Banner</title>
+        <style>
+            * {
+                margin: 0;
+                padding: 0;
+                box-sizing: border-box;
+            }
+
+            body {
+                font-family: Arial, sans-serif;
+            }
+
+            .container-cowndown {
+                max-width: 1280px;
+                margin-left: auto;
+                margin-right: auto;
+                padding: 0 10px;
+            }
+
+            .banner {
+                background-color: #dc0000;
+                color: white;
+                padding: 15px 20px;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+            }
+
+            .countdown-container {
+                display: flex;
+                align-items: center;
+                gap: 20px;
+            }
+
+            .countdown {
+                display: flex;
+                gap: 4px;
+            }
+
+            .time-box {
+                background: white;
+                color: black;
+                padding: 4px 8px;
+                border-radius: 4px;
+                min-width: 35px;
+                text-align: center;
+            }
+
+            .time-box span {
+                font-size: 20px;
+                font-weight: bold;
+            }
+
+            .promo-text {
+                display: flex;
+                align-items: center;
+                gap: 8px;
+                font-size: 20px;
+                font-weight: bold;
+                color: #ffd700;
+            }
+
+            .lightning {
+                font-size: 24px;
+            }
+
+            .view-details {
+                color: white;
+                text-decoration: none;
+                font-weight: 500;
+                transition: color 0.3s;
+            }
+
+            .view-details:hover {
+                color: #ffd700;
+            }
+
+            .product-section {
+                margin-left: 35.7%;
+                margin-top: 20px;
+                display: flex;
+                gap: 8px;
+                overflow: hidden; /* Ẩn các sản phẩm ngoài vùng hiển thị */
+            }
+            .product-slider {
+    display: flex;
+    transition: transform 0.8s ease;
+}
+
+.prev-button, .next-button {
+    cursor: pointer;
+    position: absolute;
+    width: 32px;
+    height: 32px;
+    top: 40%;
+    transform: translateY(-50%);
+    border: none;
+    background: #ECECEC;
+    z-index: 1;
+    outline: none;
+    border-radius: 50%;
+    padding: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    -webkit-transition: all 0.2s;
+    transition: all 0.2s;
+    box-shadow: 0px 0px 4.80687px rgba(0, 0, 0, 0.2)
+}
+
+.prev-button {
+    left: 37%;
+
+}
+
+.next-button {
+    right: 8.5%;
+}
+            
+
+            .product-card {
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    flex: 0 0 50px;
+    padding: 15px;
+    position: relative;
+    margin-left: 6px;
+}
+
+.product-card img {
+    max-width: 100%;
+    border-radius: 8px;
+    min-height: 164px; /* Đặt chiều cao tối thiểu */
+    object-fit: cover; /* Đảm bảo nội dung ảnh được bao phủ đầy đủ */
+}
+
+
+.product-title {
+    font-size: 15px;
+    font-weight: bold;
+    margin: 10px 0;
+    overflow: hidden; /* Ẩn phần văn bản vượt quá */
+    display: -webkit-box; /* Sử dụng để hỗ trợ line-clamp */
+    -webkit-box-orient: vertical; /* Đặt hướng của box */
+    text-overflow: ellipsis; /* Thêm dấu "..." nếu văn bản vượt quá */
+    word-wrap: break-word; /* Chia từ nếu cần */
+}
+
+
+.product-price {
+    margin: 10px 0;
+    font-size: 18px;
+    text-align: left;
+}
+
+.product-price .old-price {
+    text-decoration: line-through;
+    color: #999;
+    display: block; /* Đặt giá cũ trên một dòng riêng */
+    font-size: 14px;
+}
+
+.product-price .current-price-container {
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+    margin-top: 4px; /* Khoảng cách với giá cũ */
+}
+
+.product-price .current-price {
+    color: #dc0000;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.product-price .discount {
+    padding: 0 4px;
+    background: #FFEDED;
+    border-radius: 2px;
+    color: #E30019;
+    border: 1px solid #E30019;
+    line-height: 16px;
+    font-size: 13px;
+    margin-left: 10px;
+}
+.product-rating {
+    margin: 10px 0;
+    color: #f39c12;
+    font-size: 16px;
+    text-align: left;
+}
+
+.product-rating .review-count {
+    color: #FF8A00;
+    color: #555;
+    margin-left: 5px;
+}
+
+.product-sold {
+    margin: 10px 0;
+    font-size: 14px;
+    color: #dc0000;
+    font-weight: bold;
+}
+
+.product-button {
+    text-align: center;
+    display: block;
+    margin-top: 10px;
+    padding: 10px 20px;
+    background-color: #dc0000;
+    color: white;
+    text-decoration: none;
+    border-radius: 4px;
+    transition: background-color 0.3s;
+}
+
+.product-button:hover {
+    background-color: #b30000;
+}
+            @media (max-width: 768px) {
+                .banner {
+                    flex-direction: column;
+                    gap: 10px;
+                }
+
+                .countdown-container {
+                    flex-direction: column;
+                }
+
+                .promo-text {
+                    font-size: 16px;
+                    text-align: center;
+                }
+
+                .product-section {
+                    flex-wrap: wrap;
+                    justify-content: center;
+                }
+
+                .product-card {
+                    flex: 0 0 90%;
+                }
+            }
+            .nen {
+            background-color: #fcd584;
+            position: absolute;
+            padding-top: 30%;
+            padding-left: 82.05%;
+            z-index: -1;
+            }
+            .promo-image {
+                position: absolute;
+                padding-left: 12px;
+                padding-top: 22px;
+                border-radius: 8px;
+            }
+            .sticker_left_bottom .suaanh{
+    position: absolute;
+    z-index: 1;
+    top: 33%;
+    left: 0;
+    display: flex;
+    align-items: flex-end;
+    min-height: 0px;
+    height: 62px;
+}
+        </style>
+    </head>
+    <body>
+        <div class="container-cowndown">
+            <button class="prev-button"><svg width="18" height="18" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" x="0px" y="0px" viewBox="0 0 50 50" enable-background="new 0 0 50 50" xml:space="preserve"><metadata><!--?xpacket begin="&#65279;" id="W5M0MpCehiHzreSzNTczkc9d"?--><x:xmpmeta xmlns:x="adobe:ns:meta/" x:xmptk="Adobe XMP Core 5.3-c011 66.145661, 2012/02/06-14:56:27"></x:xmpmeta><!--?xpacket end="w"?--></metadata><g display="none"><rect x="1" y="1" display="inline" fill="#000000" width="48" height="48"></rect></g><g><g><polygon points="34.675,47.178 12.497,25 34.675,2.822 37.503,5.65 18.154,25 37.503,44.35   "></polygon></g></g></svg>
+            </button>
+            <button class="next-button"><svg width="18" height="18" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" x="0px" y="0px" viewBox="0 0 24 24" style="enable-background:new 0 0 24 24;" xml:space="preserve"><polygon points="6.379,20.908 7.546,22.075 17.621,12 7.546,1.925 6.379,3.092 15.287,12 "></polygon></svg>
+            </button>
+            <div class="banner">
+                <div class="countdown-container">
+                    <div class="countdown">
+                        <div class="time-box">
+                            <span id="days">02</span>
+                        </div>
+                        <div class="time-box">
+                            <span id="hours">07</span>
+                        </div>
+                        <div class="time-box">
+                            <span id="minutes">23</span>
+                        </div>
+                        <div class="time-box">
+                            <span id="seconds">44</span>
+                        </div>
+                    </div>
+                    <div class="promo-text">
+                        <span class="lightning">⚡</span>
+                        <span>MÁY BỘ GEARVN GIÁ CHỈ Từ 3.990.000Đ</span>
+                    </div>
+                </div>
+                <a href="#" class="view-details">Xem chi tiết ›</a>
+            </div>
+            <div class="nen"></div>
+            <div class="promo-image">
+                <img src="https://file.hstatic.net/200000722513/file/banner_399x357.png" alt="Promo" style="max-width: 96%;">
+            </div>
+           
+            <div class="product-section">
+                <div class="product-slider">
+                <!-- Product Card 1 -->
+                <div class="product-card">
+                    <img src="https://product.hstatic.net/200000722513/product/thumb_project_zero_c58860d9fa3a409294c17ab45f46f612_medium.png" alt="Product Image">
+                    <span class="sticker_left_bottom">
+                        <img class="suaanh" src="https://file.hstatic.net/200000722513/file/tag_bo_qua_5_trieu_d84af224989c45c5a17ca29544664be3.png" alt="icon">
+                    </span>
+                    <div class="product-title">PC GVN x MSI PROJECT ZERO WHITE (Intel i5-12400F)</div>
+                    <div class="product-price">
+                        <span class="old-price">29.420.000đ</span>
+                        <div class="current-price-container">
+                            <span class="current-price">27.990.000đ</span>
+                            <span class="discount">-5%</span>
+                        </div>
+                    </div>
+                    <div class="product-rating">
+                        <span class="rating">4.9 ★</span>
+                        <span class="review-count">(45 đánh giá)</span>
+                    </div>
+                    <a href="#" class="product-button">🔥Đặt mua</a>
+                </div>
+                
+                <!-- Product Card 2 -->
+                <div class="product-card">
+                    <img src="https://product.hstatic.net/200000722513/product/pc_gvn_-_amd_-_a21_-_3_c71ab3cdd9bf45cb947b98f4561300b4_grande.png" alt="Product Image">
+                    <div class="product-title">PC GVN x ASUS Back to Future</div>
+                    <div class="product-price">
+                        <span class="old-price">64.590.000đ</span>
+                        <div class="current-price-container">
+                            <span class="current-price">62.590.000đ</span>
+                            <span class="discount">-3%</span>
+                        </div>
+                    </div>
+                    <div class="product-rating">
+                        <span class="rating">4.8 ★</span>
+                        <span class="review-count">(30 đánh giá)</span>
+                    </div>
+                    <a href="#" class="product-button">🔥Đặt mua</a>
+                </div>
+                
+                <!-- Product Card 3 -->
+                <div class="product-card">
+                    
+                    <img src="https://product.hstatic.net/200000722513/product/pc_gvn_rx6600_-_3_762ba90a94904a50809a93355cd819a7_grande.png" alt="Product Image">
+                    <span class="sticker_left_bottom">
+                    <img class="suaanh" src="https://file.hstatic.net/200000722513/file/tag_bo_qua_8_trieu_e4b3c491bef24fb1a0e4ad9bbae4b0c6.png" alt="icon">
+                </span>
+                    <div class="product-title">PC GVN Intel i3-12100F</div>
+                    <div class="product-price">
+                        <span class="old-price">10.990.000đ</span>
+                        <div class="current-price-container">
+                            <span class="current-price">9.990.000đ</span>
+                            <span class="discount">-9%</span>
+                        </div>
+                    </div>
+                    <div class="product-rating">
+                        <span class="rating">4.6 ★</span>
+                        <span class="review-count">(20 đánh giá)</span>
+                    </div>
+                    <a href="#" class="product-button">🔥Đặt mua</a>
+                </div>
+                
+                <!-- Product Card 4 -->
+                <div class="product-card">
+                    <img src="https://product.hstatic.net/200000722513/product/pc_case_xigmatek_-_26_e36ac54740974ec88f65ca6eedfd10a2_grande.png" alt="Product Image">
+                    <div class="product-title">PC GVN Intel i5-12400F</div>
+                    <div class="product-price">
+                        <span class="old-price">12.990.000đ</span>
+                        <div class="current-price-container">
+                            <span class="current-price">11.990.000đ</span>
+                            <span class="discount">-8%</span>
+                        </div>
+                    </div>
+                    <div class="product-rating">
+                        <span class="rating">4.7 ★</span>
+                        <span class="review-count">(15 đánh giá)</span>
+                    </div>
+                    <a href="#" class="product-button">🔥Đặt mua</a>
+                </div>
+                <div style="margin-left: 16px;"></div>
+                                <!-- Product Card 5 -->
+                                <div class="product-card">
+                                    <img src="https://product.hstatic.net/200000722513/product/thumb_project_zero_c58860d9fa3a409294c17ab45f46f612_medium.png" alt="Product Image">
+                                    <span class="sticker_left_bottom">
+                                        <img class="suaanh" src="https://file.hstatic.net/200000722513/file/tag_bo_qua_5_trieu_d84af224989c45c5a17ca29544664be3.png" alt="icon">
+                                    </span>
+                                    <div class="product-title">PC GVN x MSI PROJECT ZERO WHITE (Intel i5-12400F)</div>
+                                    <div class="product-price">
+                                        <span class="old-price">29.420.000đ</span>
+                                        <div class="current-price-container">
+                                            <span class="current-price">27.990.000đ</span>
+                                            <span class="discount">-5%</span>
+                                        </div>
+                                    </div>
+                                    <div class="product-rating">
+                                        <span class="rating">4.9 ★</span>
+                                        <span class="review-count">(45 đánh giá)</span>
+                                    </div>
+                                    <a href="#" class="product-button">🔥Đặt mua</a>
+                                </div>
+                <!-- Product Card 6 -->
+                <div class="product-card">
+                    <img src="https://product.hstatic.net/200000722513/product/thumb_project_zero_c58860d9fa3a409294c17ab45f46f612_medium.png" alt="Product Image">
+                    <span class="sticker_left_bottom">
+                        <img class="suaanh" src="https://file.hstatic.net/200000722513/file/tag_bo_qua_5_trieu_d84af224989c45c5a17ca29544664be3.png" alt="icon">
+                    </span>
+                    <div class="product-title">PC GVN x MSI PROJECT ZERO WHITE (Intel i5-12400F)</div>
+                    <div class="product-price">
+                        <span class="old-price">29.420.000đ</span>
+                        <div class="current-price-container">
+                            <span class="current-price">27.990.000đ</span>
+                            <span class="discount">-5%</span>
+                        </div>
+                    </div>
+                    <div class="product-rating">
+                        <span class="rating">4.9 ★</span>
+                        <span class="review-count">(45 đánh giá)</span>
+                    </div>
+                    <a href="#" class="product-button">🔥Đặt mua</a>
+                </div>
+                <!-- Product Card 7 -->
+                <div class="product-card">
+                    <img src="https://product.hstatic.net/200000722513/product/thumb_project_zero_c58860d9fa3a409294c17ab45f46f612_medium.png" alt="Product Image">
+                    <span class="sticker_left_bottom">
+                        <img class="suaanh" src="https://file.hstatic.net/200000722513/file/tag_bo_qua_5_trieu_d84af224989c45c5a17ca29544664be3.png" alt="icon">
+                    </span>
+                    <div class="product-title">PC GVN x MSI PROJECT ZERO WHITE (Intel i5-12400F)</div>
+                    <div class="product-price">
+                        <span class="old-price">29.420.000đ</span>
+                        <div class="current-price-container">
+                            <span class="current-price">27.990.000đ</span>
+                            <span class="discount">-5%</span>
+                        </div>
+                    </div>
+                    <div class="product-rating">
+                        <span class="rating">4.9 ★</span>
+                        <span class="review-count">(45 đánh giá)</span>
+                    </div>
+                    <a href="#" class="product-button">🔥Đặt mua</a>
+                </div>
+                <!-- Product Card 8 -->
+                <div class="product-card">
+                    <img src="https://product.hstatic.net/200000722513/product/thumb_project_zero_c58860d9fa3a409294c17ab45f46f612_medium.png" alt="Product Image">
+                    <span class="sticker_left_bottom">
+                        <img class="suaanh" src="https://file.hstatic.net/200000722513/file/tag_bo_qua_5_trieu_d84af224989c45c5a17ca29544664be3.png" alt="icon">
+                    </span>
+                    <div class="product-title">PC GVN x MSI PROJECT ZERO WHITE (Intel i5-12400F)</div>
+                    <div class="product-price">
+                        <span class="old-price">29.420.000đ</span>
+                        <div class="current-price-container">
+                            <span class="current-price">27.990.000đ</span>
+                            <span class="discount">-5%</span>
+                        </div>
+                    </div>
+                    <div class="product-rating">
+                        <span class="rating">4.9 ★</span>
+                        <span class="review-count">(45 đánh giá)</span>
+                    </div>
+                    <a href="#" class="product-button">🔥Đặt mua</a>
+                </div>
+                </div>
+            </div>            
+        </div>
+        <!-- slider -->
+        <script>
+            document.addEventListener('DOMContentLoaded', () => {
+                const productSlider = document.querySelector('.product-slider');
+                const prevButton = document.querySelector('.prev-button');
+                const nextButton = document.querySelector('.next-button');
+                let index = 0;
+        
+                const totalProducts = document.querySelectorAll('.product-card').length;
+                const productsPerSlide = 4;
+                const maxIndex = Math.ceil(totalProducts / productsPerSlide) - 1; // Tính số slide tối đa
+                
+                let autoSlideInterval = setInterval(autoSlide, 3000); // Tự động chạy mỗi 3 giây
+        
+                prevButton.addEventListener('click', () => {
+                    if (index > 0) {
+                        index--;
+                    } else {
+                        index = maxIndex; // Quay về slide cuối cùng
+                    }
+                    updateSlider();
+                    resetAutoSlide(); // Reset lại thời gian tự động
+                });
+        
+                nextButton.addEventListener('click', () => {
+                    if (index < maxIndex) {
+                        index++;
+                    } else {
+                        index = 0; // Quay lại slide đầu tiên
+                    }
+                    updateSlider();
+                    resetAutoSlide(); // Reset lại thời gian tự động
+                });
+        
+                function updateSlider() {
+                    const offset = -index * (200 / productsPerSlide);
+                    productSlider.style.transform = `translateX(${offset}%)`;
+                }
+        
+                function resetAutoSlide() {
+                    clearInterval(autoSlideInterval); // Dừng auto slide cũ
+                    autoSlideInterval = setInterval(autoSlide, 3000); // Bắt đầu lại tự động chạy
+                }
+        
+                function autoSlide() {
+                    if (index < maxIndex) {
+                        index++;
+                    } else {
+                        index = 0; // Quay lại slide đầu tiên
+                    }
+                    updateSlider();
+                }
+            });
+        </script>
+        
+    </body>
+    </html>

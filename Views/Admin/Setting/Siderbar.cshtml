@@ -1,0 +1,195 @@
+@model List<SidebarItem>
+@if (Model == null || !Model.Any())
+{
+    <p class="text-red-500">Không có dữ liệu sidebar.</p>
+}
+else
+{
+    <div class="p-6">
+        <div class="bg-white dark:bg-gray-800 shadow-md rounded-lg">
+            <div class="flex justify-between items-center p-4 border-b border-gray-300 dark:border-gray-600">
+                <h5 class="text-lg font-semibold text-gray-900 dark:text-gray-200">Quản lý Sidebar</h5>
+                <button class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg" 
+                        onclick="document.getElementById('addModal').classList.remove('hidden')">
+                    Thêm mới
+                </button>
+            </div>
+            <div class="p-4">
+                <div id="sidebar-items" class="space-y-2">
+                    @foreach (var item in (Model ?? new List<SidebarItem>()).OrderBy(x => x.Order))
+                    {
+                        <div class="flex items-center p-3 bg-gray-100 dark:bg-gray-700 rounded-lg shadow-sm" data-id="@item.Id">
+                            <div class="drag-handle cursor-grab text-gray-500">
+                                <i class="fas fa-grip-vertical"></i>
+                            </div>
+                            <div class="ml-3">
+                                <i class="fa-solid @item.Icon text-lg w-5 h-5"></i>
+                            </div>
+                            <div class="flex-grow ml-4">
+                                <h6 class="text-gray-900 dark:text-gray-100">@item.Title</h6>
+                                <small class="text-gray-500">@item.Controller/@item.Action</small>
+                            </div>
+                            <div class="flex space-x-2">
+                                <button class="text-blue-500 hover:text-blue-700 edit-item" 
+                                        data-id="@item.Id"
+                                        data-title="@item.Title"
+                                        data-icon="@item.Icon"
+                                        data-controller="@item.Controller"
+                                        data-action="@item.Action">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                                <button class="text-red-500 hover:text-red-700 delete-item" data-id="@item.Id">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+}
+<!-- Modal Thêm mới -->
+<div id="addModal" class="hidden fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+    <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg w-96">
+        <h5 class="text-lg font-semibold mb-4">Thêm mục menu</h5>
+        <form id="addForm">
+            <div class="mb-3">
+                <label class="block text-sm font-medium">Tiêu đề</label>
+                <input type="text" class="w-full p-2 border rounded-md" name="title" required>
+            </div>
+            <div class="mb-3">
+                <label class="block text-sm font-medium">Icon (Font Awesome)</label>
+                <div class="flex items-center">
+                    <span class="p-2 bg-gray-200 rounded-md">
+                        <i class=""></i>
+                    </span>
+                    <input type="text" class="ml-2 p-2 border rounded-md flex-grow" name="icon" placeholder="fas fa-home">
+                </div>
+            </div>
+            <div class="mb-3">
+                <label class="block text-sm font-medium">Controller</label>
+                <input type="text" class="w-full p-2 border rounded-md" name="controller" required>
+            </div>
+            <div class="mb-3">
+                <label class="block text-sm font-medium">Action</label>
+                <input type="text" class="w-full p-2 border rounded-md" name="action" required>
+            </div>
+        </form>
+        <div class="flex justify-end space-x-2 mt-4">
+            <button class="bg-gray-300 hover:bg-gray-400 px-4 py-2 rounded-md" 
+                    onclick="document.getElementById('addModal').classList.add('hidden')">
+                Đóng
+            </button>
+            <button class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-md" id="btnSave">Lưu</button>
+        </div>
+    </div>
+</div>
+
+@* <script>
+    document.addEventListener("alpine:init", () => {
+        Alpine.data("sidebarManager", () => ({
+            activeTab: "sidebar",
+            isSideMenuOpen: false
+        }));
+    });
+</script> *@
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
+    <script>
+        // Kéo thả sắp xếp sidebar
+        document.addEventListener("DOMContentLoaded", function () {
+            if (document.getElementById("sidebar-items")) {
+                new Sortable(document.getElementById("sidebar-items"), {
+                    handle: ".drag-handle",
+                    animation: 150,
+                    onEnd: function () {
+                        const items = [...document.querySelectorAll("[data-id]")].map((el, index) => ({
+                            id: parseInt(el.dataset.id),
+                            order: index + 1
+                        }));
+
+                        fetch("/api/sidebar/update-order", {
+                            method: "POST",
+                            headers: {
+                                "Content-Type": "application/json"
+                            },
+                            body: JSON.stringify(items)
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.success) {
+                                toastr.success("Cập nhật thứ tự thành công!");
+                            }
+                        })
+                        .catch(error => console.error("Lỗi cập nhật thứ tự:", error));
+                    }
+                });
+            } else {
+                console.error("Không tìm thấy `#sidebar-items`!");
+            }
+        });
+
+
+
+        // Thêm mới Sidebar
+        document.getElementById("btnSave").addEventListener("click", function () {
+            const form = document.getElementById("addForm");
+            const formData = new FormData(form);
+            const data = Object.fromEntries(formData);
+
+            fetch("/api/sidebar", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    ...data,
+                    isActive: true,
+                    order: document.querySelectorAll("[data-id]").length + 1
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    toastr.success("Thêm thành công!");
+                    location.reload();
+                } else {
+                    toastr.error("Lỗi API!");
+                }
+            })
+            .catch(error => console.error("Lỗi kết nối API:", error));
+        });
+
+
+
+        // Xóa Sidebar
+        document.getElementById('sidebar-items').addEventListener('click', function (e) {
+            if (e.target.closest('.delete-item')) {
+                const button = e.target.closest('.delete-item');
+                const id = button.dataset.id;
+
+                if (confirm('Bạn có chắc chắn muốn xóa?')) {
+                    fetch(`/api/sidebar/${id}`, { method: 'DELETE' })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            toastr.success(data.message);
+                            button.closest('[data-id]').remove(); // Fix xóa bằng [data-id]
+                        }
+                    })
+                    .catch(error => toastr.error('Lỗi xóa!'));
+                }
+            }
+        });
+
+
+        // Preview icon khi nhập
+        document.querySelector('input[name="icon"]').addEventListener('input', function () {
+            const preview = this.closest('.input-group').querySelector('.icon-preview i');
+            preview.className = this.value;
+        });
+
+    </script>
+}

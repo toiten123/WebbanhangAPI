@@ -1,0 +1,97 @@
+.footer {
+    background-color: white;
+}
+
+.fluid-container {
+    max-width: 1220px;
+    margin: 0 auto;
+    padding: 20px;
+    padding-bottom: 0;
+    border-bottom: 1px solid #ececec;
+}
+
+.grid-footer {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr) 300px 350px;
+    gap: 15px;
+}
+
+.footer-title {
+    font-size: 14px;
+    font-weight: bold;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+    color: #333;
+}
+
+.footer-content,
+.list-ship,
+.list-pay {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.footer-content ul {
+    padding: 0;
+}
+
+.footer-content li {
+    list-style: none;
+    margin-bottom: 8px;
+}
+
+.footer-content li a {
+    text-decoration: none;
+    color: #111;
+    font-size: 14px;
+}
+
+.footer-content li a:hover {
+    text-decoration: underline;
+    color: #e30019;
+    cursor: pointer;
+}
+
+.list-ship,
+.list-pay {
+    display: flex;
+    gap: 10px;
+}
+
+.list-ship img,
+.list-pay img {
+    max-width: 73px;
+    height: auto;
+}
+
+.footer__2 {
+    background-color: white;
+}
+
+.social-list {
+    display: block;
+}
+
+.social-list a {
+    margin: 0 7px;
+    text-decoration: none;
+}
+
+.social-list img {
+    width: 32px;
+    height: 32px;
+}
+
+.icon-container {
+    position: relative;
+    left: 15%;
+    top: -26px;
+    width: 84%;
+}
+
+.logo-footer {
+    position: absolute;
+    top: -25%;
+    left: 85%;
+}

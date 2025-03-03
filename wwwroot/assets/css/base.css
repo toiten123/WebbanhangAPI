@@ -1,0 +1,72 @@
+/* * {
+  box-sizing: inherit;
+} */
+
+/* html {
+  font-size: 62.5%;
+  line-height: 1.6rem;
+  box-sizing: border-box;
+} */
+
+.grid {
+  width: 1280px;
+  max-width: 100%;
+  margin: 0 auto;
+  margin-right: 80px;
+}
+
+.grid-full-width {
+  width: 100%;
+  background-color: #f1f0f1;
+}
+
+.grid__row {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.row {
+  margin-left: -8px;
+  margin-right: -8px;
+}
+
+.col {
+  float: left;
+  padding: 0 2px;
+}
+
+/* .col::after {
+  clear: both;
+} */
+
+.col-full {
+  width: 100%;
+}
+
+.col-2 {
+  width: calc(100% / 8) * 2;
+}
+
+.col-3 {
+  width: calc(calc(100% / 8) * 3);
+  padding: 0 12px;
+}
+
+.col-4 {
+  width: calc(100% / 8) * 4;
+  padding: 0 12px;
+}
+
+.col-5 {
+  width: calc(100% / 8) * 5;
+  padding: 0 12px;
+}
+
+.col-6 {
+  width: calc(100% / 8) * 6;
+  /* padding: 0 12px; */
+}
+
+.mt-16 {
+  margin-top: 16px;
+}

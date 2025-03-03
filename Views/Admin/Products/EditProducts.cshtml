@@ -1,0 +1,83 @@
+<main class="h-full overflow-y-auto">
+    <div class="container px-6 mx-auto grid">
+        <h2 class="my-6 text-2xl font-semibold text-gray-700 dark:text-gray-200">
+            Chỉnh Sửa Sản Phẩm Mới
+        </h2>
+
+        <div class="p-6 bg-white rounded-lg shadow-md  dark:bg-gray-800">
+            <form id="productForm">
+                <div class="form-section">
+                    <h3 class="text-lg font-semibold text-gray-700 dark:text-gray-200 mb-4">Thông tin chung</h3>
+                    <div class="form-group mb-4">
+                        <label for="productName" class="block text-sm font-medium text-gray-600 dark:text-gray-300"><i class="fas fa-tag"></i> Tên Sản Phẩm:</label>
+                        <input type="text" id="productName" name="productName" class="w-full px-4 py-3 text-sm bg-gray-50 border rounded-lg shadow-sm text-gray-600 focus:ring dark:text-gray-300 focus:ring-purple-500 dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-purple-400" required>
+                    </div>
+                    <div class="form-group mb-4">
+                        <label for="manufacturer" class="block text-sm font-medium text-gray-600 dark:text-gray-300"><i class="fas fa-industry"></i> Nhà Sản Xuất:</label>
+                        <input type="text" id="manufacturer" name="manufacturer" class="w-full px-4 py-3 text-sm bg-gray-50 border rounded-lg shadow-sm text-gray-600 focus:ring focus:ring-purple-500 dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-purple-400">
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-4">
+                        <div class="form-group">
+                            <label for="currentPrice" class="block text-sm font-medium text-gray-600 dark:text-gray-300"><i class="fas fa-dollar-sign"></i> Giá Hiện Tại:</label>
+                            <input type="text" id="currentPrice" name="currentPrice" step="1000" class="w-full px-4 py-3 text-sm bg-gray-50 border rounded-lg shadow-sm text-gray-600 focus:ring focus:ring-purple-500 dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-purple-400" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="discountPercentage" class="block text-sm font-medium text-gray-600 dark:text-gray-300"><i class="fas fa-percent"></i> % Giảm Giá:</label>
+                            <input type="number" id="discountPercentage" name="discountPercentage" step="0.1" min="0" max="100" class="w-full px-4 py-3 text-sm bg-gray-50 border rounded-lg shadow-sm text-gray-600 focus:ring focus:ring-purple-500 dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-purple-400">
+                        </div>
+                        <div class="form-group">
+                            <label for="discountedPrice" class="block text-sm font-medium text-gray-600 dark:text-gray-300"><i class="fas fa-tags"></i> Giá Sau Giảm:</label>
+                            <input type="text" id="discountedPrice" name="discountedPrice" class="w-full px-4 py-3 text-sm bg-gray-100 border rounded-lg shadow-sm text-gray-600 focus:ring focus:ring-purple-500 dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-purple-400" readonly>
+                        </div>
+                        <div class="form-group">
+                            <label for="quantity" class="block text-sm font-medium text-gray-600 dark:text-gray-300"><i class="fas fa-cubes"></i> Số Lượng:</label>
+                            <input type="number" id="quantity" name="quantity" class="w-full px-4 py-3 text-sm bg-gray-50 border rounded-lg shadow-sm text-gray-600 focus:ring focus:ring-purple-500 dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-purple-400" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="description" class="block text-sm font-medium text-gray-600 dark:text-gray-300"><i class="fas fa-info-circle"></i> Mô Tả:</label>
+                        <textarea id="description" name="description" rows="4" class="w-full px-4 py-3 text-sm bg-gray-50 border rounded-lg shadow-sm text-gray-600 focus:ring focus:ring-purple-500 dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-purple-400"></textarea>
+                    </div>
+                </div>
+                
+                <partial name="Products/Details/Form_Select"/>
+                
+                <div class="form-section mb-6">
+                    <h3 class="text-lg font-semibold text-gray-700 dark:text-gray-200 mb-4">Ảnh Thumbnail</h3>
+                    <div class="w-full h-64 border-2 border-dashed border-blue-400 rounded-lg flex items-center justify-center cursor-pointer overflow-hidden relative">
+                        <input type="file" id="thumbnailUpload" class="hidden" accept="image/*">
+                        <div class="text-center text-gray-300">
+                            <i class="fas fa-cloud-upload-alt text-4xl mb-2"></i>
+                            <p>Click để tải lên ảnh Thumbnail</p>
+                        </div>
+                        <div id="thumbnailPreview" class="grid grid-cols-3 gap-4 p-4 w-full h-full overflow-auto absolute top-0 left-0 bg-white dark:bg-gray-800 hidden"></div>
+                    </div>
+                </div>
+
+                <div class="form-section mb-6">
+                    <h3 class="text-lg font-semibold text-gray-700 dark:text-gray-200 mb-4">Hình ảnh sản phẩm</h3>
+                    <div class="w-full h-64 border-2 border-dashed border-gray-300 rounded-lg flex items-center justify-center cursor-pointer overflow-hidden relative">
+                        <input type="file" id="imageUpload" multiple class="hidden" accept="image/*" multiple>
+                        <div class="text-center text-gray-300">
+                            <i class="fas fa-cloud-upload-alt text-4xl mb-2"></i>
+                            <p>Click để tải lên hình ảnh</p>
+                        </div>
+                        <div id="imagePreview" class="grid grid-cols-3 gap-4 p-4 w-full h-full overflow-auto absolute top-0 left-0 bg-white dark:bg-gray-800 hidden"></div>
+                    </div>
+                </div>
+
+                <div class="flex justify-end mt-6 gap-4">
+                    <button type="submit" class="px-6 py-3 text-sm font-medium text-white bg-green-500 rounded-md hover:bg-green-600 focus:ring focus:ring-green-300">
+                        Lưu
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</main>
+
+
+<partial name="Products/script/EditProducts/LoadPrice"/>
+<partial name="Products/script/EditProducts/LoadProducts"/>
+<partial name="Products/script/EditProducts/LoadProductType"/>
+<partial name="Products/script/EditProducts/SumbitProducts"/>

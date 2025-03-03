@@ -1,0 +1,213 @@
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PC GVN Intel i5-12400F/VGA RTX 4060</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"/>
+    <link rel="stylesheet" href="@Html.Raw("https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.css")"/>
+    <script src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
+    <script src="@Html.Raw("https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.js")"></script>
+</head>
+<style>
+    .anh {
+        height: 25rem;
+    }
+    .similar-products-container {
+    display: flex; /* Kích hoạt Flexbox */
+    flex-wrap: wrap; /* Cho phép dòng mới nếu cần */
+    justify-content: space-between; /* Căn đều các sản phẩm */
+}
+
+
+    .product-card-item {
+        width: 232px;
+        cursor: pointer;
+        background: #fff;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        padding: 15px;
+        position: relative;
+        margin-left: 10px;
+        margin-bottom: 10px
+    }
+
+    .product-card-item img {
+        max-width: 100%;
+        border-radius: 8px;
+        min-height: 212px;
+        /* Đặt chiều cao tối thiểu */
+        object-fit: cover;
+        /* Đảm bảo nội dung ảnh được bao phủ đầy đủ */
+    }
+
+    .product-title-item {
+        font-size: 14px;
+        font-weight: bold;
+        margin: 10px 0;
+        overflow: hidden;
+        /* Ẩn phần văn bản vượt quá */
+        display: -webkit-box;
+        /* Sử dụng để hỗ trợ line-clamp */
+        -webkit-line-clamp: 2;
+        /* Số dòng tối đa được hiển thị */
+        -webkit-box-orient: vertical;
+        /* Đặt hướng của box */
+        text-overflow: ellipsis;
+        /* Thêm dấu "..." nếu văn bản vượt quá */
+        word-wrap: break-word;
+        /* Chia từ nếu cần */
+    }
+
+    .product-price-item {
+        margin: 10px 0;
+        font-size: 18px;
+        text-align: left;
+    }
+
+    .product-price-item .old-price-item {
+        text-decoration: line-through;
+        color: #999;
+        display: block;
+        /* Đặt giá cũ trên một dòng riêng */
+        font-size: 13px;
+    }
+
+    .product-price-item .current-price-container-item {
+        display: flex;
+        align-items: baseline;
+        gap: 8px;
+        margin-top: 4px;
+    }
+
+    .product-price-item .current-price-item {
+        color: #dc0000;
+        font-size: 16px;
+        font-weight: bold;
+    }
+
+    .product-price-item .discount-item {
+        padding: 0 4px;
+        background: #FFEDED;
+        border-radius: 2px;
+        color: #E30019;
+        border: 1px solid #E30019;
+        line-height: 16px;
+        font-size: 13px;
+        margin-left: 10px;
+    }
+
+    .product-rating-item {
+        margin: 10px 0;
+        color: #FF8A00;
+        font-size: 13px;
+        text-align: left;
+    }
+
+    .product-rating-item .rating-item {
+        font-weight: 600;
+    }
+
+    .product-rating-item .review-count-item {
+        color: #FF8A00;
+        color: #555;
+        margin-left: 5px;
+    }
+
+    .product-sold-item {
+        margin: 10px 0;
+        font-size: 14px;
+        color: #dc0000;
+        font-weight: bold;
+    }
+
+    .sticker_left_bottom-item .suaanh-item {
+        position: absolute;
+        z-index: 1;
+        top: 35%;
+        left: 0;
+        display: flex;
+        align-items: flex-end;
+        min-height: 0px;
+        height: 62px;
+    }
+
+    .specs-container-item {
+        background: #ECECEC;
+        border-radius: 8px;
+        padding: 7px;
+        display: flex;
+        gap: 10px;
+        max-width: 200px;
+        margin: 20px auto;
+        flex-wrap: wrap;
+    }
+
+    .specs-container-item .spec-item-item {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+    }
+
+    .specs-container-item .spec-item-item svg {
+        width: 12px;
+        height: 12px;
+    }
+
+    .specs-container-item .spec-text-item {
+        color: #4b5563;
+        font-weight: 550;
+        font-size: 12px;
+    }
+
+    .slider-prev,
+    .slider-next {
+        cursor: pointer;
+        position: absolute;
+        width: 32px;
+        height: 32px;
+        top: 292%;
+        transform: translateY(-50%);
+        border: none;
+        background: #ECECEC;
+        z-index: 2;
+        outline: none;
+        border-radius: 50%;
+        padding: 0;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        -webkit-transition: all 0.2s;
+        transition: all 0.2s;
+        box-shadow: 0px 0px 4.80687px rgba(0, 0, 0, 0.2)
+    }
+
+    .slider-prev {
+        left: 7.7%;
+
+    }
+
+    .slider-next {
+        right: 8%;
+    }
+</style>
+
+<body class="bg-gray-50 min-h-screen" x-data="{ activeTab: 'specs' }">
+
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div id="tailwind-wrapper">
+        <partial name="Products/Details/ProductOders" />
+        <partial name="Products/Details/ProductsDetail" />
+        <partial name="Products/Details/ProductsSimilar" />
+    </div>
+    </main>
+    <script src="https://cdn.tailwindcss.com"></script>
+</body>
+
+</html>

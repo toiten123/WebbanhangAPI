@@ -1,0 +1,30 @@
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const currentPrice          = document.getElementById('currentPrice');
+        const discountPercentage    = document.getElementById('discountPercentage');
+        const discountedPrice       = document.getElementById('discountedPrice');
+        function formatNumberWithDots(num) {
+            return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+        }
+        
+        currentPrice.addEventListener('input', (event) => {
+            let value           = event.target.value.replace(/\D/g, "");
+            event.target.value  = formatNumberWithDots(value);
+            calculateDiscountedPrice();
+        });
+        
+        function calculateDiscountedPrice() {
+            let price       = parseFloat(currentPrice.value.replace(/\./g, "")) || 0;
+            let discount    = parseFloat(discountPercentage.value) || 0;
+            
+            if (price > 0 && discount >= 0 && discount <= 100) {
+                let finalPrice          = price - (price * discount / 100);
+                discountedPrice.value   = formatNumberWithDots(finalPrice.toFixed(0));
+            } else {
+                discountedPrice.value = "";
+            }
+        }
+        
+        discountPercentage.addEventListener('input', calculateDiscountedPrice);
+    });
+</script>

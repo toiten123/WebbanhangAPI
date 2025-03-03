@@ -1,0 +1,59 @@
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const productType       = document.getElementById('productType');
+        const productSections   = {
+            pc          : document.getElementById('pcFields'),
+            laptop      : document.getElementById('laptopFields'),
+            keyboard    : document.getElementById('keyboardFields'),
+            monitor     : document.getElementById('monitorFields'),
+            hub         : document.getElementById('hubFields'),
+            cable       : document.getElementById('cableFields'),
+            charger     : document.getElementById('chargerFields'),
+            headphone   : document.getElementById('headphoneFields'),
+            handheld    : document.getElementById('handheldFields'),
+            controller  : document.getElementById('controllerFields'),
+            speaker     : document.getElementById('speakerFields'),
+            microphone  : document.getElementById('microphoneFields'),
+            camera      : document.getElementById('cameraFields'),
+            mouse       : document.getElementById('mouseFields'),
+            officeMouse : document.getElementById('officeMouseFields'),
+            mousePad    : document.getElementById('mousePadFields'),
+            chair       : document.getElementById('chairFields'),
+            table       : document.getElementById('tableFields'),
+            ssd         : document.getElementById('ssdFields'),
+            hdd         : document.getElementById('hddFields'),
+            ram         : document.getElementById('ramFields'),
+            memoryCard  : document.getElementById('memoryCardFields'),
+            vga         : document.getElementById('vgaFields'),
+            cpuAmd      : document.getElementById('cpuAmdFields'),
+            cpuIntel    : document.getElementById('cpuIntelFields'),
+            mainboard   : document.getElementById('mainboardFields'),
+            case        : document.getElementById('caseFields'),
+            psu         : document.getElementById('psuFields'),
+            cooling     : document.getElementById('coolingFields'),
+            officeLaptop: document.getElementById('officeLaptopFields'),
+        };
+
+        const tabs = document.querySelectorAll('.tab');
+
+        productType.addEventListener('change', function () {
+            Object.values(productSections).forEach(section => section?.classList.add('hidden'));
+
+            if (productSections[this.value]) {
+                productSections[this.value].classList.remove('hidden');
+            }
+
+            tabs.forEach(tab => tab.classList.remove('bg-blue-500', 'text-white'));
+            const activeTab = [...tabs].find(tab => tab.getAttribute('data-tab') === this.value);
+            if (activeTab) activeTab.classList.add('bg-blue-500', 'text-white');
+        });
+
+        tabs.forEach(tab => {
+            tab.addEventListener('click', function () {
+                const tabType       = this.getAttribute('data-tab');
+                productType.value   = tabType;
+                productType.dispatchEvent(new Event('change'));
+            });
+        });
+    });
+</script>

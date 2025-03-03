@@ -1,0 +1,43 @@
+<main class="h-full overflow-y-auto">
+    <div class="container px-6 mx-auto grid">
+        <h2 class="my-6 text-2xl font-semibold text-gray-700 dark:text-gray-200">
+            Quản lý thanh toán
+        </h2>
+        <div class="px-4 py-3 mb-8 bg-white rounded-lg shadow-md dark:bg-gray-800">
+            <form class="space-y-4">
+                <div>
+                    <label for="paymentMethod" class="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                        Phương thức thanh toán
+                    </label>
+                    <select id="paymentMethod" name="paymentMethod" class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-purple-500 focus:border-purple-500 sm:text-sm rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-gray-300">
+                        <option value="">Chọn phương thức</option>
+                        <option value="cash">Tiền mặt</option>
+                        <option value="card">Thẻ tín dụng</option>
+                        <option value="transfer">Chuyển khoản</option>
+                    </select>
+                </div>
+                <div>
+                    <label for="amount" class="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                        Số tiền
+                    </label>
+                    <input type="number" id="amount" name="amount" placeholder="Nhập số tiền" class="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-purple-500 focus:border-purple-500 sm:text-sm dark:bg-gray-700 dark:border-gray-600 dark:text-gray-300">
+                </div>
+                <div>
+                    <label for="date" class="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                        Ngày thanh toán
+                    </label>
+                    <input type="date" id="date" name="date" class="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-purple-500 focus:border-purple-500 sm:text-sm dark:bg-gray-700 dark:border-gray-600 dark:text-gray-300">
+                </div>
+                <div>
+                    <label for="description" class="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                        Mô tả
+                    </label>
+                    <input type="text" id="description" name="description" placeholder="Nhập mô tả thanh toán" class="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-purple-500 focus:border-purple-500 sm:text-sm dark:bg-gray-700 dark:border-gray-600 dark:text-gray-300">
+                </div>
+                <button type="submit" class="w-full px-4 py-2 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-purple-600 border border-transparent rounded-lg active:bg-purple-600 hover:bg-purple-700 focus:outline-none focus:shadow-outline-purple">
+                    Thêm thanh toán
+                </button>
+            </form>
+        </div>
+    </div>
+</main>

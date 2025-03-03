@@ -1,0 +1,242 @@
+<main class="h-full overflow-y-auto">
+    <div class="container px-6 mx-auto grid">
+        <h2 class="my-6 text-2xl font-semibold text-gray-700 dark:text-gray-200 ">
+            Quản Lý Lương
+        </h2>
+
+        <!-- Action Buttons -->
+        <div class="flex flex-wrap gap-3 mb-6">
+            <button
+                class="px-4 py-2 bg-green-500 text-white rounded-lg flex items-center gap-2 hover:bg-green-600">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                </svg>
+                Thêm mới
+            </button>
+            <button
+                class="px-4 py-2 bg-yellow-500 text-white rounded-lg flex items-center gap-2 hover:bg-yellow-600">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
+                </svg>
+                Tải từ file
+            </button>
+            <button
+                class="px-4 py-2 bg-blue-500 text-white rounded-lg flex items-center gap-2 hover:bg-blue-600">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" />
+                </svg>
+                In dữ liệu
+            </button>
+            <button
+                class="px-4 py-2 bg-indigo-500 text-white rounded-lg flex items-center gap-2 hover:bg-indigo-600">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                </svg>
+                Sao chép
+            </button>
+            <button
+                class="px-4 py-2 bg-green-600 text-white rounded-lg flex items-center gap-2 hover:bg-green-700">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                </svg>
+                Xuất Excel
+            </button>
+            <button
+                class="px-4 py-2 bg-red-500 text-white rounded-lg flex items-center gap-2 hover:bg-red-600">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
+                </svg>
+                Xuất PDF
+            </button>
+            <button
+                class="px-4 py-2 bg-gray-500 text-white rounded-lg flex items-center gap-2 hover:bg-gray-600">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                </svg>
+                Xóa tất cả
+            </button>
+        </div>
+
+        <!-- Table -->
+        <div class="w-full overflow-hidden rounded-lg shadow-xs dark:bg-gray-800">
+            <div class="w-full overflow-x-auto">
+                <table class="w-full whitespace-no-wrap">
+                    <thead>
+                        <tr
+                        <tr class="text-xs font-semibold tracking-wide text-left text-gray-400 uppercase border-b border-gray-700 bg-dark-secondary">
+                            <th class="px-4 py-3">
+                                <input type="checkbox" class="rounded border-gray-600 bg-gray-700 text-purple-600">
+                            </th>
+                            <th class="px-4 py-3">Mã NV</th>
+                            <th class="px-4 py-3">Tên Nhân Viên</th>
+                            <th class="px-4 py-3">Chức Vụ</th>
+                            <th class="px-4 py-3">Lương Cơ Bản</th>
+                            <th class="px-4 py-3">Phụ Cấp</th>
+                            <th class="px-4 py-3">Tổng Lương</th>
+                            <th class="px-4 py-3">Trạng Thái</th>
+                            <th class="px-4 py-3">Chức Năng</th>
+                        </tr>
+                    </thead>
+                    <tbody class="bg-dark-secondary divide-y divide-gray-700">
+                        <tr class="text-gray-300">
+                            <td class="px-4 py-3">
+                                <input type="checkbox" class="rounded border-gray-600 bg-gray-700 text-purple-600">
+                            </td>
+                            <td class="px-4 py-3 text-sm">NV001</td>
+                            <td class="px-4 py-3 text-sm">Nguyễn Văn A</td>
+                            <td class="px-4 py-3 text-sm">Nhân viên IT</td>
+                            <td class="px-4 py-3 text-sm">15,000,000 đ</td>
+                            <td class="px-4 py-3 text-sm">2,000,000 đ</td>
+                            <td class="px-4 py-3 text-sm">17,000,000 đ</td>
+                            <td class="px-4 py-3 text-sm">
+                                <span class="px-2 py-1 text-xs font-medium rounded-full bg-green-500/10 text-green-500">
+                                    Đã thanh toán
+                                </span>
+                            </td>
+                            <td class="px-4 py-3 text-sm">
+                                <div class="flex items-center space-x-2">
+                                    <button class="p-2 text-red-600 bg-red-100/10 rounded-lg hover:bg-red-100/20">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                            <polyline points="3 6 5 6 21 6"></polyline>
+                                            <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                                        </svg>
+                                    </button>
+                                    <button class="p-2 text-purple-600 bg-purple-100/10 rounded-lg hover:bg-purple-100/20">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                            <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+                                            <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+                                        </svg>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr class="text-gray-300">
+                            <td class="px-4 py-3">
+                                <input type="checkbox" class="rounded border-gray-600 bg-gray-700 text-purple-600">
+                            </td>
+                            <td class="px-4 py-3 text-sm">NV002</td>
+                            <td class="px-4 py-3 text-sm">Trần Thị B</td>
+                            <td class="px-4 py-3 text-sm">Kế toán</td>
+                            <td class="px-4 py-3 text-sm">12,000,000 đ</td>
+                            <td class="px-4 py-3 text-sm">1,500,000 đ</td>
+                            <td class="px-4 py-3 text-sm">13,500,000 đ</td>
+                            <td class="px-4 py-3 text-sm">
+                                <span class="px-2 py-1 text-xs font-medium rounded-full bg-yellow-500/10 text-yellow-500">
+                                    Chờ duyệt
+                                </span>
+                            </td>
+                            <td class="px-4 py-3 text-sm">
+                                <div class="flex items-center space-x-2">
+                                    <button class="p-2 text-red-600 bg-red-100/10 rounded-lg hover:bg-red-100/20">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                            <polyline points="3 6 5 6 21 6"></polyline>
+                                            <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                                        </svg>
+                                    </button>
+                                    <button class="p-2 text-purple-600 bg-purple-100/10 rounded-lg hover:bg-purple-100/20">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                            <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+                                            <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+                                        </svg>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr class="text-gray-300">
+                            <td class="px-4 py-3">
+                                <input type="checkbox" class="rounded border-gray-600 bg-gray-700 text-purple-600">
+                            </td>
+                            <td class="px-4 py-3 text-sm">NV003</td>
+                            <td class="px-4 py-3 text-sm">Lê Văn C</td>
+                            <td class="px-4 py-3 text-sm">Trưởng phòng</td>
+                            <td class="px-4 py-3 text-sm">20,000,000 đ</td>
+                            <td class="px-4 py-3 text-sm">3,000,000 đ</td>
+                            <td class="px-4 py-3 text-sm">23,000,000 đ</td>
+                            <td class="px-4 py-3 text-sm">
+                                <span class="px-2 py-1 text-xs font-medium rounded-full bg-red-500/10 text-red-500">
+                                    Chưa thanh toán
+                                </span>
+                            </td>
+                            <td class="px-4 py-3 text-sm">
+                                <div class="flex items-center space-x-2">
+                                    <button class="p-2 text-red-600 bg-red-100/10 rounded-lg hover:bg-red-100/20">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                            <polyline points="3 6 5 6 21 6"></polyline>
+                                            <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                                        </svg>
+                                    </button>
+                                    <button class="p-2 text-purple-600 bg-purple-100/10 rounded-lg hover:bg-purple-100/20">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                            <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+                                            <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+                                        </svg>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Pagination -->
+            <div
+                class="grid px-4 py-3 text-xs font-semibold tracking-wide text-gray-300 uppercase border-t border-gray-700 dark:bg-gray-800 sm:grid-cols-9">
+                <span class="flex items-center col-span-3">
+                    Hiển thị 1-3 của 100
+                </span>
+                <span class="col-span-2"></span>
+                <span class="flex col-span-4 mt-2 sm:mt-auto sm:justify-end">
+                    <nav aria-label="Table navigation">
+                        <ul class="inline-flex items-center">
+                            <li>
+                                <button
+                                    class="px-3 py-1 rounded-md rounded-l-lg focus:outline-none focus:shadow-outline-purple">
+                                    <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                                        <path
+                                            d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z"
+                                            clip-rule="evenodd" fill-rule="evenodd"></path>
+                                    </svg>
+                                </button>
+                            </li>
+                            <li>
+                                <button
+                                    class="px-3 py-1 text-white transition-colors duration-150 bg-purple-600 rounded-md focus:outline-none focus:shadow-outline-purple">
+                                    1
+                                </button>
+                            </li>
+                            <li>
+                                <button
+                                    class="px-3 py-1 rounded-md focus:outline-none focus:shadow-outline-purple">
+                                    2
+                                </button>
+                            </li>
+                            <li>
+                                <button
+                                    class="px-3 py-1 rounded-md focus:outline-none focus:shadow-outline-purple">
+                                    3
+                                </button>
+                            </li>
+                            <li>
+                                <button
+                                    class="px-3 py-1 rounded-md rounded-r-lg focus:outline-none focus:shadow-outline-purple">
+                                    <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                                        <path
+                                            d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
+                                            clip-rule="evenodd" fill-rule="evenodd"></path>
+                                    </svg>
+                                </button>
+                            </li>
+                        </ul>
+                    </nav>
+                </span>
+            </div>
+        </div>
+    </div>
+</main>

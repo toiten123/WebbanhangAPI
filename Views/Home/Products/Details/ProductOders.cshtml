@@ -1,0 +1,310 @@
+<nav class="order-b">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-8">
+                <div class="flex items-center">
+                    <span class="text-gray-500">
+                        <a href="/" class="hover:text-red-500"><i class="fas fa-home mr-2"></i>Trang chủ</a> / PCBEST / 
+                         <span id="breadcrumb-product-name">(tên sản phẩm)</span>
+                    </span>
+                </div>
+            </div>
+        </div>
+    </nav>
+<div class="lg:grid lg:grid-cols-2 lg:gap-x-8 lg:items-start">
+    <!-- Image gallery: khởi tạo Alpine component với x-data và gọi fetchProduct ngay khi khởi tạo -->
+    <div class="flex flex-col" x-data="imageGallery()" x-init="fetchProduct()">
+        <!-- Main Image -->
+        <div
+            class="relative bg-white border border-gray-300 rounded-lg flex justify-center anh max-w-[592px] min-w-[592px] max-h-[400px] min-h-[400px] mx-auto overflow-hidden">
+            <a :href="images[currentIndex]" data-fancybox="gallery">
+                <img :src="images[currentIndex]" alt="Product image" class="w-full h-full object-contain rounded-lg"
+                    onerror="this.style.display='none'; this.parentElement.classList.add('bg-gray-200', 'border-dashed', 'border-2', 'border-gray-400'); this.parentElement.innerHTML='No Image Available';">
+            </a>
+            <button x-on:click="prev"
+                class="absolute left-2 top-1/2 -translate-y-1/2 bg-white rounded-full p-2 shadow-lg">
+                <i class="fas fa-chevron-left"></i>
+            </button>
+            <button x-on:click="next"
+                class="absolute right-2 top-1/2 -translate-y-1/2 bg-white rounded-full p-2 shadow-lg">
+                <i class="fas fa-chevron-right"></i>
+            </button>
+        </div>
+
+        <!-- Slider for thumbnails -->
+        <div class="mt-4 overflow-hidden relative">
+            <div class="flex transition-transform duration-300" :style="{ transform: `translateX(-${scrollIndex}px)` }">
+                <template x-for="(image, index) in images" :key="index">
+                    <a :href="image" data-fancybox="gallery" :class="{'ring-2 ring-red-500': currentIndex === index}"
+                        class="flex-shrink-0 rounded-lg overflow-hidden"
+                        :style="{ width: `${itemWidth}px`, height: `${itemWidth}px`, marginRight: `${gap}px` }"
+                        x-on:click.prevent="currentIndex = index; adjustScroll()">
+                        <img :src="image" :alt="`Thumbnail ${index + 1}`" class="w-full h-full object-cover">
+                    </a>
+                </template>
+            </div>
+            <!-- Navigation buttons -->
+            <button x-on:click="scrollLeft"
+                class="absolute left-2 top-1/2 -translate-y-1/2 bg-white p-2 rounded-full shadow-lg">
+                <i class="fas fa-chevron-left"></i>
+            </button>
+            <button x-on:click="scrollRight"
+                class="absolute right-4 top-1/2 -translate-y-1/2 bg-white p-2 rounded-full shadow-lg">
+                <i class="fas fa-chevron-right"></i>
+            </button>
+        </div>
+    </div>
+
+    <!-- Product info -->
+    <div class="mt-10 px-4 sm:px-0 sm:mt-16 lg:mt-0">
+        <h1 id="product-name" class="text-3xl font-bold tracking-tight text-gray-900">
+            (tên sản phẩm)
+        </h1>
+        <div class="flex items-center gap-4">
+            <h2 class="sr-only">Product information</h2>
+            <p class="text-3xl font-semibold text-red-600"><span id="price-after-discount">giá đã giảm</span></p>
+            <p class="text-2xl text-gray-500 line-through"><span id="price-before-discount">giá trước khi giảm</span></p>
+        <p class="px-2 py-1 text-sm font-semibold text-red-600 border border-red-600 rounded"><span id="discount-percentage">-%</span></p>
+        </div>
+
+        <!-- Promotion -->
+        <div class="mt-6 bg-red-50 border-red-200 rounded-lg p-4">
+            <div class="flex items-center gap-2 text-red-600 font-medium">
+                <i class="fas fa-gift"></i>
+                Quà tặng
+            </div>
+            <div class="mt-2 space-y-2">
+                <p>Tặng kèm RAM V-Color Prism RGB White trị giá 890.000đ</p>
+            </div>
+        </div>
+
+        <!-- Promotions -->
+        <div class="mt-6 bg-white rounded-lg p-4 border">
+            <h3 class="font-medium">Ưu đãi</h3>
+            <ul class="mt-2 space-y-2">
+                <li class="flex items-center gap-2">
+                    <i class="fas fa-info-circle text-green-500"></i>
+                    <span>Giảm ngay 200.000đ khi nâng cấp SSD</span>
+                    <button class="text-blue-600 text-sm">Xem thêm</button>
+                </li>
+                <li class="flex items-center gap-2">
+                    <i class="fas fa-info-circle text-green-500"></i>
+                    <span>Giảm ngay 300.000đ khi mua thêm RAM</span>
+                    <button class="text-blue-600 text-sm">Xem thêm</button>
+                </li>
+                <li class="flex items-center gap-2">
+                    <i class="fas fa-info-circle text-green-500"></i>
+                    <span>Giảm ngay 300.000đ khi mua Microsoft Office kèm PC</span>
+                    <button class="text-blue-600 text-sm">Xem thêm</button>
+                </li>
+            </ul>
+        </div>
+
+        <div class="mt-6">
+            <button
+                class="Addtocart w-full h-12 text-lg bg-red-600 hover:bg-red-700 text-white rounded-lg flex items-center justify-center">
+                <i class="fas fa-shopping-cart mr-2"></i>
+                Đặt hàng
+            </button>
+        </div>
+    </div>
+</div>
+
+<script>
+    function imageGallery() {
+  return {
+    images: [],
+    currentIndex: 0,
+    scrollIndex: 0,
+    itemWidth: 80, // Chiều rộng mỗi ảnh trong slider
+    gap: 21,       // Khoảng cách giữa các ảnh
+    visibleItems: 6, // Số ảnh hiển thị trong slider
+
+    async fetchProduct() {
+      const urlParams = new URLSearchParams(window.location.search);
+      const productID = urlParams.get("productID");
+      console.log("Danh sách ảnh sau xử lý:", this.images);
+
+      if (!productID) {
+        console.error("⚠ Không tìm thấy productID trên URL.");
+        return;
+      }
+
+      try {
+        const response = await fetch(`/api/Product/${productID}`);
+        console.log("🔄 Kết quả response:", response);
+
+        if (!response.ok) {
+          throw new Error(`❌ API lỗi: ${response.status} - ${response.statusText}`);
+        }
+
+        const productDTO = await response.json();
+        console.log("📦 Dữ liệu JSON nhận được:", productDTO);
+
+        if (!productDTO || !productDTO.product) {
+          throw new Error("⚠ API không trả về dữ liệu sản phẩm hợp lệ.");
+        }
+
+        const { product, imageThumbnail, imageData } = productDTO;
+        // Hiển thị tên sản phẩm trong breadcrumb
+        document.getElementById("breadcrumb-product-name").textContent = product.productName || "Không có tên";
+
+        // Hiển thị tên sản phẩm
+        document.getElementById("product-name").textContent = product.productName || "Không có tên";
+
+        // Hiển thị giá sau giảm
+        document.getElementById("price-after-discount").textContent =
+          product.priceAfterDiscount !== undefined
+            ? product.priceAfterDiscount.toLocaleString() + "đ"
+            : "Chưa có giá sau giảm";
+
+        // Hiển thị giá trước khi giảm
+        document.getElementById("price-before-discount").textContent =
+        product.priceOriginal !== undefined
+            ? product.priceOriginal.toLocaleString() + "đ"
+            : "Chưa có giá trước giảm";
+        
+        // Hiển thị phần trăm giảm giá
+        document.getElementById("discount-percentage").textContent =
+        product.discountPercentage !== undefined
+            ? "-" + product.discountPercentage + "%"
+            : "Không có giảm giá";
+
+        // Khởi tạo danh sách ảnh
+        this.images = [];
+
+        // Nếu có ảnh thumbnail, đặt nó làm ảnh đầu tiên
+        if (imageThumbnail && imageThumbnail.trim() !== "") {
+          this.images.push(imageThumbnail);
+        }
+
+        // Thêm các ảnh còn lại từ imageData
+        if (imageData && Array.isArray(imageData) && imageData.length > 0) {
+          this.images.push(...imageData.filter(img => img && img.trim() !== ""));
+        }
+
+        // Nếu không có ảnh nào, dùng ảnh mặc định
+        if (this.images.length === 0) {
+          this.images = ["default-thumbnail.png"];
+        }
+
+        // Reset chỉ số hiển thị ảnh chính về 0
+        this.currentIndex = 0;
+        this.scrollIndex = 0;
+
+        console.log("📸 Danh sách ảnh sau xử lý:", this.images);
+      } catch (error) {
+        console.error("🚨 Lỗi khi tải sản phẩm:", error.message);
+        alert("Không thể tải dữ liệu sản phẩm. Vui lòng thử lại sau!");
+      }
+      
+        setTimeout(() => {
+            let fancyboxItems = document.querySelectorAll("[data-fancybox='gallery']");
+            let uniqueImages = new Set();
+
+            fancyboxItems.forEach((item) => {
+                if (!uniqueImages.has(item.href)) {
+                    uniqueImages.add(item.href);
+                } else {
+                    item.setAttribute("data-fancybox", ""); // Gỡ bỏ khỏi nhóm Fancybox nhưng vẫn giữ trong thumbnail
+                }
+            });
+
+            Fancybox.unbind("[data-fancybox='gallery']");
+            Fancybox.bind("[data-fancybox='gallery']");
+        }, 500);
+    },
+
+    next() {
+      if (this.currentIndex < this.images.length - 1) {
+        this.currentIndex++;
+        this.adjustScroll();
+      }
+    },
+    prev() {
+      if (this.currentIndex > 0) {
+        this.currentIndex--;
+        this.adjustScroll();
+      }
+    },
+    scrollLeft() {
+      const totalItemWidth = this.itemWidth + this.gap;
+      if (this.scrollIndex > 0) {
+        this.scrollIndex = Math.max(0, this.scrollIndex - totalItemWidth);
+      }
+    },
+    scrollRight() {
+      const totalItemWidth = this.itemWidth + this.gap;
+      const maxScroll = (this.images.length - this.visibleItems) * totalItemWidth;
+      if (this.scrollIndex < maxScroll) {
+        this.scrollIndex = Math.min(maxScroll, this.scrollIndex + totalItemWidth);
+      }
+    },
+    adjustScroll() {
+      const totalItemWidth = this.itemWidth + this.gap;
+      const scrollPosition = this.currentIndex * totalItemWidth;
+      const visibleWidth = this.visibleItems * totalItemWidth;
+
+      if (scrollPosition < this.scrollIndex) {
+        this.scrollIndex = Math.max(0, scrollPosition);
+      } else if (scrollPosition + totalItemWidth > this.scrollIndex + visibleWidth) {
+        this.scrollIndex = Math.min(
+          (this.images.length - this.visibleItems) * totalItemWidth,
+          scrollPosition - visibleWidth + totalItemWidth
+        );
+      }
+    }
+  };
+}
+</script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+   // Hiển thị thông báo bằng SweetAlert2
+function showAlert(message, type = "success") {
+    Swal.fire({
+        icon: type,
+        title: type === "success" ? "Thành công" : "Lỗi",
+        text: message,
+        confirmButtonText: "OK"
+    });
+}
+    document.addEventListener("DOMContentLoaded", function () {
+        document.querySelector(".Addtocart").addEventListener("click", function () {
+            const productID = new URLSearchParams(window.location.search).get("productID");
+            const productName = document.getElementById("product-name").textContent;
+            const priceAfterDiscount = document.getElementById("price-after-discount").textContent;
+            const priceBeforeDiscount = document.getElementById("price-before-discount").textContent;
+            const imageThumbnail = document.querySelector(".anh img").src;
+
+            let cart = JSON.parse(localStorage.getItem("shoppingCart")) || [];
+
+            // Kiểm tra sản phẩm đã tồn tại trong giỏ hàng chưa
+            let existingProduct = cart.find(item => item.productID == productID);
+
+            if (existingProduct) {
+                existingProduct.quantity += 1;
+            } else {
+                cart.push({
+                    productID: productID,
+                    productName: productName,
+                    priceAfterDiscount: priceAfterDiscount,
+                    priceBeforeDiscount: priceBeforeDiscount,
+                    imageThumbnail: imageThumbnail,
+                    quantity: 1
+                });
+            }
+
+            localStorage.setItem("shoppingCart", JSON.stringify(cart));
+
+            // Cập nhật số lượng giỏ hàng trên header
+            updateCartCount();
+            // Hiển thị thông báo alert
+            showAlert(`${productName} đã được thêm vào giỏ hàng!`);
+        });
+    });
+
+    function updateCartCount() {
+        let cart = JSON.parse(localStorage.getItem("shoppingCart")) || [];
+        let totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+        document.querySelector(".cart-notice").textContent = totalItems;
+    }
+</script>

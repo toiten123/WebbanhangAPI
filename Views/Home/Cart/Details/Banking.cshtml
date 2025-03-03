@@ -1,0 +1,321 @@
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thanh toán</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'primary': '#EF4444',
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-gray-50 min-h-screen">
+    <main class="max-w-3xl mx-auto p-4">
+         <!-- Back Button -->
+        <a asp-controller="home" asp-action="ProductDetail" class="inline-flex items-center text-gray-600">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 mr-1">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
+            </svg>
+            Quay lại thông tin đặt hàng
+        </a>
+        <!-- Checkout Steps -->
+        <div class="w-full bg-rose-50 p-4 mb-8 rounded-lg">
+            <div class="flex justify-between items-center max-w-3xl mx-auto">
+                <div class="flex items-center">
+                    <div class="flex flex-col items-center">
+                        <div class="rounded-full p-2 bg-primary text-white">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 00-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 00-16.536-1.84M7.5 14.25L5.106 5.272M6 20.25a.75.75 0 11-1.5 0 .75.75 0 011.5 0zm12.75 0a.75.75 0 11-1.5 0 .75.75 0 011.5 0z" />
+                            </svg>
+                        </div>
+                        <span class="text-sm mt-1 text-primary">Giỏ hàng</span>
+                    </div>
+                    <div class="h-[2px] w-16 mx-2 bg-primary"></div>
+                </div>
+                <div class="flex items-center">
+                    <div class="flex flex-col items-center">
+                        <div class="rounded-full p-2 bg-primary text-white">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z" />
+                            </svg>
+                        </div>
+                        <span class="text-sm mt-1 text-primary">Thông tin đặt hàng</span>
+                    </div>
+                    <div class="h-[2px] w-16 mx-2 bg-primary"></div>
+                </div>
+                <div class="flex items-center">
+                    <div class="flex flex-col items-center">
+                        <div class="rounded-full p-2 bg-primary text-white">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 8.25h19.5M2.25 9h19.5m-16.5 5.25h6m-6 2.25h3m-3.75 3h15a2.25 2.25 0 002.25-2.25V6.75A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25v10.5A2.25 2.25 0 004.5 19.5z" />
+                            </svg>
+                        </div>
+                        <span class="text-sm mt-1 text-primary">Thanh toán</span>
+                    </div>
+                    <div class="h-[2px] w-16 mx-2 bg-gray-200"></div>
+                </div>
+                <div class="flex items-center">
+                    <div class="flex flex-col items-center">
+                        <div class="rounded-full p-2 bg-gray-200">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" />
+                            </svg>
+                        </div>
+                        <span class="text-sm mt-1 text-gray-500">Hoàn tất</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Payment Info -->
+        <div class="mt-8 space-y-6">
+            <div class="bg-white p-6 rounded-lg">
+                <h2 class="text-lg font-medium mb-4">Thông tin đặt hàng</h2>
+                <div class="space-y-2">
+                    <div class="flex justify-between">
+                        <span class="text-gray-600">Khách hàng:</span>
+                        <span id="customer-name">Đang tải...</span>
+                    </div>
+                    <div class="flex justify-between">
+                        <span class="text-gray-600">Số điện thoại:</span>
+                        <span id="customer-phone">Đang tải...</span>
+                    </div>
+                    <div class="flex justify-between">
+                        <span class="text-gray-600">Địa chỉ nhận hàng:</span>
+                        <span id="customer-address">Đang tải...</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white p-6 rounded-lg">
+                <h2 class="text-lg font-medium mb-4">Chọn hình thức thanh toán</h2>
+                <label class="flex items-center space-x-2 p-4 border rounded-lg">
+                    <input type="radio" name="payment" value="cod" checked>
+                    <span>Thanh toán khi giao hàng (COD)</span>
+                </label>
+            </div>
+
+            <div class="bg-white p-6 rounded-lg space-y-4">
+               <div class="flex justify-between">
+                    <span>Phí vận chuyển:</span>
+                    <span class="text-green-600 shipping-fee">Miễn phí</span>
+                </div>
+                <div class="flex justify-between text-lg font-medium">
+                    <span>Tổng tiền:</span>
+                    <span class="text-primary text-2xl" id="total-price">0đ</span>
+                </div>
+                <button id="payment-button" class="block w-full bg-primary hover:bg-red-600 text-white text-center py-2 rounded">
+                    THANH TOÁN NGAY
+                </button>
+            </div>
+        </div>
+    </main>
+</body>
+</html>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+    loadUserInfo();
+    TotalPrice();
+    loadShipping();
+});
+
+function loadShipping() {
+    // Kiểm tra phí vận chuyển từ localStorage
+        let shippingFee = localStorage.getItem("shippingFee");
+
+        // Kiểm tra nếu phí vận chuyển là 0 (Miễn phí) hoặc 40k
+        if (shippingFee == 0) {
+            // Nếu không có phí vận chuyển, hiển thị miễn phí
+            document.querySelector(".shipping-fee").textContent = "Miễn phí";
+        } else if (shippingFee == 40000) {
+            // Cập nhật hiển thị phí vận chuyển
+            document.querySelector(".shipping-fee").textContent = "40.000₫";
+        }
+    }
+
+function loadUserInfo() {
+        let savedData = localStorage.getItem("userInfo");
+        if (savedData) {
+            let userInfo = JSON.parse(savedData);
+
+            // Hiển thị tên đơn hàng (ordersName)
+            document.getElementById("customer-name").textContent = userInfo.ordersName || "";
+
+            // Hiển thị số điện thoại
+            document.getElementById("customer-phone").textContent = userInfo.phoneNumber || "";
+            
+            // Tạo địa chỉ đầy đủ theo format: addressDetail, ward, district, city
+            let fullAddress = [userInfo.addressDetail, userInfo.ward, userInfo.district, userInfo.city]
+                .filter(Boolean) // Loại bỏ giá trị null hoặc rỗng
+                .join(", "); // Ngăn cách bằng dấu phẩy
+
+            document.getElementById("customer-address").textContent = fullAddress;
+        }
+    }
+
+function TotalPrice() {
+    // Load tổng tiền từ localStorage nếu có
+    let savedTotalPrice = localStorage.getItem("totalPrice");
+    if (savedTotalPrice) {
+        document.getElementById("total-price").textContent = parseFloat(savedTotalPrice).toLocaleString() + "đ";
+    }
+}
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+// Hiển thị thông báo bằng SweetAlert2
+function showAlert(message, type = "success") {
+    Swal.fire({
+        icon: type,
+        title: type === "success" ? "Thành công" : "Lỗi",
+        text: message,
+        confirmButtonText: "OK"
+    });
+}
+
+document.getElementById('payment-button').addEventListener('click', function (event) {
+    event.preventDefault();  // Ngừng chuyển trang ngay lập tức
+
+    // Lấy thông tin người dùng từ localStorage
+    let savedData = localStorage.getItem('userInfo');
+    if (savedData) {
+        let userInfo = JSON.parse(savedData);
+
+        // Lấy UserID từ localStorage hoặc nơi lưu trữ khác
+        let userID = localStorage.getItem('UserID'); // Giả sử UserID được lưu ở đâu đó
+
+        // Nếu UserID không tồn tại, hiển thị lỗi
+        if (!userID) {
+            showAlert("Không tìm thấy UserID.", "error");
+            return;
+        }
+
+        // Lấy thông tin giỏ hàng từ localStorage
+        let shoppingCart = JSON.parse(localStorage.getItem("shoppingCart"));
+
+        // Kiểm tra số lượng sản phẩm trong giỏ hàng
+        let outOfStock = false;
+        let outOfStockProducts = [];
+        let stockCheckPromises = shoppingCart.map(item => {
+            return fetch(`/api/product/${item.productID}/check-stock?quantity=${item.quantity}`)
+                .then(response => {
+                    if (!response.ok) {
+                        // Xử lý lỗi API nếu response không thành công
+                        throw new Error(`Lỗi API: ${response.statusText}`);
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    if (!data.isAvailable) {
+                        outOfStock = true;
+                        outOfStockProducts.push(item.productName);
+                    }
+                })
+                .catch(error => {
+                    console.error('Lỗi khi kiểm tra tồn kho:', error);
+                    outOfStock = true; // Nếu có lỗi, giả sử sản phẩm hết hàng
+                });
+        });
+
+        Promise.all(stockCheckPromises).then(() => {
+        if (outOfStock) {
+            showAlert("Các sản phẩm đã hết hàng.Vui lòng chọn sản phẩm khác hoặc đợi có hàng mới:" + outOfStockProducts.join(","), "error");
+            return;
+        }
+
+            // Tiến hành tạo đơn hàng nếu tất cả các sản phẩm đều có đủ số lượng
+            let totalPrice = parseFloat(localStorage.getItem("totalPrice")) || 0;  // Chuyển giá trị thành số
+            let orderDetails = shoppingCart.map(item => ({
+                ProductID: parseInt(item.productID), // Chuyển đổi ID thành số
+                Quantity: item.quantity // Lấy số lượng sản phẩm
+            }));
+
+            let orderData = {
+                UserID: userID,
+                OrdersName: userInfo.ordersName,
+                OrdersPhone: userInfo.phoneNumber,
+                CityName: userInfo.city,
+                DistrictName: userInfo.district,
+                WardName: userInfo.ward,
+                Address: userInfo.addressDetail,  // Địa chỉ được lưu trong Orders
+                Description: userInfo.description,
+                ShippingFee: 40000,  // Giả sử phí vận chuyển là 40k
+                PaymentTypeName: "COD",
+                TotalPrice: totalPrice,
+                OrderDetails: orderDetails
+            };
+
+            // Gửi yêu cầu tạo đơn hàng
+            fetch('/api/orders', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(orderData)
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data) {
+                    console.log("Đơn hàng được tạo:", data);
+                    
+                    // Sau khi tạo đơn hàng, gọi API để thêm chi tiết đơn hàng
+                    let orderId = data.ordersID; // Lấy orderId từ dữ liệu trả về
+
+                    // Gửi yêu cầu thêm chi tiết đơn hàng
+                    fetch(`/api/orders/${orderId}/details`, {  
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(orderData.OrderDetails)  // Gửi chi tiết đơn hàng
+                    })
+                    .then(response => response.json())
+                    .then(() => {
+                        // Sau khi thêm chi tiết đơn hàng, gọi API để thêm trạng thái
+                        fetch(`/api/orders/${orderId}/status`, {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify({ Status: "Pending", Notes: "" })  // Trạng thái mặc định là "Pending"
+                        })
+                        .then(response => {
+                            if (response.ok) {
+                                setTimeout(function() {
+                                    window.location.href = '/home/Complete';
+                                }, 2000);
+                            } else {
+                                throw new Error(`Error adding status! status: ${response.status}`);
+                            }
+                        })
+                        .catch(error => {
+                            console.error("Lỗi khi thêm trạng thái:", error);
+                        });
+                    })
+                    .catch(error => {
+                        console.error("Lỗi khi thêm chi tiết đơn hàng:", error);
+                    });
+                } else {
+                    showAlert('Đã có lỗi xảy ra khi tạo đơn hàng. Không có dữ liệu trả về.', "error");
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                showAlert('Đã có lỗi xảy ra khi lưu đơn hàng.', "error");
+            });
+        });
+    }
+});
+</script>

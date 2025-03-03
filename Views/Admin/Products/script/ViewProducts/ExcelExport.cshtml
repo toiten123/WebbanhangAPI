@@ -1,0 +1,10 @@
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.1/xlsx.full.min.js"></script>
+<script>
+    document.getElementById('exportExcelBtn').addEventListener('click', function() {
+        let wb          = XLSX.utils.book_new();
+        let table       = document.querySelector('table');
+        let tableData   = XLSX.utils.table_to_sheet(table);
+        XLSX.utils.book_append_sheet(wb, tableData, "Sản phẩm");
+        XLSX.writeFile(wb, "Danh_Sach_San_Pham.xlsx");
+    });
+</script>

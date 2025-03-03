@@ -1,0 +1,122 @@
+<script>
+    document.addEventListener('DOMContentLoaded', async () => {
+        const urlParams = new URLSearchParams(window.location.search);
+        const productId = urlParams.get('id');
+
+        if (productId) {
+            try {
+                const response = await fetch(`/api/Product/${productId}`);
+                const productData = await response.json();
+                if (!productData || !productData.product) {
+                    console.error("❌ Dữ liệu không hợp lệ");
+                    return;
+                }
+
+                const { product, attributes = [] } = productData;
+                document.getElementById('productName').value        = product.productName || '';
+                document.getElementById('manufacturer').value       = product.manufacturer || '';
+                document.getElementById('currentPrice').value       = product.priceOriginal || 0;
+                document.getElementById('discountPercentage').value = product.discountPercentage || 0;
+                document.getElementById('discountedPrice').value    = product.priceAfterDiscount || 0;
+                document.getElementById('quantity').value           = product.quantity || 0;
+                document.getElementById('description').value        = product.description || '';
+                document.getElementById('productType').value        = product.loai || '';
+
+                const setAttributes = (name) => {
+                    const attribute = attributes.find(attr => attr.productAttributeName === name);
+                    return attribute ? attribute.attributeName : '';
+                };
+
+                const setAttributeSummary = (name) => {
+                    const attribute = attributes.find(attr => attr.productAttributeName === name);
+                    return attribute ? attribute.attributeSummary : '';
+                };
+
+                const renderAttributes = (productType) => {
+                    document.getElementById('productType').dispatchEvent(new Event('change'));
+                    const productAttributes = {
+                        'pc'            : ['Mainboard', 'CPU', 'VGA', 'SSD', 'HDD', 'PSU', 'Case', 'Fan', 'RAM'],
+                        'laptop'        : ['CPU', 'RAM', 'SSD', 'VGA', 'Màn hình', 'Hệ điều hành', 'Pin', 'Trọng lượng', 'Tần số quét'],
+                        'keyboard'      : ['Loại bàn phím', 'Switch', 'Kết nối', 'Kích thước', 'Bảng mạch', 'Chất liệu', 'Keycaps'],
+                        'monitor'       : ['Kích thước', 'Loại panel', 'Độ phân giải', 'Tần số quét', 'Độ sáng', 'Cổng kết nối', 'Màu sắc', 'Tấm nền'],
+                        'hub'           : ['Đầu vào', 'Đầu ra', 'Tốc độ hỗ trợ', 'Màu sắc', 'Chất liệu', 'Kích thước', 'Trọng lượng', 'Tương thích hệ điều hành', 'Công suất'],
+                        'cable'         : ['Loại cáp', 'Công suất hỗ trợ', 'Chiều dài', 'Chất liệu vỏ', 'Tốc độ truyền dữ liệu', 'Tương thích', 'Màu sắc'],
+                        'headphone'     : ['Loại tai nghe', 'Kết nối', 'Driver', 'Dải tần số', 'Trở kháng', 'Độ nhạy', 'Microphone', 'Pin', 'Trọng lượng', 'Tương thích', 'Phụ kiện đi kèm', 'Màu sắc'],
+                        'charger'       : ['Cổng sạc', 'Công suất', 'Tính năng', 'Tương thích', 'Màu sắc'],
+                        'camera'        : ['Model', 'Độ phân giải', 'Độ rộng trường nhìn', 'Cảm biến', 'Tần số khung hình', 'Cổng kết nối', 'Kích thước', 'Trọng lượng'],
+                        'mouse'         : ['Loại chuột', 'LED RGB', 'DPI', 'Cảm biến', 'Tốc độ phản hồi', 'Màu sắc', 'Nút', 'Dây', 'Thiết kế', 'Tương thích', 'Phần mềm đi kèm'],
+                        'officeMouse'   : ['Loại chuột', 'Loại pin', 'DPI', 'Cảm biến', 'Màu sắc', 'Thiết kế', 'Số nút', 'Kết nối', 'Tương thích', 'Đặc điểm nổi bật'],
+                        'mousePad'      : ['Kích thước', 'Đặc điểm nổi bật'],
+                        'chair'         : ['Màu sắc', 'Loại ghế', 'Khung ghế', 'Đệm ghế', 'Chất liệu bọc ghế', 'Kích thước', 'Tính năng'],
+                        'table'         : ['Màu sắc', 'Chất liệu', 'Tính năng', 'Kích thước', 'Loại bàn'],
+                        'ssd'           : ['Dung lượng', 'Loại ổ cứng', 'Chuẩn giao tiếp', 'Tốc độ đọc tối đa', 'Tính năng đặc biệt'],
+                        'hdd'           : ['Mã sản phẩm', 'Dung lượng lưu trữ', 'Chuẩn kết nối', 'Tốc độ vòng quay', 'Dung lượng bộ nhớ đệm', 'Đặc điểm nổi bật'],
+                        'ram'           : ['Dung lượng', 'Loại RAM', 'Tốc độ', 'Đèn LED', 'Điện áp hoạt động', 'Tản nhiệt'],
+                        'memoryCard'    : ['Dung lượng lưu trữ', 'Loại thẻ', 'Tốc độ đọc tối đa', 'Tính năng đặc biệt'],
+                        'vga'           : ['Loại đồ hoạ', 'Giao thức kết nối', 'Xung nhịp', 'Nhân CUDA', 'Tốc độ bộ nhớ', 'Bộ nhớ', 'Cổng xuất hình', 'Hỗ trợ HDCP', 'Tiêu thụ điện', 'Kết nối nguồn', 'PSU kiến nghị', 'Kích thước', 'Trọng lượng', 'Phiên bản DirectX hỗ trợ', 'OpenGL', 'Hỗ trợ màn hình tối đa', 'Công nghệ G-Sync', 'Độ phân giải tối đa'],
+                        'cpuAmd'        : ['Số nhân (Cores)', 'Số luồng (Threads)', 'Tốc độ xử lý', 'Bộ nhớ đệm L1', 'Bộ nhớ đệm L2', 'Bộ nhớ đệm L3', 'Mở khoá để ép xung', 'Công nghệ xử lý cho lõi CPU', 'Socket'],
+                        'cpuIntel'      : ['Socket', 'Dòng CPU', 'Số nhân', 'Số luồng', 'Tốc độ turbo tối đa của P-core', 'Tốc độ turbo tối đa của E-core', 'Điện năng tiêu thụ', 'Loại bộ nhớ'],
+                        'mainboard'     : ['Chipset', 'Kích thước', 'Hỗ trợ bộ nhớ', 'Cổng kết nối', 'Hỗ trợ GPU'],
+                        'case'          : ['Kích thước', 'Hỗ trợ mainboard', 'Chất liệu', 'Hệ thống làm mát', 'Đèn LED', 'Tính năng đặc biệt'],
+                        'psu'           : ['Công suất', 'Tiêu chuẩn hiệu suất', 'Hiệu suất', 'Quạt', 'Đầu ra', 'Bảo vệ', 'Chuẩn kết nối', 'Dây cáp', 'Kích thước', 'Nhiệt độ hoạt động', 'Tính năng nổi bật'],
+                        'cooling'       : ['Loại sản phẩm', 'Kích thước radiator', 'Chất liệu radiator', 'Quạt', 'Tốc độ quạt', 'Độ ồn', 'Lưu lượng gió', 'Tính năng đặc biệt'],
+                        'officeLaptop'  : ['CPU', 'RAM', 'Ổ cứng', 'Card đồ họa', 'Màn hình', 'Cổng giao tiếp', 'Bàn phím', 'Audio', 'Chuẩn LAN', 'Chuẩn WiFi', 'Bluetooth', 'Hệ điều hành', 'Pin / Trọng lượng', 'Màu sắc', 'Chất liệu']
+                    };
+
+
+                    const attributesToRender = productAttributes[productType] || [];
+                    attributesToRender.forEach(attribute => {
+                        console.log(productType, attribute);
+                        document.getElementById(`${productType}${attribute}`).value = setAttributes(attribute);
+                        document.getElementById(`${productType}${attribute}Summary`).value = setAttributeSummary(attribute);
+                    });
+                };
+
+                renderAttributes(product.loai);
+
+                if (productData.imageData?.length > 0) {
+                    const imagePreview = document.getElementById('imagePreview');
+                    imagePreview.innerHTML = '';
+                    imagePreview.classList.remove('hidden');
+                    productData.imageData.forEach(imageUrl => {
+                        const div = document.createElement('div');
+                        div.className = 'relative group';
+                        div.innerHTML = `
+                            <img src="${imageUrl}" alt="Hình ảnh sản phẩm" class="object-cover w-full h-full rounded">
+                            <button type="button" class="absolute top-0 right-0 text-white rounded-full p-1 text-xs opacity-0 group-hover:opacity-100 transition-opacity" onclick="removeImage(event, this)">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        `;
+                        imagePreview.appendChild(div);
+                    });
+                }
+
+                let imageThumbnail = productData.imageThumbnail;
+                if (typeof imageThumbnail === 'string') {
+                    imageThumbnail = [imageThumbnail];
+                }
+                if (Array.isArray(imageThumbnail) && imageThumbnail.length > 0) {
+                    const thumbnailPreview = document.getElementById('thumbnailPreview');
+                    thumbnailPreview.innerHTML = '';
+                    thumbnailPreview.classList.remove('hidden');
+                    imageThumbnail.forEach(imageUrl => {
+                        const div = document.createElement('div');
+                        div.className = 'relative group';
+                        div.innerHTML = `
+                            <img src="${imageUrl}" alt="Ảnh Thumbnail" class="object-cover w-full h-full rounded">
+                            <button type="button" class="absolute top-0 right-0 text-white rounded-full p-1 text-xs opacity-0 group-hover:opacity-100 transition-opacity" onclick="removeImage(event, this)">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        `;
+                        thumbnailPreview.appendChild(div);
+                    });
+                }
+            } catch (error) {
+                console.error('❌ Lỗi khi lấy dữ liệu sản phẩm:', error);
+            }
+        }
+    });
+</script>
+
+
+

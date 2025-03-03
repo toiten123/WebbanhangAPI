@@ -1,0 +1,503 @@
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thông tin đặt hàng</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'primary': '#EF4444',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .invoice-form {
+            display: none;
+        }
+
+        #invoice:checked~.invoice-form {
+            display: block;
+        }
+    </style>
+</head>
+
+<body class="bg-gray-50 min-h-screen">
+    <main class="max-w-3xl mx-auto p-4">
+                <!-- Back Button -->
+        <a  asp-controller="home" asp-action="Cart" class="inline-flex items-center text-gray-600 ">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                stroke="currentColor" class="w-5 h-5 mr-1">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
+            </svg>
+            Quay lại giỏ hàng
+        </a>
+        <!-- Checkout Steps -->
+        <div class="w-full bg-rose-50 p-4 mb-8 rounded-lg">
+            <div class="flex justify-between items-center max-w-3xl mx-auto">
+                <div class="flex items-center">
+                    <div class="flex flex-col items-center">
+                        <div class="rounded-full p-2 bg-primary text-white">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                                stroke="currentColor" class="w-5 h-5">
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                    d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 00-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 00-16.536-1.84M7.5 14.25L5.106 5.272M6 20.25a.75.75 0 11-1.5 0 .75.75 0 011.5 0zm12.75 0a.75.75 0 11-1.5 0 .75.75 0 011.5 0z" />
+                            </svg>
+                        </div>
+                        <span class="text-sm mt-1 text-primary">Giỏ hàng</span>
+                    </div>
+                    <div class="h-[2px] w-16 mx-2 bg-primary"></div>
+                </div>
+                <div class="flex items-center">
+                    <div class="flex flex-col items-center">
+                        <div class="rounded-full p-2 bg-primary text-white">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                                stroke="currentColor" class="w-5 h-5">
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                    d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z" />
+                            </svg>
+                        </div>
+                        <span class="text-sm mt-1 text-primary">Thông tin đặt hàng</span>
+                    </div>
+                    <div class="h-[2px] w-16 mx-2 bg-gray-200"></div>
+                </div>
+                <div class="flex items-center">
+                    <div class="flex flex-col items-center">
+                        <div class="rounded-full p-2 bg-gray-200">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                                stroke="currentColor" class="w-5 h-5">
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                    d="M2.25 8.25h19.5M2.25 9h19.5m-16.5 5.25h6m-6 2.25h3m-3.75 3h15a2.25 2.25 0 002.25-2.25V6.75A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25v10.5A2.25 2.25 0 004.5 19.5z" />
+                            </svg>
+                        </div>
+                        <span class="text-sm mt-1 text-gray-500">Thanh toán</span>
+                    </div>
+                    <div class="h-[2px] w-16 mx-2 bg-gray-200"></div>
+                </div>
+                <div class="flex items-center">
+                    <div class="flex flex-col items-center">
+                        <div class="rounded-full p-2 bg-gray-200">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                                stroke="currentColor" class="w-5 h-5">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" />
+                            </svg>
+                        </div>
+                        <span class="text-sm mt-1 text-gray-500">Hoàn tất</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Info Form -->
+        <div class="mt-8 space-y-6">
+            <div class="bg-white p-6 rounded-lg">
+                <h2 class="text-lg font-medium mb-4">Thông tin khách mua hàng</h2>
+                <div class="flex gap-4 mb-4">
+                <label class="flex items-center">
+                    <input type="radio" name="gender" value="Nam" id="gender-male" class="mr-2">
+                    Anh
+                </label>
+                <label class="flex items-center">
+                    <input type="radio" name="gender" value="Nữ" id="gender-female" class="mr-2">
+                    Chị
+                </label>
+            </div>
+
+                <div class="grid grid-cols-2 gap-4 mt-4">
+                <input type="text" id="ordersname" placeholder="Nhập Họ tên" class="w-full px-3 py-2 border rounded-md">
+                <input type="tel" id="phone-number" placeholder="Nhập số điện thoại" class="w-full px-3 py-2 border rounded-md">
+
+                </div>
+            </div>
+
+            <div class="bg-white p-6 rounded-lg">
+                <h2 class="text-lg font-medium mb-4">Chọn cách nhận hàng</h2>
+                <label class="flex items-center">
+                    <input type="radio" name="delivery" value="tannoi" checked class="mr-2">
+                    Giao hàng tận nơi
+                </label>
+                <div class="grid grid-cols-2 gap-4 mt-4">
+                    <!-- Chọn Tỉnh/Thành phố -->
+                    <select id="city" class="w-full px-3 py-2 border rounded-md" onchange="loadDistricts()">
+                        <option value="">Chọn Tỉnh, Thành phố</option>
+                    </select>
+
+                    <!-- Chọn Quận/Huyện -->
+                    <select id="district" class="w-full px-3 py-2 border rounded-md" onchange="loadWards()" disabled>
+                        <option value="">Chọn Quận, Huyện</option>
+                    </select>
+
+                    <!-- Chọn Phường/Xã -->
+                    <select id="ward" class="w-full px-3 py-2 border rounded-md" disabled>
+                        <option value="">Chọn Phường, Xã</option>
+                    </select>
+                    <!-- Ô nhập Số nhà, Tên đường -->
+                    <input type="text" id="address-detail" placeholder="Nhập số nhà, tên đường"
+                    class="w-full px-3 py-2 border rounded-md">
+                </div>
+
+                <div class="">
+                    <!-- Invoice Form -->
+                    <div class="invoice-form mt-4 p-4 bg-gray-50 rounded-lg">
+                        <div class="space-y-4">
+                            <input type="text" placeholder="Tên công ty" class="w-full px-3 py-2 border rounded-md">
+                            <input type="text" placeholder="Địa chỉ công ty" class="w-full px-3 py-2 border rounded-md">
+                            <div class="grid grid-cols-2 gap-4">
+                                <input type="text" placeholder="Mã số thuế" class="w-full px-3 py-2 border rounded-md">
+                                <input type="email" placeholder="Email" class="w-full px-3 py-2 border rounded-md">
+                            </div>
+                        </div>
+                    </div>
+                    <input type="text" id="description" placeholder="Lưu ý, yêu cầu khác (Không bắt buộc)" class="w-full px-3 py-2 border rounded-md mt-4">
+                </div>
+                <div class="space-y-4 mt-4">
+                    <label class="inline-flex items-center cursor-pointer">
+                        <input type="checkbox" id="invoiceToggle" class="sr-only peer">
+                        <div class="relative w-5 h-5 border rounded-sm peer-checked:bg-blue-500 peer-checked:border-blue-500 transition-colors">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="absolute w-4 h-4 text-white top-0.5 left-0.5 hidden peer-checked:block" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                            </svg>
+                        </div>
+                        <span class="ml-2 text-gray-700">Xuất hoá đơn cho đơn hàng</span>
+                    </label>
+
+                    <!-- Invoice Form -->
+                    <div id="invoiceForm" class="hidden transition-all duration-300 ease-in-out">
+                        <div class="space-y-4 bg-gray-50 p-4 rounded-lg">
+                            <input 
+                                type="text" 
+                                placeholder="Tên công ty" 
+                                class="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                            >
+                            <input 
+                                type="text" 
+                                placeholder="Địa chỉ công ty" 
+                                class="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                            >
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <input 
+                                    type="text" 
+                                    placeholder="Mã số thuế" 
+                                    class="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                >
+                                <input 
+                                    type="email" 
+                                    placeholder="Email" 
+                                    class="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                >
+                            </div>
+                        </div>
+                        <div class="mt-4">
+                            <input 
+                                type="text" 
+                                placeholder="Lưu ý, yêu cầu khác (Không bắt buộc)" 
+                                class="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                            >
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white p-6 rounded-lg">
+                <h2 class="text-lg font-medium mb-4">Dịch vụ giao hàng</h2>
+                <div class="flex items-center justify-between">
+                    <label class="flex items-center" for="standard-shipping">
+                        <input type="radio" name="shipping" value="standard" checked class="mr-2">
+                        Miễn phí vận chuyển (Giao hành tiêu chuẩn)
+                    </label>
+                    <span id="shipping-price">0đ</span> <!-- Sử dụng id để dễ dàng thay đổi -->
+                </div>
+
+            </div>
+
+            <div class="bg-white p-6 rounded-lg space-y-4">
+            <div class="flex justify-between">
+                <span>Phí vận chuyển:</span>
+                <span class="text-green-600 shipping-fee" id="shipping-fee">Miễn phí</span>
+            </div>
+                <div class="flex justify-between text-lg font-medium">
+                    <span>Tổng tiền:</span>
+                    <span class="text-primary text-2xl" id="total-price">0đ</span>
+                </div>
+
+                <a href="#" onclick="validateForm()" 
+                class="block w-full bg-primary hover:bg-red-600 text-white text-center py-2 rounded">
+                    TIẾP TỤC
+                </a>
+                <p id="error-message" class="text-center text-sm text-red-500 mt-2 hidden"></p>
+
+                <p class="text-center text-sm text-gray-500">
+                    Bạn có thể chọn hình thức thanh toán sau khi đặt hàng
+                </p>
+            </div>
+        </div>
+    </main>
+</body>
+<script>
+    const invoiceToggle = document.getElementById('invoiceToggle');
+    const invoiceForm =
+     document.getElementById('invoiceForm');
+
+    invoiceToggle.addEventListener('change', function() {
+        if (this.checked) {
+            invoiceForm.classList.remove('hidden');
+            invoiceForm.classList.add('block');
+            // Add animation class
+            invoiceForm.classList.add('animate-fade-in');
+        } else {
+            invoiceForm.classList.add('hidden');
+            invoiceForm.classList.remove('block');
+            // Remove animation class
+            invoiceForm.classList.remove('animate-fade-in');
+        }
+    });
+</script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+   // Hiển thị thông báo bằng SweetAlert2
+function showAlert(message, type = "success") {
+    Swal.fire({
+        icon: type,
+        title: type === "success" ? "Thành công" : "Lỗi",
+        text: message,
+        confirmButtonText: "OK"
+    });
+}
+
+    document.addEventListener("DOMContentLoaded", function() {
+    loadCities();
+    TotalPrice();
+    loadSavedData(); // Load lại dữ liệu đã lưu
+    loadShipping();
+});
+    function loadShipping() {
+    // Kiểm tra phí vận chuyển từ localStorage
+        let shippingFee = localStorage.getItem("shippingFee");
+
+        // Kiểm tra nếu phí vận chuyển là 0 (Miễn phí) hoặc 40k
+        if (shippingFee == 0) {
+            // Hiển thị "Miễn phí vận chuyển (Giao hành tiêu chuẩn)" và "0đ"
+            document.querySelector("label[for='standard-shipping']").textContent = "Miễn phí vận chuyển (Giao hàng tiêu chuẩn)";
+            document.getElementById("shipping-price").textContent = "0đ";
+            // Nếu không có phí vận chuyển, hiển thị miễn phí
+            document.querySelector(".shipping-fee").textContent = "Miễn phí";
+        } else if (shippingFee == 40000) {
+            // Hiển thị "Giao hàng tiêu chuẩn" và "40.000₫"
+            document.querySelector("label[for='standard-shipping']").textContent = "Giao hàng tiêu chuẩn";
+            document.getElementById("shipping-price").textContent = "40.000₫";
+            // Cập nhật hiển thị phí vận chuyển
+            document.querySelector(".shipping-fee").textContent = "40.000₫";
+        }
+    }
+
+function loadSavedData() {
+    let savedData = localStorage.getItem("userInfo");
+
+    if (savedData) {
+        let userInfo = JSON.parse(savedData);
+
+        // Điền thông tin đã lưu vào các trường
+        document.getElementById("ordersname").value = userInfo.ordersName || "";
+        document.getElementById("phone-number").value = userInfo.phoneNumber || "";
+        document.getElementById("address-detail").value = userInfo.addressDetail || "";
+
+        // Điền lại các chọn lựa Tỉnh, Quận, Xã
+        setTimeout(() => {
+            let citySelect = document.getElementById("city");
+            for (let option of citySelect.options) {
+                if (option.text === userInfo.city) {
+                    citySelect.value = option.value;
+                    break;
+                }
+            }
+
+            loadDistricts(() => {
+                let districtSelect = document.getElementById("district");
+                for (let option of districtSelect.options) {
+                    if (option.text === userInfo.district) {
+                        districtSelect.value = option.value;
+                        break;
+                    }
+                }
+
+                loadWards(() => {
+                    let wardSelect = document.getElementById("ward");
+                    for (let option of wardSelect.options) {
+                        if (option.text === userInfo.ward) {
+                            wardSelect.value = option.value;
+                            break;
+                        }
+                    }
+                });
+            });
+        }, 500);
+
+        // Lấy giới tính từ localStorage và chọn lựa
+        let savedGender = localStorage.getItem("gender");
+        if (savedGender) {
+            if (savedGender === "Nam") {
+                document.getElementById("gender-male").checked = true;
+            } else if (savedGender === "Nữ") {
+                document.getElementById("gender-female").checked = true;
+            }
+        }
+        // Load Description vào ô nhập nếu có
+        document.getElementById("description").value = userInfo.description || ""; // Nếu có Description, điền vào ô
+    }
+}
+
+
+function TotalPrice() {
+    // Load tổng tiền từ localStorage nếu có
+    let savedTotalPrice = localStorage.getItem("totalPrice");
+    if (savedTotalPrice) {
+        document.getElementById("total-price").textContent = parseFloat(savedTotalPrice).toLocaleString() + "đ";
+    }
+}
+// Lưu giới tính vào localStorage khi thay đổi
+document.querySelectorAll('input[name="gender"]').forEach(input => {
+    input.addEventListener('change', function () {
+        let gender = this.value;
+        // Lưu giới tính vào localStorage
+        localStorage.setItem("gender", gender);
+    });
+});
+
+function loadCities() {
+    fetch("https://provinces.open-api.vn/api/?depth=1")
+        .then(response => response.json())
+        .then(data => {
+            let citySelect = document.getElementById("city");
+            citySelect.innerHTML = '<option value="">Chọn Tỉnh, Thành phố</option>';
+            data.forEach(city => {
+                citySelect.innerHTML += `<option value="${city.code}">${city.name}</option>`;
+            });
+        })
+        .catch(error => console.error("Lỗi khi lấy danh sách thành phố:", error));
+}
+
+function loadDistricts(callback) {
+    let cityId = document.getElementById("city").value;
+    let districtSelect = document.getElementById("district");
+    let wardSelect = document.getElementById("ward");
+
+    districtSelect.innerHTML = '<option value="">Chọn Quận, Huyện</option>';
+    wardSelect.innerHTML = '<option value="">Chọn Phường, Xã</option>';
+    wardSelect.disabled = true;
+    districtSelect.disabled = true;
+
+    if (!cityId) return;
+
+    fetch(`https://provinces.open-api.vn/api/p/${cityId}?depth=2`)
+        .then(response => response.json())
+        .then(data => {
+            districtSelect.disabled = false;
+            data.districts.forEach(district => {
+                districtSelect.innerHTML += `<option value="${district.code}">${district.name}</option>`;
+            });
+
+            // Gọi lại loadWards sau khi quận/huyện được tải
+            if (callback) callback();
+        })
+        .catch(error => console.error("Lỗi khi lấy danh sách quận/huyện:", error));
+}
+
+
+
+
+function loadWards(callback) {
+    let districtId = document.getElementById("district").value;
+    let wardSelect = document.getElementById("ward");
+
+    wardSelect.innerHTML = '<option value="">Chọn Phường, Xã</option>';
+    wardSelect.disabled = true;
+
+    if (!districtId) return;
+
+    fetch(`https://provinces.open-api.vn/api/d/${districtId}?depth=2`)
+        .then(response => response.json())
+        .then(data => {
+            wardSelect.disabled = false;
+            data.wards.forEach(ward => {
+                wardSelect.innerHTML += `<option value="${ward.code}">${ward.name}</option>`;
+            });
+
+            if (callback) callback(); // Gọi lại callback nếu có
+        })
+        .catch(error => console.error("Lỗi khi lấy danh sách phường/xã:", error));
+}
+
+function validateForm() {
+        let ordersName = document.getElementById("ordersname").value.trim();
+        let phoneNumber = document.getElementById("phone-number").value.trim();
+        let description = document.getElementById("description").value.trim();
+        
+        let citySelect = document.getElementById("city");
+        let districtSelect = document.getElementById("district");
+        let wardSelect = document.getElementById("ward");
+
+        let city = citySelect.value;
+        let district = districtSelect.value;
+        let ward = wardSelect.value;
+        let addressDetail = document.getElementById("address-detail").value.trim();
+
+        let gender = document.querySelector('input[name="gender"]:checked')?.value;
+
+        // Kiểm tra nếu các trường bắt buộc bị bỏ trống
+        if (ordersName === "" || phoneNumber === "" || city === "" || district === "" || ward === "" || addressDetail === "" || !gender) {
+            showAlert("Vui lòng điền đầy đủ thông tin cá nhân và địa chỉ nhận hàng.", "error");
+            return;
+        }
+
+        // Kiểm tra số điện thoại hợp lệ (tối thiểu 10 số)
+        let phoneRegex = /^[0-9]{10,11}$/;
+        if (!phoneRegex.test(phoneNumber)) {
+            showAlert("Số điện thoại không hợp lệ. Vui lòng nhập đúng 10-11 số.", "error");
+            return;
+        }
+
+        let userInfo = {
+            ordersName: ordersName,
+            phoneNumber: phoneNumber,
+            city: citySelect.options[citySelect.selectedIndex].text,
+            district: districtSelect.options[districtSelect.selectedIndex].text,
+            ward: wardSelect.options[wardSelect.selectedIndex].text,
+            addressDetail: addressDetail,
+            description: description
+        };
+
+        localStorage.setItem("userInfo", JSON.stringify(userInfo));
+        localStorage.setItem("gender", gender);
+
+        setTimeout(() => {
+            window.location.href = "/home/Banking"; // Chuyển hướng đến trang thanh toán
+        }, 1000);
+    }
+
+</script>
+<style>
+    @@keyframes fadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(-10px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .animate-fade-in {
+        animation: fadeIn 0.3s ease-in-out;
+    }
+</style>
+</html>

@@ -1,0 +1,149 @@
+<main class="h-full overflow-y-auto">
+    <div class="container px-6 mx-auto grid" x-data="{ activeTab: 'gmail' }">
+        <h2 class="my-6 text-2xl font-semibold text-gray-700 dark:text-gray-200">
+            Cài Đặt
+        </h2>
+        <ul class="flex border-b border-gray-300 dark:border-gray-600 justify-center space-x-4 mb-6" id="settingsTab" role="tablist">
+            <li class="">
+                <button @@click="activeTab = 'gmail'" :class="{ 'bg-blue-600 text-white': activeTab === 'gmail' }" class="px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-200 bg-gray-100 dark:bg-gray-700 rounded-t-lg focus:outline-none">
+                    <i class="fas fa-envelope"></i> Gmail
+                </button>
+            </li>
+            <li class="">
+                <button @@click="activeTab = 'telegram'" :class="{ 'bg-blue-600 text-white': activeTab === 'telegram' }" class="px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-200 bg-gray-100 dark:bg-gray-700 rounded-t-lg focus:outline-none">
+                    <i class="fab fa-telegram"></i> Telegram
+                </button>
+            </li>
+            <li class="">
+                <button @@click="activeTab = 'notifications'" :class="{ 'bg-blue-600 text-white': activeTab === 'notifications' }" class="px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-200 bg-gray-100 dark:bg-gray-700 rounded-t-lg focus:outline-none">
+                    <i class="fas fa-bell"></i> Thông Báo
+                </button>
+            </li>
+            <li class="">
+                <button @@click="activeTab = 'website'" :class="{ 'bg-blue-600 text-white': activeTab === 'website' }" class="px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-200 bg-gray-100 dark:bg-gray-700 rounded-t-lg focus:outline-none">
+                    <i class="fas fa-globe"></i> Website
+                </button>
+            </li>
+            <li class="">
+                <button @@click="activeTab = 'bank'" :class="{ 'bg-blue-600 text-white': activeTab === 'bank' }" class="px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-200 bg-gray-100 dark:bg-gray-700 rounded-t-lg focus:outline-none">
+                    <i class="fas fa-university"></i> Ngân Hàng
+                </button>
+            </li>
+            <li class="">
+                <button @@click="activeTab = 'sidebar'" :class="{ 'bg-blue-600 text-white': activeTab === 'sidebar' }" class="px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-200 bg-gray-100 dark:bg-gray-700 rounded-t-lg focus:outline-none">
+                    <i class="fas fa-bars"></i> Sidebar
+                </button>
+            </li>
+            <li class="">
+                <button @@click="activeTab = 'settings'" :class="{ 'bg-blue-600 text-white': activeTab === 'settings' }" class="px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-200 bg-gray-100 dark:bg-gray-700 rounded-t-lg focus:outline-none">
+                    <i class="fas fa-cogs"></i> Cài Đặt
+                </button>
+            </li>
+        </ul>
+        
+        
+        <div class="tab-content bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-200 rounded-lg p-6">
+            <!-- Sidebar Settings -->
+            <div x-data="sidebarManager" x-show="activeTab === 'sidebar'" x-cloak>
+                <partial name="Setting/Siderbar" />
+            </div>
+
+            <!-- Gmail Settings -->
+            <div x-show="activeTab === 'gmail'" x-cloak>
+                <h4 class="text-xl font-semibold text-gray-700 dark:text-gray-200 mb-4"><i class="fas fa-envelope"></i> Gmail Settings</h4>
+                <form>
+                    <div class="mb-4">
+                        <label for="email" class="block text-sm font-medium text-gray-700 dark:text-gray-200">Email</label>
+                        <input type="email" class="w-full px-4 py-2 mt-1 text-sm bg-gray-50 dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring focus:ring-blue-300" id="email" placeholder="Enter your email">
+                    </div>
+                    <div class="mb-4">
+                        <label for="password" class="block text-sm font-medium text-gray-700 dark:text-gray-200">Password</label>
+                        <input type="password" class="w-full px-4 py-2 mt-1 text-sm bg-gray-50 dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring focus:ring-blue-300" id="password" placeholder="Enter your password">
+                    </div>
+                    <button type="submit" class="px-6 py-2 text-white bg-blue-600 rounded-md hover:bg-blue-700 focus:outline-none">Save Changes</button>
+                </form>
+            </div>
+
+            <!-- Telegram Settings -->
+            <div x-show="activeTab === 'telegram'" x-cloak>
+                <h4 class="text-xl font-semibold text-gray-700 dark:text-gray-200 mb-4"><i class="fab fa-telegram"></i> Telegram Settings</h4>
+                <form>
+                    <div class="mb-4">
+                        <label for="botToken" class="block text-sm font-medium text-gray-700 dark:text-gray-200">Bot Token</label>
+                        <input type="text" class="w-full px-4 py-2 mt-1 text-sm bg-gray-50 dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring focus:ring-blue-300" id="botToken" placeholder="Enter your Telegram bot token">
+                    </div>
+                    <button type="submit" class="px-6 py-2 text-white bg-blue-600 rounded-md hover:bg-blue-700 focus:outline-none">Save Changes</button>
+                </form>
+            </div>
+
+            <!-- Notification Settings -->
+            <div x-show="activeTab === 'notifications'">
+                <h4 class="text-xl font-semibold text-gray-700 dark:text-gray-200 mb-4"><i class="fas fa-bell"></i> Notification Settings</h4>
+                <form>
+                    <div class="mb-4">
+                        <label for="notificationContent" class="block text-sm font-medium text-gray-700 dark:text-gray-200">Nội dung</label>
+                        <textarea id="notificationContent" class="w-full px-4 py-2 mt-1 text-sm bg-gray-50 dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring focus:ring-blue-300" rows="8" placeholder="Nhập nội dung thông báo..."></textarea>
+                    </div>
+                    <button class="px-6 py-2 text-white bg-blue-600 rounded-md hover:bg-blue-700 focus:outline-none"><i class="fas fa-save"></i> Lưu thông báo</button>
+                </form>
+            </div>
+
+            <!-- Website Settings -->
+            <div x-show="activeTab === 'website'">
+                <h4 class="text-xl font-semibold text-gray-700 dark:text-gray-200 mb-4"><i class="fas fa-globe"></i> Website Settings</h4>
+                <form>
+                    <div class="mb-4">
+                        <label for="websiteName" class="block text-sm font-medium text-gray-700 dark:text-gray-200">Website Name</label>
+                        <input type="text" class="w-full px-4 py-2 mt-1 text-sm bg-gray-50 dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring focus:ring-blue-300" id="websiteName" placeholder="Enter website name">
+                    </div>
+                    <div class="mb-4">
+                        <label for="websiteLogo" class="block text-sm font-medium text-gray-700 dark:text-gray-200">Website Logo</label>
+                        <div class="w-full px-4 py-6 mt-1 text-sm bg-gray-50 dark:bg-gray-800 border border-dashed border-gray-300 dark:border-gray-600 rounded-md text-center focus:outline-none focus:ring focus:ring-blue-300 cursor-pointer">
+                            <i class="fas fa-cloud-upload-alt"></i>
+                            <p>Drag & drop an image here, or click to select</p>
+                        </div>
+                    </div>
+                    <button type="submit" class="px-6 py-2 text-white bg-blue-600 rounded-md hover:bg-blue-700 focus:outline-none">Save Changes</button>
+                </form>
+            </div>
+
+            <!-- Settings Tab -->
+            <div x-show="activeTab === 'settings'">
+                <h4 class="text-xl font-semibold text-gray-700 dark:text-gray-200 mb-4"><i class="fas fa-cogs"></i> Cài Đặt Chung</h4>
+                <form>
+                    <div class="flex items-center mb-4">
+                        <input class="w-5 h-5 text-blue-600 bg-gray-50 border border-gray-300 rounded focus:ring focus:ring-blue-300 focus:outline-none dark:bg-gray-800 dark:border-gray-600" type="checkbox" id="maintenanceMode">
+                        <label class="ml-2 text-sm font-medium text-gray-700 dark:text-gray-200" for="maintenanceMode">Chế độ bảo trì website</label>
+                    </div>
+                    <button type="submit" class="px-6 py-2 text-white bg-blue-600 rounded-md hover:bg-blue-700 focus:outline-none">Lưu Cài Đặt</button>
+                </form>
+            </div>
+
+            <!-- Bank Settings -->
+            <div x-show="activeTab === 'bank'">
+                <h4 class="text-xl font-semibold text-gray-700 dark:text-gray-200 mb-4"><i class="fas fa-university"></i> Thông Tin Ngân Hàng</h4>
+                <form>
+                    <div class="mb-4">
+                        <label for="bankName" class="block text-sm font-medium text-gray-700 dark:text-gray-200">Tên Ngân Hàng</label>
+                        <input type="text" class="w-full px-4 py-2 mt-1 text-sm bg-gray-50 dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring focus:ring-blue-300" id="bankName" placeholder="Nhập tên ngân hàng">
+                    </div>
+                    <div class="mb-4">
+                        <label for="accountNumber" class="block text-sm font-medium text-gray-700 dark:text-gray-200">Số Tài Khoản</label>
+                        <input type="text" class="w-full px-4 py-2 mt-1 text-sm bg-gray-50 dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring focus:ring-blue-300" id="accountNumber" placeholder="Nhập số tài khoản">
+                    </div>
+                    <div class="mb-4">
+                        <label for="accountHolder" class="block text-sm font-medium text-gray-700 dark:text-gray-200">Chủ Tài Khoản</label>
+                        <input type="text" class="w-full px-4 py-2 mt-1 text-sm bg-gray-50 dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring focus:ring-blue-300" id="accountHolder" placeholder="Nhập tên chủ tài khoản">
+                    </div>
+                    <button type="submit" class="px-6 py-2 text-white bg-blue-600 rounded-md hover:bg-blue-700 focus:outline-none">Lưu Thông Tin Ngân Hàng</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" defer></script>
+<script>
+    CKEDITOR.replace('notificationContent');
+</script>

@@ -1,0 +1,34 @@
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const tbody = document.querySelector('tbody');
+        
+        tbody.addEventListener('click', function(event) {
+            if (event.target.closest('.edit-product-button')) {
+                const productId = event.target.closest('.edit-product-button').getAttribute('data-id');
+                if (productId) {
+                    window.location.href = `/Admin/EditProducts?id=${productId}`;
+                }
+            }
+            if (event.target.closest('.delete-product-button')) {
+                const productId = event.target.closest('.delete-product-button').getAttribute('data-id');
+                if (productId) {
+                    const confirmDelete = confirm('Bạn có chắc chắn muốn xóa sản phẩm này?');
+                    if (confirmDelete) {
+                        fetch(`/api/Product/${productId}`, { method: 'DELETE' })
+                            .then(response => {
+                                if (response.ok) {
+                                    alert('Sản phẩm đã được xóa');
+                                    location.reload();
+                                } else {
+                                    alert('Không thể xóa sản phẩm');
+                                }
+                            })
+                            .catch(error => {
+                                console.error('Lỗi khi xóa sản phẩm:', error);
+                            });
+                    }
+                }
+            }
+        });
+    });
+</script>

@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GEARVN - Đăng ký</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+</head>
+<body class="flex items-center justify-center min-h-screen bg-gray-100">
+    <div class="bg-white p-6 rounded-lg shadow-lg w-full max-w-md relative">
+        <button class="absolute top-2 right-2 text-gray-600 text-2xl hover:text-gray-800"><i class="fas fa-times"></i></button>
+        <h1 class="text-2xl font-bold text-center text-gray-800 mb-8">ĐĂNG KÝ</h1>
+        <form onsubmit="handleRegister(event)">
+            <div class="mb-4">
+                <label for="registerEmail" class="block text-sm font-medium text-gray-700 mb-1">Email</label>
+                <div class="relative">
+                    <input type="email" id="registerEmail" required class="w-full pl-10 pr-3 py-2 border rounded-md focus:ring focus:ring-blue-500 focus:outline-none">
+                    <i class="fas fa-envelope absolute left-3 top-2.5 text-gray-500"></i>
+                </div>
+            </div>
+            <div class="mb-4">
+                <label for="registerPassword" class="block text-sm font-medium text-gray-700 mb-1">Mật khẩu</label>
+                <div class="relative">
+                    <input type="password" id="registerPassword" required class="w-full pl-10 pr-10 py-2 border rounded-md focus:ring focus:ring-blue-500 focus:outline-none">
+                    <i class="fas fa-lock absolute left-3 top-2.5 text-gray-500"></i>
+                    <button type="button" class="absolute inset-y-0 right-3 flex items-center text-gray-500 hover:text-gray-700 toggle-password" data-target="registerPassword">
+                        <i class="fas fa-eye"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="mb-4">
+                <label for="confirmPassword" class="block text-sm font-medium text-gray-700 mb-1">Xác nhận mật khẩu</label>
+                <div class="relative">
+                    <input type="password" id="confirmPassword" required class="w-full pl-10 pr-10 py-2 border rounded-md focus:ring focus:ring-blue-500 focus:outline-none">
+                    <i class="fas fa-lock absolute left-3 top-2.5 text-gray-500"></i>
+                    <button type="button" class="absolute inset-y-0 right-3 flex items-center text-gray-500 hover:text-gray-700 toggle-password" data-target="confirmPassword">
+                        <i class="fas fa-eye"></i>
+                    </button>
+                </div>
+            </div>
+            <button type="submit" class="w-full bg-blue-700 text-white py-2 rounded-md hover:bg-blue-800 flex items-center justify-center gap-2">
+                <i class="fas fa-user-plus"></i>
+                ĐĂNG KÝ
+            </button>
+        </form>
+        <div class="flex items-center my-6">
+            <div class="border-t border-gray-300 flex-grow"></div>
+            <span class="px-3 text-sm text-gray-500">hoặc đăng ký bằng</span>
+            <div class="border-t border-gray-300 flex-grow"></div>
+        </div>
+        <div class="grid grid-cols-2 gap-4 mb-6">
+            <button class="flex items-center justify-center gap-2 py-2 border border-gray-300 rounded-md hover:bg-gray-100">
+                <i class="fab fa-google text-red-500"></i>
+                Google
+            </button>
+            <button class="flex items-center justify-center gap-2 py-2 bg-blue-700 text-white rounded-md hover:bg-blue-800">
+                <i class="fab fa-facebook-f"></i>
+                Facebook
+            </button>
+        </div>
+        <div class="text-center text-sm text-gray-500">
+            <span>Bạn đã có tài khoản? </span>
+            <a href="dangnhapForm.html" class="text-blue-700 font-medium hover:underline">Đăng nhập ngay!</a>
+        </div>
+    </div>
+    <script>
+        document.querySelectorAll('.toggle-password').forEach(button => {
+            button.addEventListener('click', function () {
+                const targetId = this.getAttribute('data-target');
+                const targetInput = document.getElementById(targetId);
+
+                // Toggle the type attribute
+                const type = targetInput.getAttribute('type') === 'password' ? 'text' : 'password';
+                targetInput.setAttribute('type', type);
+
+                // Toggle the eye icon
+                this.innerHTML = type === 'password'
+                    ? '<i class="fas fa-eye"></i>'
+                    : '<i class="fas fa-eye-slash"></i>';
+            });
+        });
+    </script>
+</body>
+</html>

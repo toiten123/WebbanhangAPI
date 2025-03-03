@@ -1,0 +1,330 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'SF Pro Display', 'Arial', sans-serif;
+    background-color: #f1f0f1;
+}
+
+.container-cowndown {
+    max-width: 1280px;
+    margin-left: auto;
+    margin-right: 92px;
+    padding-bottom: 3%;
+}
+
+.banner {
+    background: linear-gradient(180deg, #1ad0f7 0%, #2940B8 100%);
+    color: white;
+    padding: 15px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-radius: 5px 5px 0px 0px;
+}
+
+.countdown-container {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.countdown {
+    display: flex;
+    gap: 4px;
+}
+
+.time-box {
+    background: white;
+    color: black;
+    padding: 4px 8px;
+    border-radius: 4px;
+    min-width: 35px;
+    text-align: center;
+}
+
+.time-box span {
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.promo-text {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-family: 'SVN-Gilroy';
+    font-style: italic;
+    font-weight: 900;
+    font-size: 32px;
+    line-height: 40px;
+    text-transform: uppercase;
+    padding-left: 35px;
+    padding-right: 15px;
+    position: relative;
+    white-space: initial;
+    overflow: hidden;
+    /* -webkit-line-clamp: 1; */
+    -webkit-box-orient: vertical;
+    display: -webkit-box;
+    color: #FFEE12;
+}
+
+.lightning {
+    font-size: 24px;
+}
+
+.view-details {
+    color: white;
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.3s;
+}
+
+.view-details:hover {
+    color: #ffd700;
+}
+
+.product-section {
+    margin-left: 35%;
+    display: flex;
+    gap: 8px;
+    overflow: hidden;
+    /* Ẩn các sản phẩm ngoài vùng hiển thị */
+}
+
+.product-slider {
+    display: flex;
+    transition: transform 0.8s ease;
+}
+
+.prev-button,
+.next-button {
+    cursor: pointer;
+    position: absolute;
+    width: 32px;
+    height: 32px;
+    top: 162%;
+    transform: translateY(-50%);
+    border: none;
+    background: #ECECEC;
+    z-index: 2;
+    outline: none;
+    border-radius: 50%;
+    padding: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    -webkit-transition: all 0.2s;
+    transition: all 0.2s;
+    box-shadow: 0px 0px 4.80687px rgba(0, 0, 0, 0.2)
+}
+
+.prev-button {
+    left: 36.8%;
+
+}
+
+.next-button {
+    right: 11%;
+}
+
+
+.product-card {
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    flex: 0 0 50px;
+    padding: 10px;
+    position: relative;
+    margin-left: 5px;
+    margin-top: 20px;
+}
+
+.product-card img {
+    max-width: 100%;
+    border-radius: 8px;
+    min-height: 164px;
+    /* Đặt chiều cao tối thiểu */
+    object-fit: cover;
+    /* Đảm bảo nội dung ảnh được bao phủ đầy đủ */
+}
+
+
+.product-title {
+    font-size: 15px;
+    font-weight: bold;
+    margin: 10px 0;
+    overflow: hidden;
+    /* Ẩn phần văn bản vượt quá */
+    display: -webkit-box;
+    /* Sử dụng để hỗ trợ line-clamp */
+    -webkit-line-clamp: 2;
+    /* Số dòng tối đa được hiển thị */
+    -webkit-box-orient: vertical;
+    /* Đặt hướng của box */
+    text-overflow: ellipsis;
+    /* Thêm dấu "..." nếu văn bản vượt quá */
+    word-wrap: break-word;
+    /* Chia từ nếu cần */
+}
+
+
+.product-price {
+    margin: 10px 0;
+    font-size: 18px;
+    text-align: left;
+}
+
+.product-price .old-price {
+    text-decoration: line-through;
+    color: #999;
+    display: block;
+    /* Đặt giá cũ trên một dòng riêng */
+    font-size: 14px;
+}
+
+.product-price .current-price-container {
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+    margin-top: 4px;
+    /* Khoảng cách với giá cũ */
+}
+
+.product-price .current-price {
+    color: #dc0000;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.product-price .discount {
+    padding: 0 4px;
+    background: #FFEDED;
+    border-radius: 2px;
+    color: #E30019;
+    border: 1px solid #E30019;
+    line-height: 16px;
+    font-size: 13px;
+    margin-left: 10px;
+}
+
+.product-rating {
+    margin: 10px 0;
+    color: #f39c12;
+    font-size: 16px;
+    text-align: left;
+}
+
+.product-rating .review-count {
+    color: #FF8A00;
+    color: #555;
+    margin-left: 5px;
+}
+
+.product-sold {
+    margin: 10px 0;
+    font-size: 14px;
+    color: #dc0000;
+    font-weight: bold;
+}
+
+.product-button {
+    text-align: center;
+    display: block;
+    margin-top: 10px;
+    padding: 10px 20px;
+    background-color: #dc0000;
+    color: white;
+    text-decoration: none;
+    border-radius: 4px;
+    transition: background-color 0.3s;
+}
+
+.product-button:hover {
+    background-color: #b30000;
+}
+
+@media (max-width: 768px) {
+    .banner {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .countdown-container {
+        flex-direction: column;
+    }
+
+    .promo-text {
+        font-size: 16px;
+        text-align: center;
+    }
+
+    .product-section {
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    .product-card {
+        flex: 0 0 90%;
+    }
+}
+
+.nen {
+    background-color: #296FFF;
+    position: absolute;
+    padding-top: 25.8%;
+    padding-left: 78.2%;
+    border-radius: 0px 0px 5px 5px;
+}
+
+.promo-image {
+    position: absolute;
+    padding-left: 21px;
+    padding-top: 24px;
+    border-radius: 8px;
+    width: 380px;
+    height: 336px;
+}
+
+.sticker_left_bottom .suaanh {
+    position: absolute;
+    z-index: 1;
+    top: 33%;
+    left: 0;
+    display: flex;
+    align-items: flex-end;
+    min-height: 0px;
+    height: 62px;
+}
+
+.hinh-container {
+    max-width: 1280px;
+    margin: 0 auto;
+    margin-right: 92px;
+    padding-top: 30px;
+    margin-bottom: 15px;
+}
+
+.banner-flexhinh {
+    display: flex;
+    /* Thêm display flex */
+    gap: 20px;
+    /* Khoảng cách giữa 2 banner */
+}
+
+.banner-hinh {
+    width: 50%;
+    /* Mỗi banner chiếm 50% chiều rộng */
+}
+
+.banner-hinh img {
+    width: 100%;
+    height: auto;
+    display: block;
+    border-radius: 12px;
+    /* Bo góc cho hình ảnh */
+}

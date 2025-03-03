@@ -1,0 +1,72 @@
+<script>
+    document.addEventListener('DOMContentLoaded', async function () {
+        try {
+            let response        = await fetch('/api/Product');
+            if (response.ok) {
+                let products    = await response.json();
+                renderProductTable(products);
+            } else {
+                console.error('Không thể tải dữ liệu sản phẩm');
+            }
+        } catch (error) {
+            console.error('Lỗi khi gọi API:', error);x
+        }
+    });
+    
+    function renderProductTable(products) {
+        const tbody = document.querySelector('tbody');
+        tbody.innerHTML = '';
+        
+        if (products.length === 0) {
+            renderEmptyMessage();
+        } else {
+            products.forEach(item => {
+                const product = item.product;
+                if (!product) return;
+                
+                const row = document.createElement('tr');
+                row.classList.add('text-black-400');
+                row.classList.add('dark:text-gray-400');
+                row.innerHTML = `
+                    <td class="px-4 py-3">
+                        <input type="checkbox" class="rounded border-gray-600 bg-gray-700 text-purple-600">
+                    </td>
+                    <td class="px-4 py-3 text-sm">${product.productID}</td>
+                    <td class="px-4 py-3 text-sm max-w-xs overflow-hidden text-ellipsis whitespace-nowrap">${product.productName}</td>
+                    <td class="px-4 py-3 text-sm max-w-3xs 0verflow-hidden text-ellipsis whitespace-nowrap">${product.loai}</td>
+                    <td class="px-4 py-3 text-sm max-w-3xs 0verflow-hidden text-ellipsis whitespace-nowrap">${product.manufacturer || ''}</td>
+                    <td class="px-4 py-3 text-sm">${product.priceOriginal.toLocaleString()} đ</td>
+                    <td class="px-4 py-3 text-sm">${product.quantity}</td>
+                    <td class="px-4 py-3 text-sm max-w-xs overflow-hidden text-ellipsis whitespace-nowrap">${product.description || ''}</td>
+                    <td class="px-4 py-3 text-sm">
+                        <div class="flex items-center space-x-2">
+                            <a href="javascript:void(0);" class="p-2 text-red-600 bg-red-100/10 rounded-lg hover:bg-red-100/20 delete-product-button" data-id="${product.productID}">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <polyline points="3 6 5 6 21 6"></polyline>
+                                    <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                                </svg>
+                            </a>
+                            <a href="/Admin/EditProducts?id=${product.productID}" class="p-2 text-purple-600 bg-purple-100/10 rounded-lg hover:bg-purple-100/20 edit-product-button" data-id="${product.productID}">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+                                    <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+                                </svg>
+                            </a>
+                        </div>
+                    </td>
+                `;
+                tbody.appendChild(row);
+            });
+        }
+    }
+    
+    function renderEmptyMessage() {
+        const tbody     = document.querySelector('tbody');
+        tbody.innerHTML = `
+            <tr class="text-gray-300">
+                <td colspan="9" class="px-4 py-3 text-center">Chưa có dữ liệu</td>
+            </tr>
+        `;
+    }
+
+</script>
